@@ -1,12 +1,13 @@
 package plantopia.sungshin.plantopia;
 
 public class PostItem {
-    private String url, title, source, img;
+    private String url, title, source;
+    private int img;
 
     public PostItem() {
     }
 
-    public PostItem(String url, String title, String source, String img) {
+    public PostItem(String url, String title, String source, int img) {
         this.url = url;
         this.title = title;
         this.source = source;
@@ -37,11 +38,11 @@ public class PostItem {
         this.source = source;
     }
 
-    public String getImg() {
+    public int getImg() {
         return img;
     }
 
-    public void setImg(String img) {
+    public void setImg(int img) {
         this.img = img;
     }
 }

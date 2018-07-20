@@ -19,10 +19,13 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationViewEx bnve = (BottomNavigationViewEx) findViewById(R.id.bnve);
 
         //BottomNavigation 디자인 설정
-        bnve.enableAnimation(true);
+        bnve.enableAnimation(true); //위로 떠오르는 애니메이션
         bnve.enableShiftingMode(false);
         bnve.enableItemShiftingMode(false);
         bnve.setTextVisibility(false);
+        bnve.setPadding(0, 20, 0, 20);
+
+        getSupportActionBar().setElevation(0); //액션바 그림자 제거
 
         loadFragment(new HomeFragment());
 
