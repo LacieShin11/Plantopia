@@ -1,20 +1,16 @@
 package plantopia.sungshin.plantopia;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -25,23 +21,28 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class HomeFragment extends android.support.v4.app.Fragment implements RecyclerView.OnItemTouchListener {
-    @BindView(R.id.post_gallery) RecyclerView postGallery;
-    @BindView(R.id.diy_gallery) RecyclerView diyGallery;
-    @BindView(R.id.product_gallery) RecyclerView productGallery;
+    @BindView(R.id.post_gallery)
+    RecyclerView postGallery;
+    @BindView(R.id.diy_gallery)
+    RecyclerView diyGallery;
+    @BindView(R.id.product_gallery)
+    RecyclerView productGallery;
 
-    ArrayList<PostItem> arrayList = new ArrayList<>();
-    PostRecyclerViewAdapter postAdapter = new PostRecyclerViewAdapter(arrayList, getContext());
-    String [] titles = new String[3];
-    String [] sources =  new String[]{"네이버 블로그" ,"브런치", "브런치"};
-    String [] url =  new String[]{"http://www.androhub.com/android-staggered-and-horizontal-recyclerview/" ,"두번째", "세번째"};
-    int [] images = new int[]{R.drawable.test, R.drawable.test, R.drawable.test};
+    ArrayList<PostItem> postList = new ArrayList<>();
+    ArrayList<DIYItem> diyList = new ArrayList<>();
+    ArrayList<ProductItem> productList = new ArrayList<>();
 
+    PostRecyclerViewAdapter postAdapter = new PostRecyclerViewAdapter(postList, getContext());
+    DIYRecyclerViewAdapter diyAdapter = new DIYRecyclerViewAdapter(diyList, getContext());
+    ProductRecyclerViewAdapter productAdapter = new ProductRecyclerViewAdapter(productList, getContext());
+    String[] titles = new String[]{"식물 키우기", "식물 키우기", "식물 키우기", "식물 키우기", "식물 키우기"};
+    String[] sources = new String[]{"네이버 포스트", "네이버 포스트", "네이버 포스트", "네이버 포스트", "네이버 포스트"};
+    String[] url = new String[]{"http://www.androhub.com/android-staggered-and-horizontal-recyclerview/", "두번째", "세번째", "다섯번째", "네번째"};
+    int[] images = new int[]{R.drawable.test, R.drawable.test, R.drawable.test};
 
-    String naverPostUrl = "https://post.naver.com/search/post.nhn?keyword=식물키우기&sortType=createDate.dsc&range=&term=all&navigationType=current";
+    String naverPostUrl = "http://petplant.co.kr/board/board.html?code=needsad_image3";
     Document postDoc;
-
     private Unbinder unbinder;
-    private ArrayList<PostItem> postItems = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,25 +58,20 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
         postGallery.setHasFixedSize(true);
         postGallery.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        for (int i = 0; i < titles.length; i++) {
-            arrayList.add(new PostItem(url[i], titles[i], sources[i], images[i]));
-        }
-
         postGallery.setAdapter(postAdapter);
         postAdapter.notifyDataSetChanged();
 
-        try {
-            postDoc = Jsoup.connect(naverPostUrl).get();
-            Elements elements = postDoc.select("tit_feed ell");
-            Log.d("elements", elements.get(0).toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        diyGallery.setAdapter(diyAdapter);
+        postAdapter.notifyDataSetChanged();
+
+        productGallery.setAdapter(productAdapter);
+        productAdapter.notifyDataSetChanged();
+
+        getWebsite();
 
         postGallery.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), postGallery, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getContext(), postAdapter.getItem(position).getTitle(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -87,28 +83,47 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
         return view;
     }
 
-   /*public void getTitles(String[] titles) {
-        final Element postElement;
-
-        new AsyncTask() {
+    private void getWebsite() {
+        new Thread(new Runnable() {
             @Override
-            protected Object doInBackground(Object[] objects) {
+            public void run() {
+                final StringBuilder builder = new StringBuilder();
+
                 try {
-                    doc = Jsoup.connect(naverPostUrl).get();
-                    postElement = doc.select("tit_feed ell");
+                    Document doc = Jsoup.connect(naverPostUrl).get();
+                    Elements links = doc.select("list_title");
 
+                    /*for (int i = 0; i < 5; i++) {
+                        builder.append(links.get(i).text());
+                        titles[i] = builder.toString();
+                        builder.setLength(0);
+                    }*/
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    builder.append("Error : ").append(e.getMessage()).append("\n");
                 }
-                return null;
-            }
 
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < titles.length; i++) {
+                            PostItem item = new PostItem(url[i], titles[i], sources[i], 0);
+                            DIYItem item2 = new DIYItem(url[i], titles[i], sources[i]);
+                            ProductItem item3 = new ProductItem("화분", "2000원", "www.maver.com");
+
+                            postAdapter.addItem(item);
+                            diyAdapter.addItem(item2);
+                            productAdapter.addItem(item3);
+                        }
+
+                        postAdapter.notifyDataSetChanged();
+                        diyAdapter.notifyDataSetChanged();
+                        productAdapter.notifyDataSetChanged();
+                }
+                });
             }
-        };
-    }*/
+        }).start();
+    }
+
 
     @Override
     public void onDestroyView() {

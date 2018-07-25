@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.MenuItem;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         bnve.enableItemShiftingMode(false);
         bnve.setTextVisibility(false);
         bnve.setPadding(0, 20, 0, 20);
+        bnve.setForegroundGravity(Gravity.CENTER);
 
         getSupportActionBar().setElevation(0); //액션바 그림자 제거
 

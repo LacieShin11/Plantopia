@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-public class PostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
-    private ArrayList<PostItem> arrayList;
+public class DIYRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
+    private ArrayList<DIYItem> arrayList;
     private Context mContext;
 
-    public PostRecyclerViewAdapter(ArrayList<PostItem> arrayList, Context mContext) {
+    public DIYRecyclerViewAdapter(ArrayList<DIYItem> arrayList, Context mContext) {
         this.arrayList = arrayList;
         this.mContext = mContext;
     }
@@ -22,7 +22,7 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.item_post, parent, false);
+        ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.item_diy, parent, false);
         RecyclerViewHolder listHolder = new RecyclerViewHolder(viewGroup);
 
         return listHolder;
@@ -31,7 +31,7 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         RecyclerViewHolder mainHolder = (RecyclerViewHolder) holder;
-        PostItem item = arrayList.get(position);
+        DIYItem item = arrayList.get(position);
 
 //        Bitmap img = BitmapFactory.decodeResource(mContext.getResources(), item.getImg());
 
@@ -45,7 +45,7 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
         return (arrayList != null) ? arrayList.size() : 0;
     }
 
-    public PostItem getItem(int position) {
+    public DIYItem getItem(int position) {
         return arrayList.get(position);
     }
 
@@ -53,7 +53,7 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
         arrayList.clear();
     }
 
-    public void addItem(PostItem item) {
+    public void addItem(DIYItem item) {
         arrayList.add(item);
     }
 }
