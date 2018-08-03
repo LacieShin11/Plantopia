@@ -5,22 +5,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="1dp"
+        android:layout_below="@+id/actionbar_text"
+        android:layout_gravity="bottom"
+        android:background="#d8d8d8" />
+
+    <LinearLayout
+        android:layout_marginHorizontal="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:civ_border_color="@android:color/darker_gray"
-            app:civ_border_width="1dp" />
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:src="@drawable/face"
+            app:civ_border_color="#9b9b9b"
+            app:civ_border_width="2dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:orientation="vertical">
 
 

@@ -1,60 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:orientation="vertical"
-    android:paddingVertical="15dp">
+    android:background="@drawable/background">
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/music_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="15dp"
-        android:background="@drawable/round_item_custom"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_above="@id/music_info_layout"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="30dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="20dp" />
 
-    </LinearLayout>
-
-    <LinearLayout
+    <View
+        android:id="@+id/shadow"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="15dp"
-        android:background="@drawable/round_item_custom"
-        android:orientation="vertical">
+        android:layout_height="3dp"
+        android:layout_above="@+id/music_info_layout"
+        android:layout_gravity="bottom"
+        android:background="@drawable/custom_shadow" />
 
-    </LinearLayout>
-
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/music_info_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="15dp"
-        android:background="@drawable/round_item_custom"
-        android:orientation="vertical">
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@android:color/white"
+        android:gravity="center_vertical">
 
-    </LinearLayout>
+        <FrameLayout
+            android:id="@+id/music_round_layout"
+            android:layout_width="26dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="1dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="15dp"
-        android:background="@drawable/round_item_custom"
-        android:orientation="vertical">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/music_round_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/circle_crop" />
 
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/music_state_btn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_play_arrow_24dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="15dp"
-        android:background="@drawable/round_item_custom"
-        android:orientation="vertical">
+        </FrameLayout>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/played_song_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/music_round_layout"
+            android:elevation="2dp"
+            android:gravity="center_vertical"
+            android:text="Moonlight Dream"
+            android:textColor="@android:color/black"
+            android:textSize="17sp" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="2dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-</LinearLayout>
+            <ImageButton
+                android:id="@+id/music_speaker_btn"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_volume_mute_24dp" />
+
+            <ImageButton
+                android:id="@+id/music_change_btn"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_tune_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/music_stop_btn"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_close_gray_24dp" />
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

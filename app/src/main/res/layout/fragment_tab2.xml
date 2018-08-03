@@ -4,10 +4,12 @@
     android:layout_height="match_parent">
 
     <View
+        android:layout_below="@+id/actionbar_text"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_gravity="bottom"
         android:background="#d8d8d8" />
-    
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
