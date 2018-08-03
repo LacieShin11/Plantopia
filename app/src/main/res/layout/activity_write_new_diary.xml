@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <plantopia.sungshin.plantopia.customView.SquareImgView
+            android:id="@+id/diary_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="15dp"
+            android:background="#BDBDBD"
+            android:scaleType="center" />
+
+        <EditText
+            android:id="@+id/diary_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
+            android:background="@null"
+            android:gravity="left|top"
+            android:hint="성장기록을 남겨주세요."
+            android:scrollbars="vertical" />
+
+    </LinearLayout>
+</ScrollView>

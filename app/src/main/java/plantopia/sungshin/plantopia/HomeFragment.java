@@ -1,5 +1,7 @@
 package plantopia.sungshin.plantopia;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +34,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
     ArrayList<DIYItem> diyList = new ArrayList<>();
     ArrayList<ProductItem> productList = new ArrayList<>();
 
+    Activity activity;
     PostRecyclerViewAdapter postAdapter = new PostRecyclerViewAdapter(postList, getContext());
     DIYRecyclerViewAdapter diyAdapter = new DIYRecyclerViewAdapter(diyList, getContext());
     ProductRecyclerViewAdapter productAdapter = new ProductRecyclerViewAdapter(productList, getContext());
@@ -47,6 +50,13 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Activity) activity = (Activity) context;
     }
 
     @Nullable
@@ -102,7 +112,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                     builder.append("Error : ").append(e.getMessage()).append("\n");
                 }
 
-                getActivity().runOnUiThread(new Runnable() {
+                activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         for (int i = 0; i < titles.length; i++) {

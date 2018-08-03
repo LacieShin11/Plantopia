@@ -1,5 +1,6 @@
 package plantopia.sungshin.plantopia;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,6 +12,7 @@ import android.view.MenuItem;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity {
+    static final int WRITE_DIARY = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.menu_edit:
-                        fragment = new EditFragment();
+//                        fragment = new EditFragment();
+                        Intent intent = new Intent(MainActivity.this, WriteNewDiaryActivity.class);
+                        startActivityForResult(intent, WRITE_DIARY);
                         break;
 
                     case R.id.menu_music:
