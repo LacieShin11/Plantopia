@@ -24,6 +24,7 @@
         <activity
             android:name=".WriteNewDiaryActivity"
             android:label="다이어리 쓰기" />
+        <activity android:name=".PlantDetailInfoActivity" />
     </application>
 
 </manifest>

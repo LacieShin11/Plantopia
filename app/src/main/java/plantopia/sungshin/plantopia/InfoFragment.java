@@ -20,6 +20,7 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
     }
 
@@ -53,8 +54,10 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add:
+
                 break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 }
