@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -22,11 +23,14 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public class InfoFragment extends android.support.v4.app.Fragment {
+    static final int SETTING = 1;
     private Unbinder unbinder;
     Activity activity;
 
     @BindView(android.R.id.tabhost)
     TabHost tabHost;
+    @BindView(R.id.setting_btn)
+    ImageButton settingBtn;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,8 +50,6 @@ public class InfoFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_tab5, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-//        tabHost = view.findViewById(android.R.id.tabhost);
-
         LocalActivityManager mLocalActivityManager = new LocalActivityManager(getActivity(), false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
         tabHost.setup(mLocalActivityManager);
@@ -57,6 +59,13 @@ public class InfoFragment extends android.support.v4.app.Fragment {
         setupTab(new TextView(getContext()), "스크랩");
         tabHost.setCurrentTab(0);
 
+        settingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ProfileSettingActivity.class);
+                startActivityForResult(intent, SETTING);
+            }
+        });
         return view;
     }
 

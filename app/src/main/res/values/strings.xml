@@ -7,4 +7,12 @@
     <string name="none_plant">등록된 식물이 없습니다.</string>
     <string name="none_diary">작성된 다이어리가 없습니다.</string>
     <string name="none_scrap">스크랩 된 게시물이 없습니다.</string>
+
+    <string name="profile_text1">이메일 계정</string>
+    <string name="profile_text2">로그아웃</string>
+    <string name="profile_text3">회원 탈퇴</string>
+
+    <string name="add_plant_text1">식물 종류</string>
+    <string name="add_plant_text2">Plantopia 기기연결</string>
+    <string name="add_plant_text3">푸시알림</string>
 </resources>
