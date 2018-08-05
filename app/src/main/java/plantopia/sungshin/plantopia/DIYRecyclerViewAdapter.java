@@ -3,12 +3,13 @@ package plantopia.sungshin.plantopia;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-public class DIYRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
+public class DIYRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerDiyViewHolder> {
     private ArrayList<DIYItem> arrayList;
     private Context mContext;
 
@@ -19,18 +20,18 @@ public class DIYRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHol
 
     @NonNull
     @Override
-    public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerDiyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.item_diy, parent, false);
-        RecyclerViewHolder listHolder = new RecyclerViewHolder(viewGroup);
+        RecyclerDiyViewHolder listHolder = new RecyclerDiyViewHolder(viewGroup);
 
         return listHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
-        RecyclerViewHolder mainHolder = (RecyclerViewHolder) holder;
+    public void onBindViewHolder(@NonNull RecyclerDiyViewHolder holder, int position) {
+        RecyclerDiyViewHolder mainHolder = (RecyclerDiyViewHolder) holder;
         DIYItem item = arrayList.get(position);
 
 //        Bitmap img = BitmapFactory.decodeResource(mContext.getResources(), item.getImg());
@@ -55,5 +56,6 @@ public class DIYRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHol
 
     public void addItem(DIYItem item) {
         arrayList.add(item);
+        notifyDataSetChanged();
     }
 }

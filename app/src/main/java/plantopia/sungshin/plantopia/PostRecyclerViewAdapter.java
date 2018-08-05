@@ -3,6 +3,7 @@ package plantopia.sungshin.plantopia;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -55,5 +56,8 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
 
     public void addItem(PostItem item) {
         arrayList.add(item);
+        /*for (int i = 0; i < arrayList.size(); i++) {
+            Log.d("아이템", arrayList.get(i).getTitle());
+        }*/
     }
 }

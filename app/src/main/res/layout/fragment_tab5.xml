@@ -30,7 +30,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="20dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -57,7 +58,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_gravity="center_vertical"
                     android:background="@android:color/transparent"
-                    android:foreground="?android:attr/selectableItemBackground"
                     android:scaleType="fitCenter"
                     android:src="@drawable/setting" />
             </RelativeLayout>
@@ -82,7 +82,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="6"
+                        android:text="0"
                         android:textColor="@android:color/black"
                         android:textSize="21sp"
                         android:textStyle="bold" />
@@ -90,7 +90,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="4dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="화분"
@@ -109,7 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="31"
+                        android:text="0"
                         android:textColor="@android:color/black"
                         android:textSize="21sp"
                         android:textStyle="bold" />
@@ -117,7 +117,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="4dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="기록"
@@ -136,7 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="27"
+                        android:text="0"
                         android:textColor="@android:color/black"
                         android:textSize="21sp"
                         android:textStyle="bold" />
@@ -144,7 +144,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="4dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="저장"
@@ -155,12 +155,30 @@
         </RelativeLayout>
     </LinearLayout>
 
-    <TabWidget
-        android:id="@+id/info_tab"
-        android:background="@drawable/tab_back_custom"
+    <TabHost
+        android:id="@android:id/tabhost"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="10dp">
 
-    </TabWidget>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tab_back_custom" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
 
 </LinearLayout>

@@ -25,6 +25,12 @@
             android:name=".WriteNewDiaryActivity"
             android:label="다이어리 쓰기" />
         <activity android:name=".PlantDetailInfoActivity" />
+        <activity
+            android:name=".InfoTab1Activity" />
+        <activity
+            android:name=".InfoTab2Activity" />
+        <activity
+            android:name=".InfoTab3Activity" />
     </application>
 
 </manifest>

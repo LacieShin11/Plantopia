@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
+public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerProductViewHolder> {
     private ArrayList<ProductItem> arrayList;
     private Context mContext;
 
@@ -19,24 +19,24 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @NonNull
     @Override
-    public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.item_product, parent, false);
-        RecyclerViewHolder listHolder = new RecyclerViewHolder(viewGroup);
+        RecyclerProductViewHolder listHolder = new RecyclerProductViewHolder(viewGroup);
 
         return listHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
-        RecyclerViewHolder mainHolder = (RecyclerViewHolder) holder;
+    public void onBindViewHolder(@NonNull RecyclerProductViewHolder holder, int position) {
+        RecyclerProductViewHolder mainHolder = (RecyclerProductViewHolder) holder;
         ProductItem item = arrayList.get(position);
 
 //        Bitmap img = BitmapFactory.decodeResource(mContext.getResources(), item.getImg());
 
         mainHolder.titleText.setText(item.getName());
-        mainHolder.sourceText.setText(item.getPrice());
+        mainHolder.priceText.setText(item.getPrice());
         mainHolder.postImg.setImageResource(R.drawable.test2);
     }
 

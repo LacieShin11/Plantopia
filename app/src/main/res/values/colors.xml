@@ -3,7 +3,7 @@
     <color name="colorSignBtn">#5A000000</color>
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#898989</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#000000</color>
     <color name="colorIcon">#BDBDBD</color>
     <color name="colorIconSelected">#898989</color>
 </resources>
