@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -18,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +31,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     static final int STOP = 2;
     Activity activity;
 
+    private MediaPlayer mediaPlayer;
     private int playedMusic;
     private int musicState;
     private Unbinder unbinder;
@@ -37,7 +40,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             new MusicListItem("Time Travel In the Dream", "by HyunKyung", "2:48"),
             new MusicListItem("Moonlight Dream", "by 현경이", "3:01"),
             new MusicListItem("Wish Upon a Shooting Star", "by 의정부의 딸", "2:45"),
-            new MusicListItem("새벽별", "by Light Of Honglab", "4:04"),
+            new MusicListItem("새벽별", "by Hope of Uijungbu", "4:04"),
             new MusicListItem("그림자와 빛", "by 갓.현.경", "5:00")
     };
 
@@ -55,6 +58,8 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     ImageButton musicStateBtn;
     @BindView(R.id.shadow)
     View shadow;
+    @BindView(R.id.played_song_title)
+    TextView musicTitleText;
 
     @Override
     public void onAttach(Context context) {
@@ -72,7 +77,6 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab4, container, false);
-        //activity.getActionBar().setTitle("BGM");
 
         unbinder = ButterKnife.bind(this, view);
 
@@ -80,16 +84,45 @@ public class MusicFragment extends android.support.v4.app.Fragment {
         musicList.setAdapter(adapter);
         adapter.setItem(musicListItems);
 
-        //하단 바 표시 여부
-        if (musicState == PLAYING || musicState == PAUSE)
-            changeMusicLayout(true);
-        else if (musicState == STOP)
-            changeMusicLayout(false);
+        changeMusicLayout(false);
 
         musicList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                changeMusicLayout(true);
+                if (musicList.getVisibility() == View.INVISIBLE)
+                    changeMusicLayout(true);
+
+                if (mediaPlayer != null) {
+                    mediaPlayer.release();
+                }
+
+                switch (position) {
+                    case 0:
+                        mediaPlayer = MediaPlayer.create(getContext(), R.raw.time_travel_in_the_dream);
+                        break;
+                    case 1:
+                        mediaPlayer = MediaPlayer.create(getContext(), R.raw.moonlight_dream);
+                        break;
+                    case 2:
+                        mediaPlayer = MediaPlayer.create(getContext(), R.raw.wish_upon_a_shooting_star);
+                        break;
+                    case 3:
+                        mediaPlayer = MediaPlayer.create(getContext(), R.raw.dawn_star);
+                        break;
+                    case 4:
+                        mediaPlayer = MediaPlayer.create(getContext(), R.raw.shadow_and_light);
+                        break;
+                }
+
+                if (mediaPlayer != null) {
+                    musicState = PLAYING;
+                    mediaPlayer.start();
+                    musicStateBtn.setImageResource(R.drawable.ic_pause_24dp);
+                    musicTitleText.setText(adapter.getItem(position).getSongTitle());
+
+                    changeMusicLayout(true);
+                }
+
             }
         });
 
@@ -97,6 +130,23 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
+                    case R.id.music_state_btn:
+                        if (musicState == PAUSE) {
+                            try {
+                                mediaPlayer.start();
+                                musicState = PLAYING;
+                                musicStateBtn.setImageResource(R.drawable.ic_pause_24dp);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else if (musicState == PLAYING) {
+                            mediaPlayer.pause();
+                            musicState = PAUSE;
+                            musicStateBtn.setImageResource(R.drawable.ic_play_arrow_24dp);
+                        }
+
+                        break;
+
                     case R.id.music_speaker_btn:
                         activity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
                         new Thread(new Runnable() {
@@ -113,6 +163,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
 
                     case R.id.music_stop_btn:
                         musicState = STOP;
+                        mediaPlayer.stop();
                         changeMusicLayout(false);
 
                         activity.setVolumeControlStream(AudioManager.USE_DEFAULT_STREAM_TYPE); //볼륨 조절시 일반볼륨 변경
@@ -133,6 +184,14 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+
+        if (mediaPlayer != null) {
+            try {
+                mediaPlayer.release();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
