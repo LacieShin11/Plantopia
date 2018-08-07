@@ -15,4 +15,7 @@
     <string name="add_plant_text1">식물 종류</string>
     <string name="add_plant_text2">Plantopia 기기연결</string>
     <string name="add_plant_text3">푸시알림</string>
+
+    <string name="info_tab1_text1">Plantopia Care</string>
+    <string name="info_tab1_text2">Plants Care</string>
 </resources>
