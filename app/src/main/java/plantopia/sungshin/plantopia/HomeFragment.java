@@ -16,8 +16,8 @@ import android.widget.Toast;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.jsoup.nodes.Element;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -45,7 +45,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
     String[] url = new String[]{"연결링크 1", "연결링크 2", "연결링크 3", "연결링크 4", "연결링크 5"};
     int[] images = new int[]{R.drawable.test, R.drawable.test, R.drawable.test};
 
-    String postUrl = "https://m.post.naver.com/search/post.nhn?keyword=%EC%8B%9D%EB%AC%BC%ED%82%A4%EC%9A%B0%EA%B8%B0";
+    String postUrl = "https://brunch.co.kr/search?q=%EC%8B%9D%EB%AC%BC%20%ED%82%A4%EC%9A%B0%EA%B8%B0&type=article";
     Document postDoc;
     private Unbinder unbinder;
 
@@ -128,17 +128,25 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                 final StringBuilder builder = new StringBuilder();
 
                 try {
-//                    postDoc = Jsoup.connect(postUrl).maxBodySize(0).userAgent("Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36").get();
-                    postDoc = Jsoup.connect(postUrl).maxBodySize(0).get();
-//                    Elements links = postDoc.select("blind");
-//                    Elements links = postDoc.getElementsByClass("blind");
+                    postDoc = Jsoup.connect(postUrl)
+                            .header("Accept-Encoding", "gzip, deflate")
+                            .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36")
+                            .maxBodySize(0)
+                            .referrer("http://www.google.com")
+                            .timeout(600000)
+                            .get();
 
-                    /*for (int i = 0; i < 5; i++) {
+                    Log.d("아이템", postDoc.toString());
+                    Elements links = postDoc.select("tit_subject");
+
+                    for (int i = 0; i < links.size(); i++) {
                         builder.append(links.get(i).text());
                         titles[i] = builder.toString();
                         builder.setLength(0);
-                    }*/
-                } catch (IOException e) {
+                        Log.d("아이템", titles[i]);
+                    }
+
+                } catch (Exception e) {
                     builder.append("Error : ").append(e.getMessage()).append("\n");
                 }
 

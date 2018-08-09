@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="@string/sign_up"
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="20dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/add_profile_images_02" />
+
+    <EditText
+        android:id="@+id/sign_up_email_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:fontFamily="sans-serif"
+        android:hint="@string/hint_email"
+        android:inputType="textEmailAddress" />
+
+    <TextView
+        android:id="@+id/email_warning_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="5dp"
+        android:text="@string/sign_up_warning"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+    <EditText
+        android:id="@+id/sign_up_pwd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:fontFamily="sans-serif"
+        android:hint="@string/hint_pwd"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/pwd_warning_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="5dp"
+        android:text="@string/sign_up_warning2"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+
+    <EditText
+        android:id="@+id/sign_up_pwd_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:fontFamily="sans-serif"
+        android:hint="@string/confirm_pwd"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/pwd_warning_text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:fontFamily="sans-serif"
+        android:paddingLeft="5dp"
+        android:text="@string/sign_up_warning3"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginBottom="40dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="sans-serif"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="완료"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+</LinearLayout>

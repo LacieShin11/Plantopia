@@ -25,13 +25,19 @@
             android:name=".WriteNewDiaryActivity"
             android:label="다이어리 쓰기" />
         <activity android:name=".PlantDetailInfoActivity" />
-        <activity
-            android:name=".InfoTab1Activity" />
-        <activity
-            android:name=".InfoTab2Activity" />
-        <activity
-            android:name=".InfoTab3Activity" />
+        <activity android:name=".InfoTab1Activity" />
+        <activity android:name=".InfoTab2Activity" />
+        <activity android:name=".InfoTab3Activity" />
         <activity android:name=".ProfileSettingActivity" />
+        <activity
+            android:name=".SignInActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".SignUpActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".SignUpActivity2"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

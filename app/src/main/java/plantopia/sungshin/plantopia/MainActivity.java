@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 
@@ -14,6 +15,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class MainActivity extends AppCompatActivity {
     static final int WRITE_DIARY = 2;
+    static final int LOGIN = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.menu_info:
+                        Intent loginIntent = new Intent(MainActivity.this, SignInActivity.class);
+                        startActivityForResult(loginIntent, LOGIN);
                         fragment = new InfoFragment();
                         break;
                 }

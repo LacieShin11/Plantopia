@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginVertical="10dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/profile_intro" />
+
+    <FrameLayout
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginVertical="20dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_profile_images_02"
+            app:civ_border_color="#BDBDBD"
+            app:civ_border_width="2dp" />
+
+        <ImageButton
+            android:id="@+id/change_profile_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right|bottom"
+            android:layout_marginRight="10dp"
+            android:background="#BDBDBD"
+            android:onClick="cameraBtnOnClicked"
+            android:scaleType="fitCenter"
+            android:src="@drawable/plant" />
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/sign_in_email_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="45dp"
+        android:fontFamily="sans-serif"
+        android:hint="@string/hint_name"
+        android:inputType="textEmailAddress" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/tab_back_custom"
+            android:fontFamily="sans-serif"
+            android:text="@string/skip" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/tab_back_custom"
+            android:fontFamily="sans-serif"
+            android:text="@string/finish" />
+    </LinearLayout>
+</LinearLayout>

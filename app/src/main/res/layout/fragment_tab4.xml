@@ -81,27 +81,40 @@
                 android:layout_width="17dp"
                 android:layout_height="17dp"
                 android:layout_marginRight="10dp"
+                android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:src="@drawable/ic_volume_mute_24dp" />
+                android:src="@drawable/music_volume" />
 
             <ImageButton
                 android:id="@+id/music_change_btn"
                 android:layout_width="17dp"
                 android:layout_height="17dp"
                 android:layout_marginRight="10dp"
+                android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:src="@drawable/ic_tune_black_24dp" />
+                android:src="@drawable/music_previous" />
+
+            <ImageButton
+                android:id="@+id/music_change_next_btn"
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_marginRight="10dp"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:src="@drawable/music_next" />
 
             <ImageButton
                 android:id="@+id/music_stop_btn"
                 android:layout_width="17dp"
                 android:layout_height="17dp"
                 android:layout_marginRight="10dp"
+                android:scaleType="fitCenter"
                 android:background="@android:color/transparent"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:src="@drawable/ic_close_gray_24dp" />
+                android:src="@drawable/music_off" />
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>
