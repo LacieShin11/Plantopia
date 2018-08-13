@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
+import plantopia.sungshin.plantopia.Music.MusicFragment;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setElevation(0); //액션바 그림자 제거
 
-        loadFragment(new HomeFragment());
+        loadFragment(new plantopia.sungshin.plantopia.HomeFragment());
 
         //BottomNavigation 터치 이벤트
         bnve.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.menu_home:
-                        fragment = new HomeFragment();
+                        fragment = new plantopia.sungshin.plantopia.HomeFragment();
                         break;
 
                     case R.id.menu_search:
@@ -54,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.menu_edit:
-//                        fragment = new EditFragment();
                         Intent intent = new Intent(MainActivity.this, WriteNewDiaryActivity.class);
                         startActivityForResult(intent, WRITE_DIARY);
                         break;
@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.menu_info:
-                        Intent loginIntent = new Intent(MainActivity.this, SignInActivity.class);
-                        startActivityForResult(loginIntent, LOGIN);
+//                        Intent loginIntent = new Intent(MainActivity.this, SignInActivity.class);
+//                        startActivityForResult(loginIntent, LOGIN);
                         fragment = new InfoFragment();
                         break;
                 }

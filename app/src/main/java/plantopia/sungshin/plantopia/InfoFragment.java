@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,13 +26,18 @@ import butterknife.Unbinder;
 
 public class InfoFragment extends android.support.v4.app.Fragment {
     static final int SETTING = 1;
+    private static final int LOGIN = 2;
     private Unbinder unbinder;
     Activity activity;
+    Context context;
+    UserData user;
 
     @BindView(android.R.id.tabhost)
     TabHost tabHost;
     @BindView(R.id.setting_btn)
     ImageButton settingBtn;
+    @BindView(R.id.id_text)
+    TextView idText;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +49,7 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.context = context;
     }
 
     @Nullable
@@ -50,23 +58,37 @@ public class InfoFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_tab5, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        //자동로그인이 되어있지 않을 경우 로그인 창으로 이동
+        if (!AutoLoginManager.getInstance(context).isLoggedIn()) {
+            Toast.makeText(context, "로그인이 필요한 기능입니다.", Toast.LENGTH_SHORT).show();
+            startActivityForResult(new Intent(context, SignInActivity.class), LOGIN);
+        }
+
+        UserData user = AutoLoginManager.getInstance(context).getUser();
+        idText.setText(user.getUserName());
+
         LocalActivityManager mLocalActivityManager = new LocalActivityManager(getActivity(), false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
         tabHost.setup(mLocalActivityManager);
 
-        setupTab(new TextView(getContext()), "식물");
-        setupTab(new TextView(getContext()), "다이어리");
-        setupTab(new TextView(getContext()), "스크랩");
+        setupTab(new TextView(context), "식물");
+        setupTab(new TextView(context), "다이어리");
+        setupTab(new TextView(context), "스크랩");
         tabHost.setCurrentTab(0);
 
         settingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ProfileSettingActivity.class);
+                Intent intent = new Intent(context, ProfileSettingActivity.class);
                 startActivityForResult(intent, SETTING);
             }
         });
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

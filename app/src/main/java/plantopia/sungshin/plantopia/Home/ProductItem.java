@@ -1,4 +1,4 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.Home;
 
 public class ProductItem {
     private String name, price, url;

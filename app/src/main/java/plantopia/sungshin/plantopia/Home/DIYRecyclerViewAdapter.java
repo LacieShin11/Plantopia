@@ -1,13 +1,14 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.Home;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+
+import plantopia.sungshin.plantopia.R;
 
 public class DIYRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerDiyViewHolder> {
     private ArrayList<DIYItem> arrayList;

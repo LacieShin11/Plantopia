@@ -1,128 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <FrameLayout
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginVertical="20dp">
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:visibility="invisible"
+        android:layout_gravity="center" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/face"
-            app:civ_border_color="#BDBDBD"
-            app:civ_border_width="2dp" />
-
-        <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right|bottom"
-            android:layout_marginRight="10dp"
-            android:background="#BDBDBD"
-            android:onClick="cameraBtnOnClicked"
-            android:scaleType="fitCenter"
-            android:src="@drawable/plant" />
-    </FrameLayout>
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:gravity="center">
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/id_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
-            android:text="name"
-            android:textColor="@android:color/black"
-            android:textSize="22sp"
-            android:textStyle="bold" />
+        <FrameLayout
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginVertical="20dp">
 
-        <ImageButton
-            android:id="@+id/change_name_btn"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:layout_toRightOf="@+id/id_text"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/name" />
-    </RelativeLayout>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/face"
+                app:civ_border_color="#BDBDBD"
+                app:civ_border_width="2dp" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp"
-        android:background="@drawable/tab_back_custom">
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right|bottom"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:onClick="cameraBtnOnClicked"
+                android:scaleType="fitCenter"
+                android:src="@drawable/camera" />
+        </FrameLayout>
 
-        <Button
-            android:id="@+id/email_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:text="@string/profile_text1"
-            android:layout_marginLeft="8dp"
-            android:textColor="@android:color/black"
-            android:textSize="17sp" />
-
-        <TextView
-            android:id="@+id/email_address_text"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/email_text"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="11dp"
-            android:layout_marginVertical="10dp"
-            android:gravity="right"
-            android:text="zion830@naver.com"
-            android:textColor="@android:color/black"
-            android:textSize="17sp" />
+            android:layout_marginBottom="20dp"
+            android:gravity="center">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/email_text"
-            android:background="#BDBDBD" />
+            <TextView
+                android:id="@+id/id_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:text="name"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/logout_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/email_text"
-            android:background="@android:color/transparent"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="15dp"
-            android:text="@string/profile_text2"
-            android:textColor="@android:color/black"
-            android:textSize="17sp" />
+            <ImageButton
+                android:id="@+id/change_name_btn"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_toRightOf="@+id/id_text"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/name" />
+        </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/logout_text"
-            android:background="#BDBDBD" />
-
-        <Button
-            android:id="@+id/delete_account_text"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/logout_text"
-            android:background="@android:color/transparent"
-            android:gravity="left|center_vertical"
-            android:paddingHorizontal="15dp"
-            android:text="@string/profile_text3"
-            android:textColor="@android:color/black"
-            android:textSize="17sp" />
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/tab_back_custom">
 
-    </RelativeLayout>
-</LinearLayout>
+            <Button
+                android:id="@+id/email_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:background="@android:color/transparent"
+                android:text="@string/profile_text1"
+                android:textColor="@android:color/black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/email_address_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/email_text"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="11dp"
+                android:layout_marginVertical="10dp"
+                android:gravity="right"
+                android:text="zion830@naver.com"
+                android:textColor="@android:color/black"
+                android:textSize="17sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/email_text"
+                android:background="#BDBDBD" />
+
+            <Button
+                android:id="@+id/logout_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/email_text"
+                android:background="@android:color/transparent"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:onClick="logoutBtnOnClicked"
+                android:paddingHorizontal="15dp"
+                android:text="@string/profile_text2"
+                android:textColor="@android:color/black"
+                android:textSize="17sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/logout_text"
+                android:background="#BDBDBD" />
+
+            <Button
+                android:id="@+id/delete_account_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/logout_text"
+                android:background="@android:color/transparent"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="left|center_vertical"
+                android:paddingHorizontal="15dp"
+                android:text="@string/profile_text3"
+                android:textColor="@android:color/black"
+                android:textSize="17sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>

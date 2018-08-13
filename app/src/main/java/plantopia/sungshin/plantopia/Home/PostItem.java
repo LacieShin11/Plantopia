@@ -1,15 +1,17 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.Home;
 
-public class DIYItem {
+public class PostItem {
     private String url, title, source;
+    private int img;
 
-    public DIYItem() {
+    public PostItem() {
     }
 
-    public DIYItem(String url, String title, String source) {
+    public PostItem(String url, String title, String source, int img) {
         this.url = url;
         this.title = title;
         this.source = source;
+        this.img = img;
     }
 
     public String getUrl() {
@@ -34,5 +36,13 @@ public class DIYItem {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public int getImg() {
+        return img;
+    }
+
+    public void setImg(int img) {
+        this.img = img;
     }
 }

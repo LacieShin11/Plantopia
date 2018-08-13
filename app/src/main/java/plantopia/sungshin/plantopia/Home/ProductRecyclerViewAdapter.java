@@ -1,4 +1,4 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.Home;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+
+import plantopia.sungshin.plantopia.R;
 
 public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerProductViewHolder> {
     private ArrayList<ProductItem> arrayList;

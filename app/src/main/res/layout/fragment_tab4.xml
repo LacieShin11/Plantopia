@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@drawable/background1">
 
     <ListView
         android:id="@+id/music_list"
@@ -43,7 +43,7 @@
                 android:id="@+id/music_round_img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/face" />
+                android:src="@drawable/circle_crop" />
 
             <ImageButton
                 android:id="@+id/music_state_btn"
