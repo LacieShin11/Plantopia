@@ -15,7 +15,8 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="15dp"
             android:background="#BDBDBD"
-            android:scaleType="center" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/add_images" />
 
         <EditText
             android:id="@+id/diary_edit"

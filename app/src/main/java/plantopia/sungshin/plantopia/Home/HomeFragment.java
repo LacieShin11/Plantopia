@@ -1,7 +1,8 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.Home;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,8 +16,10 @@ import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -28,6 +31,8 @@ import plantopia.sungshin.plantopia.Home.PostItem;
 import plantopia.sungshin.plantopia.Home.PostRecyclerViewAdapter;
 import plantopia.sungshin.plantopia.Home.ProductItem;
 import plantopia.sungshin.plantopia.Home.ProductRecyclerViewAdapter;
+import plantopia.sungshin.plantopia.R;
+import plantopia.sungshin.plantopia.RecyclerItemClickListener;
 
 public class HomeFragment extends android.support.v4.app.Fragment implements RecyclerView.OnItemTouchListener {
     @BindView(R.id.post_gallery)
@@ -127,18 +132,24 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
 
     //웹 크롤링한 내용 가져오는 함수
     private void getWebsite() {
+        MainPageTask.execute(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 final StringBuilder builder = new StringBuilder();
-
+/*
                 try {
                     postDoc = Jsoup.connect(postUrl)
                             .header("Accept-Encoding", "gzip, deflate")
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36")
                             .maxBodySize(0)
-                            .referrer("http://www.google.com")
-                            .timeout(600000)
+                            .timeout(0)
                             .get();
 
                     Log.d("아이템", postDoc.toString());
@@ -153,7 +164,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
 
                 } catch (Exception e) {
                     builder.append("Error : ").append(e.getMessage()).append("\n");
-                }
+                }*/
 
                 activity.runOnUiThread(new Runnable() {
                     @Override
@@ -196,5 +207,33 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
     @Override
     public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
+    }
+
+    private class MainPageTask extends AsyncTask<Void, Void, Void> {
+        private Elements element;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            for (Element e : element) {
+                Log.d("elements", e.text());
+            }
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String postUrl = "https://brunch.co.kr/search?q=%EC%8B%9D%EB%AC%BC%20%ED%82%A4%EC%9A%B0%EA%B8%B0&type=article";
+
+            try {
+                Document doc = Jsoup.connect(postUrl).get();
+                Log.d("Doc", doc.toString());
+                element = doc.select("tit_subject");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
     }
 }

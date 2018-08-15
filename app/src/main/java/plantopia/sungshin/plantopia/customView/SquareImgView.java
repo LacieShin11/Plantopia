@@ -1,11 +1,12 @@
 package plantopia.sungshin.plantopia.customView;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
 //정사각형 이미지뷰
-public class SquareImgView extends AppCompatImageView {
+public class SquareImgView extends AppCompatImageButton {
     public SquareImgView(Context context) {
         super(context);
     }

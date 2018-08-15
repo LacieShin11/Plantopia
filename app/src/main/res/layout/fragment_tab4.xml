@@ -43,7 +43,7 @@
                 android:id="@+id/music_round_img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/circle_crop" />
+                android:src="@drawable/crop" />
 
             <ImageButton
                 android:id="@+id/music_state_btn"
@@ -87,7 +87,7 @@
                 android:src="@drawable/music_volume" />
 
             <ImageButton
-                android:id="@+id/music_change_btn"
+                android:id="@+id/prev_music_btn"
                 android:layout_width="17dp"
                 android:layout_height="17dp"
                 android:layout_marginRight="10dp"
@@ -97,7 +97,7 @@
                 android:src="@drawable/music_previous" />
 
             <ImageButton
-                android:id="@+id/music_change_next_btn"
+                android:id="@+id/next_music_btn"
                 android:layout_width="17dp"
                 android:layout_height="17dp"
                 android:layout_marginRight="10dp"

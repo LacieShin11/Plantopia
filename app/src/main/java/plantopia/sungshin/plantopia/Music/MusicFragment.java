@@ -43,13 +43,18 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             new MusicListItem("새벽별", "by Hope of Uijungbu", "4:04"),
             new MusicListItem("그림자와 빛", "by 갓.현.경", "5:00")
     };
+    private int[] musicID =
+            {R.raw.time_travel_in_the_dream, R.raw.moonlight_dream,
+                    R.raw.wish_upon_a_shooting_star, R.raw.dawn_star, R.raw.shadow_and_light};
 
     @BindView(R.id.music_list)
     ListView musicList;
     @BindView(R.id.music_info_layout)
     RelativeLayout musicInfoLayout;
-    @BindView(R.id.music_change_btn)
-    ImageButton musicChangeBtn;
+    @BindView(R.id.prev_music_btn)
+    ImageButton prevBtn;
+    @BindView(R.id.next_music_btn)
+    ImageButton nextBtn;
     @BindView(R.id.music_speaker_btn)
     ImageButton musicSpeakerBtn;
     @BindView(R.id.music_stop_btn)
@@ -96,23 +101,8 @@ public class MusicFragment extends android.support.v4.app.Fragment {
                     mediaPlayer.release();
                 }
 
-                switch (position) {
-                    case 0:
-                        mediaPlayer = MediaPlayer.create(getContext(), R.raw.time_travel_in_the_dream);
-                        break;
-                    case 1:
-                        mediaPlayer = MediaPlayer.create(getContext(), R.raw.moonlight_dream);
-                        break;
-                    case 2:
-                        mediaPlayer = MediaPlayer.create(getContext(), R.raw.wish_upon_a_shooting_star);
-                        break;
-                    case 3:
-                        mediaPlayer = MediaPlayer.create(getContext(), R.raw.dawn_star);
-                        break;
-                    case 4:
-                        mediaPlayer = MediaPlayer.create(getContext(), R.raw.shadow_and_light);
-                        break;
-                }
+                playedMusic = position;
+                mediaPlayer = MediaPlayer.create(getContext(), musicID[position]);
 
                 if (mediaPlayer != null) {
                     musicState = PLAYING;
@@ -158,7 +148,12 @@ public class MusicFragment extends android.support.v4.app.Fragment {
 
                         break;
 
-                    case R.id.music_change_btn:
+                    case R.id.prev_music_btn:
+                        changeMusic(-1);
+                        break;
+
+                    case R.id.next_music_btn:
+                        changeMusic(1);
                         break;
 
                     case R.id.music_stop_btn:
@@ -172,12 +167,30 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             }
         };
 
-        musicChangeBtn.setOnClickListener(imgBtnClickListener);
+        nextBtn.setOnClickListener(imgBtnClickListener);
+        prevBtn.setOnClickListener(imgBtnClickListener);
         musicSpeakerBtn.setOnClickListener(imgBtnClickListener);
         musicStopBtn.setOnClickListener(imgBtnClickListener);
         musicStateBtn.setOnClickListener(imgBtnClickListener);
 
         return view;
+    }
+
+    //다음 곡 재생, 이전 곡 재생 함수
+    public void changeMusic(int direction) {
+        playedMusic += direction;
+
+        if (playedMusic == -1) playedMusic = 4;
+        if (playedMusic == 5) playedMusic = 0;
+
+        mediaPlayer.stop();
+        mediaPlayer.release();
+        mediaPlayer = MediaPlayer.create(getContext(), musicID[playedMusic]);
+
+        if (musicState == PLAYING)
+            mediaPlayer.start();
+
+        musicTitleText.setText(adapter.getItem(playedMusic).getSongTitle());
     }
 
     @Override
@@ -211,7 +224,6 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     }
 
     public void changeMusicLayout(boolean isVisible) {
-
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) musicList.getLayoutParams();
 
         if (!isVisible) {

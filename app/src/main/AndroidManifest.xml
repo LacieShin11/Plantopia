@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -20,7 +22,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LoginActivity" />
         <activity
             android:name=".WriteNewDiaryActivity"
             android:label="다이어리 쓰기" />
@@ -38,6 +39,7 @@
         <activity
             android:name=".SignUpActivity2"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
     </application>
 
 </manifest>
