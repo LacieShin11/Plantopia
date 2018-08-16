@@ -1,16 +1,7 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.User;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -21,33 +12,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import plantopia.sungshin.plantopia.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static android.os.Build.VERSION_CODES.BASE;
-
 public class SignInActivity extends AppCompatActivity {
     private static final int LOGIN = 2;
+    private ServiceApiForUser service;
 
     @BindView(R.id.email)
     AutoCompleteTextView mEmailView;
@@ -70,6 +47,11 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
 
+        //네트워크 연결
+        /*ApplicationController applicationController = ApplicationController.getInstance();
+        applicationController.buildService(new ServerURL().URL, 3000);
+        service = ApplicationController.getInstance().getService();*/
+
         signInFinishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,37 +70,44 @@ public class SignInActivity extends AppCompatActivity {
         finish();
     }
 
-    private void userLogin(final String email, final String pwd) {
-        final String URL_LOGIN = "http://ec2-13-125-140-255.ap-northeast-2.compute.amazonaws.com:3001/test/3/";
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(URL_LOGIN)
-                .addConverterFactory(GsonConverterFactory.create())
+    public void userLogin(final String userEmail, final String userPwd) {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(new ServerURL().URL).addConverterFactory(GsonConverterFactory.create())
                 .build();
+        ServiceApiForUser endPoints = retrofit.create(ServiceApiForUser.class);
 
-        GetService service = retrofit.create(GetService.class);
-        Call<List<UserData>> call = service.listDummies("5");
+//        Call<LoginResult> userDataCall = service.getLoginResult(userEmail, userPwd);
+        Call<LoginResult> userDataCall = endPoints.getLoginResult(userEmail, userPwd);
 
-        Callback dummies = new Callback<List<UserData>>(){
+        userDataCall.enqueue(new Callback<LoginResult>() {
             @Override
-            public void onResponse(Call<List<UserData>> call, retrofit2.Response<List<UserData>> response) {
+            public void onResponse(Call<LoginResult> call, retrofit2.Response<LoginResult> response) {
                 if (response.isSuccessful()) {
-                    List<UserData> dummies = response.body();
+                    LoginResult loginResult = response.body(); //받아온 데이터 받을 객체
+                    Log.i("로그인 통신 성공 ", loginResult.getMsg());
 
-                    for(UserData userData : dummies) {
-                        Log.d("데이터 확인", userData.getUserEmail() + " " + userData.getUserPwd());
+                    if (loginResult.getMsg().equals("Success")) {
+                        Toast.makeText(getApplicationContext(),
+                                loginResult.getUser_name() + "님 환영합니다!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                    //아이디, 비밀번호를 잘못 입력했을 경우
+                    else {
+                        mEmailView.setError(getString(R.string.sign_up_warning6));
+                        mPasswordView.setError(getString(R.string.sign_up_warning6));
                     }
                 } else {
-                    Log.d("데이터 오류", String.valueOf(response.code()));
+                    Log.e("서버 문제 발생", response.code() + "");
+                    Toast.makeText(getApplicationContext(), "로그인 오류 발생", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<UserData>> call, Throwable t) {
-                Log.d("데이터 실패", t.getMessage());
+            public void onFailure(Call<LoginResult> call, Throwable t) {
+                //서버 연결을 아예 실패했을 경우
+                Log.e("서버 접속 에러 발생 ", t.getMessage());
+                Toast.makeText(getApplicationContext(), "로그인 오류 발생", Toast.LENGTH_SHORT).show();
             }
-        };
-
-        call.enqueue(dummies);
+        });
     }
 
     private void attemptLogin() {

@@ -27,6 +27,7 @@
     <string name="sign_up_warning3">비밀번호가 일치하지 않습니다.</string>
     <string name="sign_up_warning4">비밀번호를 입력해주세요.</string>
     <string name="sign_up_warning5">이메일 주소를 입력해주세요.</string>
+    <string name="sign_up_warning6">아이디 또는 비밀번호를 잘못 입력하셨습니다.</string>
     <string name="sign_in">로그인</string>
     <string name="hint_email">email</string>
     <string name="hint_pwd">password</string>
@@ -34,4 +35,13 @@
     <string name="finish">완료</string>
     <string name="skip">넘어가기</string>
     <string name="profile_intro">Plantopia에서 사용할 프로필을 설정해주세요!</string>
+
+    <string name="plant_state1">&quot; 물 주세요! &quot;</string>
+    <string name="plant_state2">&quot; 햇빛이 필요해요! &quot;</string>
+    <string name="plant_state3">&quot; 너무 건조해요! &quot;</string>
+    <string name="plant_state4">&quot; 너무 더워요! &quot;</string>
+    <string name="plant_state5">&quot; 너무 추워요! &quot;</string>
+    <string name="plant_state6">&quot; 몸상태가 최악이예요... &quot;</string>
+    <string name="plant_state7">&quot; 기분이 좋아요! &quot;</string>
+
 </resources>

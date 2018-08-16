@@ -1,4 +1,4 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.User;
 
 import android.content.Context;
 import android.content.Intent;

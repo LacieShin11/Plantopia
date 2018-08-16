@@ -27,10 +27,10 @@ public class InfoTab1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_tab1);
 
-        plantItems.add(new PlantItem("코코", 1));
-        plantItems.add(new PlantItem("아이비", 1));
-        plantItems.add(new PlantItem("산세", 1));
-        plantItems.add(new PlantItem("베리", 1));
+        plantItems.add(new PlantItem("코코", "여명옥", 1));
+        plantItems.add(new PlantItem("아이비", "스투키", 2));
+        plantItems.add(new PlantItem("산세", "칼라데아", 3));
+        plantItems.add(new PlantItem("베리", "죽백", 4));
 
         getSupportActionBar().hide();
         ButterKnife.bind(this);

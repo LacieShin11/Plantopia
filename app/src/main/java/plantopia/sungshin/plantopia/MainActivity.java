@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         bnve.enableShiftingMode(false);
         bnve.enableItemShiftingMode(false);
         bnve.setTextVisibility(false);
-        bnve.setPadding(0, 20, 0, 20);
+        bnve.setPadding(0, 25, 0, 25);
         bnve.setForegroundGravity(Gravity.CENTER);
 
         getSupportActionBar().setElevation(0); //액션바 그림자 제거

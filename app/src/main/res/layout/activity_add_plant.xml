@@ -22,21 +22,22 @@
             android:layout_height="130dp"
             android:layout_marginVertical="20dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/add_profile_images_02"
-                app:civ_border_color="#9b9b9b"
-                app:civ_border_width="1dp" />
+            <com.joooonho.SelectableRoundedImageView
+                android:id="@+id/plant_img"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/add_plant_images_02"
+                app:sriv_left_bottom_corner_radius="30dp"
+                app:sriv_left_top_corner_radius="30dp"
+                app:sriv_right_bottom_corner_radius="30dp"
+                app:sriv_right_top_corner_radius="30dp" />
 
             <ImageButton
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right|bottom"
-                android:layout_marginRight="10dp"
                 android:background="@android:color/transparent"
-                android:onClick="cameraBtnOnClicked"
                 android:scaleType="fitCenter"
                 android:src="@drawable/camera" />
         </FrameLayout>
@@ -76,65 +77,69 @@
             android:layout_marginHorizontal="10dp"
             android:background="@drawable/tab_back_custom">
 
-            <Button
-                android:id="@+id/email_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:background="@android:color/transparent"
-                android:text="@string/profile_text1"
-                android:textColor="@android:color/black"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/email_address_text"
+            <RelativeLayout
+                android:id="@+id/search_plant_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/email_text"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="11dp"
-                android:layout_marginVertical="10dp"
-                android:gravity="right"
-                android:text="zion830@naver.com"
-                android:textColor="@android:color/black"
-                android:textSize="17sp" />
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/plant_type_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:background="@android:color/transparent"
+                    android:text="@string/add_plant_text1"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp" />
+
+                <ImageButton
+                    android:id="@+id/search_plant_btn"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@android:color/transparent"
+                    android:gravity="right"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/search" />
+            </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/email_text"
+                android:layout_below="@id/search_plant_layout"
                 android:background="#BDBDBD" />
 
             <Button
-                android:id="@+id/logout_text"
+                android:id="@+id/connect_device_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/email_text"
+                android:layout_below="@id/search_plant_layout"
                 android:background="@android:color/transparent"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
-                android:onClick="logoutBtnOnClicked"
                 android:paddingHorizontal="15dp"
-                android:text="@string/profile_text2"
+                android:text="@string/add_plant_text2"
                 android:textColor="@android:color/black"
                 android:textSize="17sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/logout_text"
+                android:layout_below="@id/connect_device_btn"
                 android:background="#BDBDBD" />
 
             <Button
                 android:id="@+id/delete_account_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/logout_text"
+                android:layout_below="@id/connect_device_btn"
                 android:background="@android:color/transparent"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="left|center_vertical"
                 android:paddingHorizontal="15dp"
-                android:text="@string/profile_text3"
+                android:text="@string/add_plant_text3"
                 android:textColor="@android:color/black"
                 android:textSize="17sp" />
 

@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.app.LocalActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,10 +21,14 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import plantopia.sungshin.plantopia.User.AutoLoginManager;
+import plantopia.sungshin.plantopia.User.SignInActivity;
+import plantopia.sungshin.plantopia.User.UserData;
 
 public class InfoFragment extends android.support.v4.app.Fragment {
     static final int SETTING = 1;
     private static final int LOGIN = 2;
+    private static final int ADD_PLANT = 3;
     private Unbinder unbinder;
     Activity activity;
     Context context;
@@ -83,6 +85,8 @@ public class InfoFragment extends android.support.v4.app.Fragment {
                 startActivityForResult(intent, SETTING);
             }
         });
+
+
         return view;
     }
 
@@ -107,12 +111,13 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add:
-
+                startActivityForResult(new Intent(context, AddPlantActivity.class), ADD_PLANT);
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     // 탭 위젯 설정 및 추가
     public void setupTab(final View view, final String tag) {

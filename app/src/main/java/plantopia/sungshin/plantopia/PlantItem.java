@@ -2,10 +2,12 @@ package plantopia.sungshin.plantopia;
 
 public class PlantItem {
     private String plantName;
+    private String plantType;
     private int plantImg;
 
-    public PlantItem(String plantName, int plantImg) {
+    public PlantItem(String plantName, String plantType, int plantImg) {
         this.plantName = plantName;
+        this.plantType = plantType;
         this.plantImg = plantImg;
     }
 
@@ -23,5 +25,13 @@ public class PlantItem {
 
     public void setPlantImg(int plantImg) {
         this.plantImg = plantImg;
+    }
+
+    public String getPlantType() {
+        return plantType;
+    }
+
+    public void setPlantType(String plantType) {
+        this.plantType = plantType;
     }
 }

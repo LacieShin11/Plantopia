@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import butterknife.ButterKnife;
+import plantopia.sungshin.plantopia.User.AutoLoginManager;
 
 public class ProfileSettingActivity extends AppCompatActivity {
     @Override

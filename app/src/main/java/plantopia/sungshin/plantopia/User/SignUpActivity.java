@@ -1,4 +1,4 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.User;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,6 +25,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import plantopia.sungshin.plantopia.R;
 
 public class SignUpActivity extends AppCompatActivity {
     @BindView(R.id.email_warning_text)
@@ -125,53 +126,7 @@ public class SignUpActivity extends AppCompatActivity {
         final String emailStr = emailEdit.getText().toString();
         final String pwdStr = pwdEdit.getText().toString();
         final String pwdConfirmStr = pwdConfirmEdit.getText().toString();
-        final String registerUrl = "sftp://ec2-user@ec2-13-125-227-30.ap-northeast-2.compute.amazonaws.com/home/ec2-user/login.js";
 
-        StringRequest request = new StringRequest(Request.Method.POST, registerUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progressBar.setVisibility(View.GONE);
-
-                        try {
-                            JSONObject obj = new JSONObject(response);
-
-                            if (!obj.getBoolean("error")) {
-                                JSONObject userJson = obj.getJSONObject("user");
-
-                                //creating a new user object
-                                UserData user = new UserData(userJson.getInt("id"),
-                                        userJson.getString("username"),
-                                        userJson.getString("email")
-                                );
-
-                                AutoLoginManager.getInstance(getApplicationContext()).userLogin(user);
-
-                                finish();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "로그인 오류 발생. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "로그인 오류 발생. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                Log.d("로그인 에러", error.getMessage());
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("email", emailStr);
-                params.put("pwd", pwdStr);
-
-                return params;
-            }
-        };
     }
 
     public void cancelOnClicked(View view) {
