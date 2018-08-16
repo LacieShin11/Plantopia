@@ -39,7 +39,7 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerPro
 
         mainHolder.titleText.setText(item.getName());
         mainHolder.priceText.setText(item.getPrice());
-        mainHolder.postImg.setImageResource(R.drawable.test2);
+        mainHolder.postImg.setImageResource(R.drawable.test);
     }
 
     @Override
