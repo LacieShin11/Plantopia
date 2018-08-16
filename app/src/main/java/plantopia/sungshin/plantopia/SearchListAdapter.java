@@ -12,9 +12,13 @@ import java.util.ArrayList;
 
 public class SearchListAdapter extends BaseAdapter {
     ArrayList<String> arrayList;
+    ArrayList<String> plantNumberList;
+    // ArrayList<String> bitmapList;
 
-    public SearchListAdapter(ArrayList<String> arrayList) {
+    public SearchListAdapter(ArrayList<String> arrayList, ArrayList<String> plantNumberList) {
         this.arrayList = arrayList;
+        this.plantNumberList = plantNumberList;
+        // this.bitmapList = bitmapList;
     }
 
     @Override
@@ -46,10 +50,15 @@ public class SearchListAdapter extends BaseAdapter {
         ImageView imageView = v.findViewById(R.id.search_img);
 
         textView.setText(arrayList.get(position));
+        /*Bitmap bm = BitmapFactory.decodeFile(bitmapList.get(position));
+        imageView.setImageBitmap(bm);*/
+
         return v;
     }
 
     public void clear() {
         arrayList.clear();
     }
+
+
 }
