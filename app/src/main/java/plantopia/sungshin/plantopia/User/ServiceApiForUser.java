@@ -14,9 +14,10 @@ import retrofit2.http.Path;
 public interface ServiceApiForUser {
 
     //로그인
-    @FormUrlEncoded
+//    @FormUrlEncoded
     @POST("/login")
-    Call<LoginResult> getLoginResult(@Field("user_email") String userEmail, @Field("user_pwd") String userPwd);
+//    Call<LoginResult> getLoginResult(@Field("user_email") String user_email, @Field("user_pwd") String user_pwd);
+    Call<LoginResult> getLoginResult(@Body LoginResult loginResult);
 
     //회원가입
     @FormUrlEncoded

@@ -10,10 +10,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApplicationController extends Application {
     private static ApplicationController instance;
+    private ServiceApiForUser service;
+
     public static ApplicationController getInstance() {
         return instance;
     }
-    private ServiceApiForUser service;
+
     public ServiceApiForUser getService() {
         return service;
     }

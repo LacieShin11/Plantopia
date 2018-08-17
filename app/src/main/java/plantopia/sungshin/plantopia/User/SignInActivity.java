@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 import plantopia.sungshin.plantopia.R;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -48,9 +49,10 @@ public class SignInActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //네트워크 연결
-        /*ApplicationController applicationController = ApplicationController.getInstance();
+        ApplicationController applicationController = ApplicationController.getInstance();
+        Log.d("url", new ServerURL().URL);
         applicationController.buildService(new ServerURL().URL, 3000);
-        service = ApplicationController.getInstance().getService();*/
+        service = ApplicationController.getInstance().getService();
 
         signInFinishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,21 +73,15 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void userLogin(final String userEmail, final String userPwd) {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(new ServerURL().URL).addConverterFactory(GsonConverterFactory.create())
-                .build();
-        ServiceApiForUser endPoints = retrofit.create(ServiceApiForUser.class);
-
-//        Call<LoginResult> userDataCall = service.getLoginResult(userEmail, userPwd);
-        Call<LoginResult> userDataCall = endPoints.getLoginResult(userEmail, userPwd);
-
+        LoginResult loginResult = new LoginResult(userEmail, userPwd);
+        Call<LoginResult> userDataCall = service.getLoginResult(loginResult);
         userDataCall.enqueue(new Callback<LoginResult>() {
             @Override
-            public void onResponse(Call<LoginResult> call, retrofit2.Response<LoginResult> response) {
+            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
                 if (response.isSuccessful()) {
                     LoginResult loginResult = response.body(); //받아온 데이터 받을 객체
-                    Log.i("로그인 통신 성공 ", loginResult.getMsg());
 
-                    if (loginResult.getMsg().equals("Success")) {
+                    if (loginResult.isResult()) {
                         Toast.makeText(getApplicationContext(),
                                 loginResult.getUser_name() + "님 환영합니다!", Toast.LENGTH_SHORT).show();
                         finish();
@@ -103,7 +99,6 @@ public class SignInActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginResult> call, Throwable t) {
-                //서버 연결을 아예 실패했을 경우
                 Log.e("서버 접속 에러 발생 ", t.getMessage());
                 Toast.makeText(getApplicationContext(), "로그인 오류 발생", Toast.LENGTH_SHORT).show();
             }

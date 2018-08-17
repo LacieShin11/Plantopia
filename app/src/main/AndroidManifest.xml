@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
+        android:name=".User.ApplicationController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -42,6 +43,7 @@
         <activity android:name=".PlantChatActivity" />
         <activity android:name=".PlantInfoActivity" />
         <activity android:name=".AddPlantActivity" />
+        <activity android:name=".ModifyPlantActivity" />
+        <activity android:name=".DetailActivity" />
     </application>
-
 </manifest>

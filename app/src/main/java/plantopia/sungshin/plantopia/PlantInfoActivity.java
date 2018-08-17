@@ -12,11 +12,17 @@ import android.view.MenuItem;
 import butterknife.ButterKnife;
 
 public class PlantInfoActivity extends AppCompatActivity {
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_info);
         ButterKnife.bind(this);
+        
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+        setTitle(intent.getStringExtra("plantName"));
     }
 
     @Override
@@ -34,6 +40,10 @@ public class PlantInfoActivity extends AppCompatActivity {
 
             case R.id.menu_setting:
                 startActivity(new Intent(PlantInfoActivity.this, ModifyPlantActivity.class));
+                break;
+
+            case R.id.home:
+                finish();
                 break;
         }
 

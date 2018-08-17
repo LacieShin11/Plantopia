@@ -1,10 +1,18 @@
 package plantopia.sungshin.plantopia.User;
 
+import java.sql.Blob;
+
 public class LoginResult {
     private boolean result;
     private String msg;
     private int user_id;
-    private String user_email, user_name;
+    private String user_email, user_name, user_pwd;
+    private Blob user_img;
+
+    public LoginResult(String user_email, String user_pwd) {
+        this.user_email = user_email;
+        this.user_pwd = user_pwd;
+    }
 
     public LoginResult(boolean result, String msg, int user_id, String user_email, String user_name) {
         this.result = result;

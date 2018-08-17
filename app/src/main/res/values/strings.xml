@@ -44,4 +44,7 @@
     <string name="plant_state6">&quot; 몸상태가 최악이예요... &quot;</string>
     <string name="plant_state7">&quot; 기분이 좋아요! &quot;</string>
 
+    <string name="state_good">GOOD</string>
+    <string name="state_bad">BAD</string>
+    <string name="state_low">LOW!</string>
 </resources>
