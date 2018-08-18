@@ -27,7 +27,10 @@
     <string name="sign_up_warning3">비밀번호가 일치하지 않습니다.</string>
     <string name="sign_up_warning4">비밀번호를 입력해주세요.</string>
     <string name="sign_up_warning5">이메일 주소를 입력해주세요.</string>
-    <string name="sign_up_warning6">아이디 또는 비밀번호를 잘못 입력하셨습니다.</string>
+    <string name="sign_up_warning6">비밀번호를 잘못 입력하셨습니다.</string>
+    <string name="sign_up_warning7">존재하지 않는 계정입니다.</string>
+    <string name="sign_up_warning8">비밀번호를 한번 더 입력해주세요.</string>
+
     <string name="sign_in">로그인</string>
     <string name="hint_email">email</string>
     <string name="hint_pwd">password</string>
@@ -47,4 +50,7 @@
     <string name="state_good">GOOD</string>
     <string name="state_bad">BAD</string>
     <string name="state_low">LOW!</string>
+
+    <string name="need_login">로그인이 필요합니다.</string>
+    <string name="name_error">오류 발생. 다시 시도해주세요.</string>
 </resources>

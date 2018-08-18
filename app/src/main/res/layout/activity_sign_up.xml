@@ -8,7 +8,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
         android:gravity="center"
         android:text="@string/sign_up"
         android:textColor="@android:color/black"
@@ -23,62 +22,53 @@
         android:scaleType="fitCenter"
         android:src="@drawable/add_profile_images_02" />
 
-    <EditText
-        android:id="@+id/sign_up_email_edit"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:fontFamily="sans-serif"
-        android:hint="@string/hint_email"
-        android:inputType="textEmailAddress" />
+        android:layout_marginHorizontal="40dp">
 
-    <TextView
-        android:id="@+id/email_warning_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:fontFamily="sans-serif"
-        android:paddingLeft="5dp"
-        android:text="@string/sign_up_warning"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+        <AutoCompleteTextView
+            android:id="@+id/join_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:singleLine="true" />
 
-    <EditText
-        android:id="@+id/sign_up_pwd_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:fontFamily="sans-serif"
-        android:hint="@string/hint_pwd"
-        android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
 
-    <TextView
-        android:id="@+id/pwd_warning_text"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:fontFamily="sans-serif"
-        android:paddingLeft="5dp"
-        android:text="@string/sign_up_warning2"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+        android:layout_marginHorizontal="40dp">
 
-    <EditText
-        android:id="@+id/sign_up_pwd_confirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:fontFamily="sans-serif"
-        android:hint="@string/confirm_pwd"
-        android:inputType="textPassword" />
+        <AutoCompleteTextView
+            android:id="@+id/join_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_pwd"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true" />
 
-    <TextView
-        android:id="@+id/pwd_warning_text2"
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="40dp"
-        android:fontFamily="sans-serif"
-        android:paddingLeft="5dp"
-        android:text="@string/sign_up_warning3"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption" />
+        android:layout_marginHorizontal="40dp">
+
+        <AutoCompleteTextView
+            android:id="@+id/join_pwd_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/confirm_pwd"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,10 +84,9 @@
             android:layout_gravity="right"
             android:layout_marginTop="10dp"
             android:background="@android:color/transparent"
-            android:fontFamily="sans-serif"
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:text="취소"
             android:onClick="cancelOnClicked"
+            android:text="취소"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -109,7 +98,6 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
             android:background="@android:color/transparent"
-            android:fontFamily="sans-serif"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:text="완료"
             android:textSize="17sp"
@@ -120,6 +108,6 @@
         android:id="@+id/progressbar"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:visibility="invisible"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:visibility="invisible" />
 </LinearLayout>

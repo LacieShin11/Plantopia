@@ -5,11 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import plantopia.sungshin.plantopia.R;
+
 public class AutoLoginManager {
     private static final String SHARED_PREF_NAME = "plantopia_sharedpref";
     private static final String KEY_NAME = "keyname";
     private static final String KEY_EMAIL = "keyemail";
-    //    private static final String KEY_PWD = "keypwd";
     private static final String KEY_ID = "keyid";
 
     private static AutoLoginManager mInstance;
@@ -30,9 +31,16 @@ public class AutoLoginManager {
     public void userLogin(UserData user) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(KEY_ID, user.getUserId());
-        editor.putString(KEY_NAME, user.getUserName());
-        editor.putString(KEY_EMAIL, user.getUserEmail());
+        editor.putInt(KEY_ID, user.getUser_id());
+        editor.putString(KEY_NAME, user.getUser_name());
+        editor.putString(KEY_EMAIL, user.getUser_email());
+        editor.apply();
+    }
+
+    public void setUserName(String name) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_NAME, name);
         editor.apply();
     }
 
@@ -45,10 +53,11 @@ public class AutoLoginManager {
     //로그인한 유저 정보 제공
     public UserData getUser() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
         return new UserData(
                 sharedPreferences.getInt(KEY_ID, -1),
-                sharedPreferences.getString(KEY_NAME, null),
-                sharedPreferences.getString(KEY_EMAIL, null)
+                sharedPreferences.getString(KEY_EMAIL, null),
+                sharedPreferences.getString(KEY_NAME, null)
         );
     }
 
@@ -59,7 +68,7 @@ public class AutoLoginManager {
         editor.clear();
         editor.apply();
 
-        Toast.makeText(mContext, "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, R.string.need_login, Toast.LENGTH_SHORT).show();
         mContext.startActivity(new Intent(mContext, SignInActivity.class)); //다시 로그인 창으로 이동
     }
 }

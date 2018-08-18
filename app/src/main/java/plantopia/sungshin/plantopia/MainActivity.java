@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import plantopia.sungshin.plantopia.Music.MusicFragment;
+import plantopia.sungshin.plantopia.User.AutoLoginManager;
+import plantopia.sungshin.plantopia.User.SignInActivity;
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_EXTERNAL_STORAGE = 0;
@@ -60,8 +62,14 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.menu_edit:
-                        Intent intent = new Intent(MainActivity.this, WriteNewDiaryActivity.class);
-                        startActivityForResult(intent, WRITE_DIARY);
+                        if (AutoLoginManager.getInstance(getApplicationContext()).isLoggedIn()) {
+                            Intent intent = new Intent(MainActivity.this, WriteNewDiaryActivity.class);
+                            startActivityForResult(intent, WRITE_DIARY);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                            startActivityForResult(intent, LOGIN);
+                        }
                         break;
 
                     case R.id.menu_music:
@@ -69,8 +77,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.menu_info:
-//                        Intent loginIntent = new Intent(MainActivity.this, SignInActivity.class);
-//                        startActivityForResult(loginIntent, LOGIN);
                         fragment = new InfoFragment();
                         break;
                 }

@@ -20,11 +20,9 @@ import plantopia.sungshin.plantopia.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignInActivity extends AppCompatActivity {
-    private static final int LOGIN = 2;
+    private static final int LOGIN_SUCCESS = 5;
     private ServiceApiForUser service;
 
     @BindView(R.id.email)
@@ -44,14 +42,14 @@ public class SignInActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        final int LOGIN_SUCCESS = 5;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
 
-        //네트워크 연결
+        //서버 연결
         ApplicationController applicationController = ApplicationController.getInstance();
-        Log.d("url", new ServerURL().URL);
-        applicationController.buildService(new ServerURL().URL, 3000);
+        applicationController.buildService(ServerURL.URL, 3000);
         service = ApplicationController.getInstance().getService();
 
         signInFinishBtn.setOnClickListener(new View.OnClickListener() {
@@ -73,23 +71,34 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void userLogin(final String userEmail, final String userPwd) {
-        LoginResult loginResult = new LoginResult(userEmail, userPwd);
-        Call<LoginResult> userDataCall = service.getLoginResult(loginResult);
-        userDataCall.enqueue(new Callback<LoginResult>() {
+        progressBar.setVisibility(View.VISIBLE);
+
+        UserData loginResult = new UserData(userEmail, userPwd);
+        Call<UserData> userDataCall = service.getLoginResult(loginResult);
+        userDataCall.enqueue(new Callback<UserData>() {
             @Override
-            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+            public void onResponse(Call<UserData> call, Response<UserData> response) {
+                progressBar.setVisibility(View.INVISIBLE);
+
                 if (response.isSuccessful()) {
-                    LoginResult loginResult = response.body(); //받아온 데이터 받을 객체
+                    UserData loginResult = response.body(); //받아온 데이터 받을 객체
+
+                    Log.d("loginResult", loginResult.getMsg());
 
                     if (loginResult.isResult()) {
+                        AutoLoginManager.getInstance(getApplicationContext()).userLogin(loginResult);
                         Toast.makeText(getApplicationContext(),
                                 loginResult.getUser_name() + "님 환영합니다!", Toast.LENGTH_SHORT).show();
+
+                        setResult(LOGIN_SUCCESS);
                         finish();
                     }
                     //아이디, 비밀번호를 잘못 입력했을 경우
                     else {
-                        mEmailView.setError(getString(R.string.sign_up_warning6));
-                        mPasswordView.setError(getString(R.string.sign_up_warning6));
+                        if (loginResult.getMsg().equals("Account not exist"))
+                            mEmailView.setError(getString(R.string.sign_up_warning7));
+                        else if (loginResult.getMsg().equals("Password wrong"))
+                            mPasswordView.setError(getString(R.string.sign_up_warning6));
                     }
                 } else {
                     Log.e("서버 문제 발생", response.code() + "");
@@ -98,7 +107,9 @@ public class SignInActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<LoginResult> call, Throwable t) {
+            public void onFailure(Call<UserData> call, Throwable t) {
+                progressBar.setVisibility(View.INVISIBLE);
+
                 Log.e("서버 접속 에러 발생 ", t.getMessage());
                 Toast.makeText(getApplicationContext(), "로그인 오류 발생", Toast.LENGTH_SHORT).show();
             }

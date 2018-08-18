@@ -22,17 +22,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
-import plantopia.sungshin.plantopia.User.SignInActivity;
 import plantopia.sungshin.plantopia.User.UserData;
+import plantopia.sungshin.plantopia.User.SignInActivity;
 
 public class InfoFragment extends android.support.v4.app.Fragment {
     static final int SETTING = 1;
     private static final int LOGIN = 2;
     private static final int ADD_PLANT = 3;
+    private static final int LOGOUT = 4;
+    private static final int LOGIN_SUCCESS = 5;
+
     private Unbinder unbinder;
     Activity activity;
     Context context;
-    UserData user;
 
     @BindView(android.R.id.tabhost)
     TabHost tabHost;
@@ -64,10 +66,10 @@ public class InfoFragment extends android.support.v4.app.Fragment {
         if (!AutoLoginManager.getInstance(context).isLoggedIn()) {
             Toast.makeText(context, "로그인이 필요한 기능입니다.", Toast.LENGTH_SHORT).show();
             startActivityForResult(new Intent(context, SignInActivity.class), LOGIN);
+        } else {
+            UserData user = AutoLoginManager.getInstance(context).getUser();
+            idText.setText(user.getUser_name());
         }
-
-        UserData user = AutoLoginManager.getInstance(context).getUser();
-        idText.setText(user.getUserName());
 
         LocalActivityManager mLocalActivityManager = new LocalActivityManager(getActivity(), false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
@@ -86,13 +88,14 @@ public class InfoFragment extends android.support.v4.app.Fragment {
             }
         });
 
-
         return view;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        idText.setText(AutoLoginManager.getInstance(context).getUser().getUser_name());
     }
 
     @Override
