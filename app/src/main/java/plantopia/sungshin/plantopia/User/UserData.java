@@ -7,7 +7,7 @@ public class UserData {
     private String msg;
     private int user_id;
     private String user_email, user_name, user_pwd;
-    private Blob user_img;
+    private String user_img;
 
     public UserData(String user_email, String user_pwd) {
         this.user_email = user_email;
@@ -30,6 +30,22 @@ public class UserData {
 
     public boolean isResult() {
         return result;
+    }
+
+    public String getUser_pwd() {
+        return user_pwd;
+    }
+
+    public void setUser_pwd(String user_pwd) {
+        this.user_pwd = user_pwd;
+    }
+
+    public String getUser_img() {
+        return user_img;
+    }
+
+    public void setUser_img(String user_img) {
+        this.user_img = user_img;
     }
 
     public void setResult(boolean result) {

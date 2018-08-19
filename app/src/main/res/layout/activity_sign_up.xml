@@ -99,6 +99,7 @@
             android:layout_marginTop="10dp"
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:onClick="finishBtnOnClicked"
             android:text="완료"
             android:textSize="17sp"
             android:textStyle="bold" />

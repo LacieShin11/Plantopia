@@ -11,6 +11,7 @@ public class AutoLoginManager {
     private static final String SHARED_PREF_NAME = "plantopia_sharedpref";
     private static final String KEY_NAME = "keyname";
     private static final String KEY_EMAIL = "keyemail";
+    private static final String KEY_IMG = "keyimg";
     private static final String KEY_ID = "keyid";
 
     private static AutoLoginManager mInstance;
@@ -34,6 +35,7 @@ public class AutoLoginManager {
         editor.putInt(KEY_ID, user.getUser_id());
         editor.putString(KEY_NAME, user.getUser_name());
         editor.putString(KEY_EMAIL, user.getUser_email());
+        editor.putString(KEY_IMG, user.getUser_img());
         editor.apply();
     }
 
@@ -41,6 +43,13 @@ public class AutoLoginManager {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_NAME, name);
+        editor.apply();
+    }
+
+    public void setUserImg(String imgPath) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_IMG, imgPath);
         editor.apply();
     }
 
@@ -68,7 +77,7 @@ public class AutoLoginManager {
         editor.clear();
         editor.apply();
 
-        Toast.makeText(mContext, R.string.need_login, Toast.LENGTH_SHORT).show();
-        mContext.startActivity(new Intent(mContext, SignInActivity.class)); //다시 로그인 창으로 이동
+        //Toast.makeText(mContext, R.string.need_login, Toast.LENGTH_SHORT).show();
+        //mContext.startActivity(new Intent(mContext, SignInActivity.class)); //다시 로그인 창으로 이동
     }
 }

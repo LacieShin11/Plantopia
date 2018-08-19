@@ -37,7 +37,7 @@
             android:name=".User.SignUpActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".SignUpActivity2"
+            android:name=".User.SignUpActivity2"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity android:name=".PlantChatActivity" />

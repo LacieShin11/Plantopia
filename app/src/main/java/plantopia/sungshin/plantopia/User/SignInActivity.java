@@ -147,7 +147,6 @@ public class SignInActivity extends AppCompatActivity {
         if (cancel) {
             focusView.requestFocus();
         } else {
-            //showProgress(true);
             userLogin(email, password);
         }
     }

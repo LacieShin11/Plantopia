@@ -33,15 +33,15 @@ public class InfoTab1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_tab1);
 
-        plantItems.add(new PlantItem("코코", "여명옥", 1));
-        plantItems.add(new PlantItem("아이비", "스투키", 2));
-        plantItems.add(new PlantItem("산세", "칼라데아", 3));
-        plantItems.add(new PlantItem("베리", "죽백", 4));
+        plantItems.add(new PlantItem("코코", "여명옥", ""));
+        plantItems.add(new PlantItem("아이비", "스투키", ""));
+        plantItems.add(new PlantItem("산세", "칼라데아", ""));
+        plantItems.add(new PlantItem("베리", "죽백", ""));
 
-        plantopiaItems.add(new PlantItem("코코", "여명옥", 1));
-        plantopiaItems.add(new PlantItem("아이비", "스투키", 2));
-        plantopiaItems.add(new PlantItem("산세", "칼라데아", 3));
-        plantopiaItems.add(new PlantItem("베리", "죽백", 4));
+        plantopiaItems.add(new PlantItem("코코", "여명옥", ""));
+        plantopiaItems.add(new PlantItem("아이비", "스투키", ""));
+        plantopiaItems.add(new PlantItem("산세", "칼라데아", ""));
+        plantopiaItems.add(new PlantItem("베리", "죽백", ""));
 
         getSupportActionBar().hide();
         ButterKnife.bind(this);

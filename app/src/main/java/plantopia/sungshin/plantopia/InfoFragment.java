@@ -6,14 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +38,13 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     private Unbinder unbinder;
     Activity activity;
     Context context;
+
+    @BindView(R.id.layout_need_login)
+    LinearLayout needLoginLayout;
+    @BindView(R.id.layout_login)
+    LinearLayout loginLayout;
+    @BindView(R.id.login_btn)
+    Button loginBtn;
 
     @BindView(android.R.id.tabhost)
     TabHost tabHost;
@@ -63,13 +73,10 @@ public class InfoFragment extends android.support.v4.app.Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         //자동로그인이 되어있지 않을 경우 로그인 창으로 이동
-        if (!AutoLoginManager.getInstance(context).isLoggedIn()) {
-            Toast.makeText(context, "로그인이 필요한 기능입니다.", Toast.LENGTH_SHORT).show();
-            startActivityForResult(new Intent(context, SignInActivity.class), LOGIN);
-        } else {
-            UserData user = AutoLoginManager.getInstance(context).getUser();
-            idText.setText(user.getUser_name());
-        }
+
+        Log.d("로그인 여부", AutoLoginManager.getInstance(context).isLoggedIn() + "");
+
+        setLoginLayout(AutoLoginManager.getInstance(context).isLoggedIn());
 
         LocalActivityManager mLocalActivityManager = new LocalActivityManager(getActivity(), false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
@@ -88,6 +95,12 @@ public class InfoFragment extends android.support.v4.app.Fragment {
             }
         });
 
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(context, SignInActivity.class), LOGIN);
+            }
+        });
         return view;
     }
 
@@ -95,7 +108,10 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        idText.setText(AutoLoginManager.getInstance(context).getUser().getUser_name());
+        if (resultCode == LOGOUT)
+            setLoginLayout(false);
+        else
+            setLoginLayout(true);
     }
 
     @Override
@@ -163,5 +179,18 @@ public class InfoFragment extends android.support.v4.app.Fragment {
         }
 
         return view;
+    }
+
+    private void setLoginLayout(boolean isLoggined) {
+        if (isLoggined) {
+            needLoginLayout.setVisibility(View.GONE);
+            loginLayout.setVisibility(View.VISIBLE);
+
+            UserData user = AutoLoginManager.getInstance(context).getUser();
+            idText.setText(user.getUser_name());
+        } else {
+            needLoginLayout.setVisibility(View.VISIBLE);
+            loginLayout.setVisibility(View.GONE);
+        }
     }
 }

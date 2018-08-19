@@ -1,7 +1,11 @@
 package plantopia.sungshin.plantopia;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -10,15 +14,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.soundcloud.android.crop.Crop;
+
+import java.io.File;
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import plantopia.sungshin.plantopia.User.ApplicationController;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
 import plantopia.sungshin.plantopia.User.ServerURL;
@@ -29,10 +43,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProfileSettingActivity extends AppCompatActivity {
+    private static final int TAKING_PIC = 10;
     private static final int LOGOUT = 4;
 
     private ServiceApiForUser service;
     UserData loginedUser;
+    @BindView(R.id.profile_img)
+    CircleImageView profileImg;
     @BindView(R.id.change_profile_btn)
     ImageButton changProfileBtn;
     @BindView(R.id.change_name_btn)
@@ -53,6 +70,8 @@ public class ProfileSettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_setting);
         ButterKnife.bind(this);
+        setTitle("프로필 설정");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //서버 연결
         ApplicationController applicationController = ApplicationController.getInstance();
@@ -105,7 +124,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
                 showMessage("이름을 입력해주세요.");
             else if (idEdit.getText().toString().length() > 10)
                 showMessage("10자 이하로 입력해주세요.");
-            //닉네임 변경
+                //닉네임 변경
             else {
                 hideMessage();
                 changeName(idEdit.getText().toString());
@@ -129,6 +148,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
         inputLayout.setError(null);
     }
 
+    //닉네임 변경
     public void changeName(String name) {
         progressBar.setVisibility(View.VISIBLE);
         UserData sendData = new UserData(loginedUser.getUser_id(), loginedUser.getUser_email(), name);
@@ -161,6 +181,92 @@ public class ProfileSettingActivity extends AppCompatActivity {
     }
 
     public void cameraBtnOnClicked(View view) {
+        CharSequence[] list = {"사진 촬영", "갤러리 사진 선택"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingActivity.this);
+        builder.setTitle("사진 추가")
+                .setItems(list, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                            if (takePictureIntent.resolveActivity(getPackageManager()) != null)
+                                startActivityForResult(takePictureIntent, TAKING_PIC);
+
+                        } else if (which == 1) {
+                            Crop.pickImage(ProfileSettingActivity.this);
+                        }
+                    }
+                });
+
+        builder.show();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("경로", "resultCode : " + resultCode + " requestCode : " + requestCode);
+
+        if (requestCode == TAKING_PIC && resultCode == RESULT_OK) {
+            beginCrop(data.getData());
+        } else if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
+            beginCrop(data.getData());
+        } else if (requestCode == Crop.REQUEST_CROP) {
+            handleCrop(resultCode, data);
+        }
+    }
+
+    private void beginCrop(Uri source) {
+        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));
+        Crop.of(source, destination).withAspect(1, 1).start(this);
+    }
+
+    private void handleCrop(int resultCode, Intent result) {
+        if (resultCode == RESULT_OK) {
+            changeImg(Crop.getOutput(result));
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Crop.getOutput(result));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //프로필 이미지 변경
+    public void changeImg(final Uri filePath) {
+        progressBar.setVisibility(View.VISIBLE);
+        File file = new File(filePath.getPath());
+
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
+        RequestBody email = RequestBody.create(MediaType.parse("text/plain"), loginedUser.getUser_name());
+
+        retrofit2.Call<okhttp3.ResponseBody> req = service.updateUserImg(email, body);
+        req.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                progressBar.setVisibility(View.INVISIBLE);
+                if (response.isSuccessful()) {
+                    profileImg.setImageURI(filePath);
+                    AutoLoginManager.getInstance(getApplicationContext()).setUserImg(filePath.getPath());
+                    Log.d("이미지 변경 성공", filePath.getPath());
+                } else {
+                    Toast.makeText(ProfileSettingActivity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                progressBar.setVisibility(View.INVISIBLE);
+                Toast.makeText(ProfileSettingActivity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
     }
 
     public void deleteAccountBtnOnClicked(View view) {
@@ -180,5 +286,13 @@ public class ProfileSettingActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+            finish();
+
+        return true;
     }
 }
