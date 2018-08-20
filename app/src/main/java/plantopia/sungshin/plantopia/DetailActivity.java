@@ -26,6 +26,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 public class DetailActivity extends AppCompatActivity {
     String key = "20180814WAQFXYCPVL972GCN79KFQ";
     String plantName = "";
+
     String plantNum ="";
 
     TextView titleView, textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8, textView9, textView10, textView11;
