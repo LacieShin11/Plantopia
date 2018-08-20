@@ -15,21 +15,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageButton
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/search"
-            android:background="@android:color/white"/>
-
         <EditText
+            android:layout_width="224dp"
+            android:layout_height="wrap_content"
             android:hint="식물을 검색하세요"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:id="@+id/search_edit_text"/>
+
+        <ImageButton
+            android:layout_width="165dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:src="@drawable/search" />
 
     </LinearLayout>
 
     <ListView
         android:id="@+id/search_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:textFilterEnabled="true" />
 </LinearLayout>

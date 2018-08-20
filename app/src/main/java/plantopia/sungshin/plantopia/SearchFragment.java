@@ -5,11 +5,14 @@ import android.net.http.HttpResponseCache;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import org.w3c.dom.Document;
@@ -22,7 +25,6 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -36,11 +38,11 @@ public class SearchFragment extends android.support.v4.app.Fragment {
 
     @BindView(R.id.search_list)
     ListView searchListView;
+    @BindView(R.id.search_edit_text)
+    EditText editText;
 
     SearchListAdapter adapter;
-    ArrayList<String> plantNameList = new ArrayList<>(); // 식물 이름
-    ArrayList<String> plantNumberList = new ArrayList<>(); // 식물 번호
-    // ArrayList<String> plantList = new ArrayList<>(); // 식물 사진
+
     String key = "20180814WAQFXYCPVL972GCN79KFQ";
 
     @Override
@@ -49,7 +51,6 @@ public class SearchFragment extends android.support.v4.app.Fragment {
 
         GetPlantDataTask ayncTask = new GetPlantDataTask();
         ayncTask.execute();
-        Log.d("ayncTask.execute() : ", "완료");
     }
 
     @Nullable
@@ -58,12 +59,39 @@ public class SearchFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_tab2, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable edit) {
+                String filterText = edit.toString();
+                /*if(filterText.length() > 0)
+                {
+                    searchListView.setFilterText(filterText);
+                }
+                else
+                {
+                    searchListView.clearTextFilter();;
+                }*/
+                ((SearchListAdapter)searchListView.getAdapter()).getFilter().filter(filterText) ;
+            }
+        });
+
         searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String name = plantNameList.get(position);
-                String number = plantNumberList.get(position);
+                Plant plant = (Plant) adapter.getItem(position);
+                String name = plant.getPlantName();
+                String number = plant.getPlantNumber();
 
                 Intent intent = new Intent(getContext(), DetailActivity.class);
                 intent.putExtra("name", name);
@@ -86,6 +114,8 @@ public class SearchFragment extends android.support.v4.app.Fragment {
     {
         @Override
         protected HttpResponseCache doInBackground(String... strings) {
+            adapter = new SearchListAdapter();
+
             HttpResponseCache response = null;
             final String apiurl = "http://api.nongsaro.go.kr/service/garden/gardenList";
             HttpURLConnection conn = null;
@@ -122,12 +152,11 @@ public class SearchFragment extends android.support.v4.app.Fragment {
                     }
                     String plantNum = node.getChildNodes().item(0).getFirstChild().getNodeValue();
                     String plantName = node.getChildNodes().item(1).getFirstChild().getNodeValue();
-                    // String plant = node.getChildNodes().item(9).getFirstChild().getNodeValue();
+
                     Log.d("식물 번호 : ", plantNum);
                     Log.d("식물 이름 : ", plantName);
-                    plantNumberList.add(plantNum);
-                    plantNameList.add(plantName);
-                    // plantList.add(plant);
+
+                    adapter.addPlant(plantName, plantNum);
                 }
                 publishProgress();
 
@@ -147,10 +176,9 @@ public class SearchFragment extends android.support.v4.app.Fragment {
         @Override
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
-            adapter = new SearchListAdapter(plantNameList, plantNumberList);
+
             searchListView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
-
         }
     }
 }

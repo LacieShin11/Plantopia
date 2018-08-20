@@ -5,30 +5,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class SearchListAdapter extends BaseAdapter {
-    ArrayList<String> arrayList;
-    ArrayList<String> plantNumberList;
-    // ArrayList<String> bitmapList;
+public class SearchListAdapter extends BaseAdapter implements Filterable {
+    ArrayList<Plant> arrayList = new ArrayList<Plant>();
+    ArrayList<Plant> filteredArrayList = arrayList;
+    Filter listFilter;
 
-    public SearchListAdapter(ArrayList<String> arrayList, ArrayList<String> plantNumberList) {
-        this.arrayList = arrayList;
-        this.plantNumberList = plantNumberList;
-        // this.bitmapList = bitmapList;
+    public SearchListAdapter() {
+
     }
 
     @Override
     public int getCount() {
-        return arrayList.size();
+        return filteredArrayList.size();
     }
 
     @Override
-    public String getItem(int position) {
-        return arrayList.get(position);
+    public Object getItem(int position) {
+        return filteredArrayList.get(position);
     }
 
     @Override
@@ -49,9 +49,9 @@ public class SearchListAdapter extends BaseAdapter {
         TextView textView = v.findViewById(R.id.search_text);
         ImageView imageView = v.findViewById(R.id.search_img);
 
-        textView.setText(arrayList.get(position));
-        /*Bitmap bm = BitmapFactory.decodeFile(bitmapList.get(position));
-        imageView.setImageBitmap(bm);*/
+        Plant plant = filteredArrayList.get(position);
+
+        textView.setText(plant.getPlantName());
 
         return v;
     }
@@ -60,5 +60,65 @@ public class SearchListAdapter extends BaseAdapter {
         arrayList.clear();
     }
 
+    public void addPlant(String name, String number)
+    {
+        Plant plant = new Plant(name, number);
 
+        arrayList.add(plant);
+    }
+
+    @Override
+    public Filter getFilter() {
+        if(listFilter == null)
+        {
+            listFilter = new ListFilter();
+        }
+
+        return listFilter;
+    }
+
+    private class ListFilter extends Filter
+    {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+
+            if(constraint == null || constraint.length() == 0)
+            {
+                results.values = arrayList;
+                results.count = arrayList.size();
+            }
+            else
+            {
+                ArrayList<Plant> plantList = new ArrayList<Plant>();
+
+                for(Plant plant : arrayList)
+                {
+                    if(plant.getPlantName().toUpperCase().contains(constraint.toString().toUpperCase()))
+                    {
+                        plantList.add(plant);
+                    }
+                }
+
+                results.values = plantList;
+                results.count = plantList.size();
+            }
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteredArrayList = (ArrayList<Plant>) results.values;
+
+            if(results.count > 0)
+            {
+                notifyDataSetChanged();
+            }
+            else
+            {
+                notifyDataSetInvalidated();
+            }
+
+        }
+    }
 }
