@@ -45,5 +45,6 @@
         <activity android:name=".AddPlantActivity" />
         <activity android:name=".ModifyPlantActivity" />
         <activity android:name=".DetailActivity" />
+        <activity android:name=".TestActivity" />
     </application>
 </manifest>

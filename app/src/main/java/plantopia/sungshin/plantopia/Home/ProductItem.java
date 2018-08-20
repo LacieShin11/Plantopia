@@ -1,15 +1,16 @@
 package plantopia.sungshin.plantopia.Home;
 
 public class ProductItem {
-    private String name, price, url;
+    private String name, price, url, image;
 
     public ProductItem() {
     }
 
-    public ProductItem(String name, String price, String url) {
+    public ProductItem(String name, String price, String url, String image) {
         this.name = name;
         this.price = price;
         this.url = url;
+        this.image = image;
     }
 
     public String getName() {
@@ -34,5 +35,13 @@ public class ProductItem {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getImage() {
+        return image;
     }
 }
