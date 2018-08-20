@@ -29,6 +29,7 @@
             android:id="@+id/product_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:singleLine="true"
             android:paddingHorizontal="5dp"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
@@ -37,6 +38,7 @@
             android:id="@+id/product_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:singleLine="true"
             android:paddingBottom="5dp"
             android:paddingHorizontal="5dp"
             android:textColor="@android:color/darker_gray"
