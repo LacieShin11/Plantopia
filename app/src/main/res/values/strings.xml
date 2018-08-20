@@ -57,4 +57,12 @@
     <string name="need_login">로그인이 필요합니다.</string>
     <string name="need_login2">Plantopia의 식물 관리 서비스를 \n이용하기 위해선 로그인이 필요합니다.</string>
     <string name="name_error">오류 발생. 다시 시도해주세요.</string>
+
+    <string name="username">43831eaa-43f9-445f-9914-32d75018557d</string>
+    <string name="password">666iihGX8rPA</string>
+    <string name="stuckyi_workspace">23a9b530-ddde-4a05-8a97-9e68412fbaa2</string>
+    <string name="calathea_workspace">b2ae5482-baf5-44ea-892e-4373faa5aa36</string>
+    <string name="oroya_workspace">d4a60bf3-0726-4ee1-b916-d1f06a689c18</string>
+    <string name="palm_workspace">2aa88f2a-e2f5-4730-9a00-7bff60a918c7</string>
+    <string name="nagi_workspace">a0d2db0f-5097-46b5-bedd-60387eb96545</string>
 </resources>

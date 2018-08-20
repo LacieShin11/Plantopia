@@ -45,5 +45,11 @@
         <activity android:name=".AddPlantActivity" />
         <activity android:name=".ModifyPlantActivity" />
         <activity android:name=".DetailActivity" />
+        <!--챗봇 연결-->
+        <activity android:name=".ChatBot.Calathea"></activity>
+        <activity android:name=".ChatBot.Stuckyi"></activity>
+        <activity android:name=".ChatBot.Oroya"></activity>
+        <activity android:name=".ChatBot.Palm"></activity>
+        <activity android:name=".ChatBot.Nagi"></activity>
     </application>
 </manifest>

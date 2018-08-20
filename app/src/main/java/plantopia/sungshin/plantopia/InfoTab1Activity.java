@@ -33,15 +33,18 @@ public class InfoTab1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_tab1);
 
-        plantItems.add(new PlantItem("코코", "여명옥", ""));
+        //생성자-plantName, plantType, plantImg, 온도, 습도, 빛 등등!
+        plantItems.add(new PlantItem("코코", "여염옥", ""));
         plantItems.add(new PlantItem("아이비", "스투키", ""));
         plantItems.add(new PlantItem("산세", "칼라데아", ""));
         plantItems.add(new PlantItem("베리", "죽백", ""));
+        plantItems.add(new PlantItem("테이블", "테이블야자", ""));
 
         plantopiaItems.add(new PlantItem("코코", "여명옥", ""));
         plantopiaItems.add(new PlantItem("아이비", "스투키", ""));
         plantopiaItems.add(new PlantItem("산세", "칼라데아", ""));
         plantopiaItems.add(new PlantItem("베리", "죽백", ""));
+        plantopiaItems.add(new PlantItem("테이블", "테이블야자", ""));
 
         getSupportActionBar().hide();
         ButterKnife.bind(this);
@@ -70,7 +73,6 @@ public class InfoTab1Activity extends AppCompatActivity {
                         Intent intent = new Intent(InfoTab1Activity.this, PlantInfoActivity.class);
                         intent.putExtra("plantName", plantAdapter.getItem(position).getPlantName());
                         intent.putExtra("plantType", plantAdapter.getItem(position).getPlantType());
-
                         startActivityForResult(intent, DEVICE_CONNECTION);
                     }
 
