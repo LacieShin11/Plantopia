@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginVertical="10dp"
-        android:fontFamily="sans-serif"
-        android:text="@string/profile_intro" />
+        android:layout_marginTop="20dp"
+        android:text="@string/profile_intro"
+        android:textSize="17sp" />
 
     <FrameLayout
         android:layout_width="130dp"
@@ -37,17 +37,25 @@
             android:background="#BDBDBD"
             android:onClick="cameraBtnOnClicked"
             android:scaleType="fitCenter"
-            android:src="@drawable/plant" />
+            android:src="@drawable/camera" />
     </FrameLayout>
 
-    <EditText
-        android:id="@+id/sign_in_email_edit"
+
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="45dp"
-        android:fontFamily="sans-serif"
-        android:hint="@string/hint_name"
-        android:inputType="textEmailAddress" />
+        android:layout_marginHorizontal="40dp">
+
+        <AutoCompleteTextView
+            android:id="@+id/join_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/confirm_pwd"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,21 +66,25 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/join_skip_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:background="@drawable/tab_back_custom"
-            android:fontFamily="sans-serif"
+            android:foreground="?attr/selectableItemBackground"
+            android:onClick="skipBtnOnClicked"
             android:text="@string/skip" />
 
         <Button
+            android:id="@+id/join_finish_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:background="@drawable/tab_back_custom"
-            android:fontFamily="sans-serif"
+            android:foreground="?attr/selectableItemBackground"
+            android:onClick="finishBtnOnClicked"
             android:text="@string/finish" />
     </LinearLayout>
 </LinearLayout>

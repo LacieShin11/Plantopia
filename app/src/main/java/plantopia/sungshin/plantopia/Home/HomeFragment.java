@@ -25,12 +25,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import plantopia.sungshin.plantopia.Home.DIYItem;
-import plantopia.sungshin.plantopia.Home.DIYRecyclerViewAdapter;
-import plantopia.sungshin.plantopia.Home.PostItem;
-import plantopia.sungshin.plantopia.Home.PostRecyclerViewAdapter;
-import plantopia.sungshin.plantopia.Home.ProductItem;
-import plantopia.sungshin.plantopia.Home.ProductRecyclerViewAdapter;
 import plantopia.sungshin.plantopia.R;
 import plantopia.sungshin.plantopia.RecyclerItemClickListener;
 
@@ -106,7 +100,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
             }
         }));
 
-        diyGallery.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), postGallery, new RecyclerItemClickListener.OnItemClickListener() {
+        diyGallery.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), diyGallery, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Toast.makeText(getContext(), diyAdapter.getItem(position).getUrl(), Toast.LENGTH_SHORT).show();
@@ -117,7 +111,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
             }
         }));
 
-        productGallery.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), postGallery, new RecyclerItemClickListener.OnItemClickListener() {
+        productGallery.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), productGallery, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Toast.makeText(getContext(), productAdapter.getItem(position).getUrl(), Toast.LENGTH_SHORT).show();

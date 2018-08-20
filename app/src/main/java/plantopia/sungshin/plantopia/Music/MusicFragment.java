@@ -3,6 +3,7 @@ package plantopia.sungshin.plantopia.Music;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -23,12 +24,14 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import plantopia.sungshin.plantopia.AddPlantActivity;
 import plantopia.sungshin.plantopia.R;
 
 public class MusicFragment extends android.support.v4.app.Fragment {
     static final int PLAYING = 0;
     static final int PAUSE = 1;
     static final int STOP = 2;
+    private static final int ADD_PLANT = 3;
     Activity activity;
 
     private MediaPlayer mediaPlayer;
@@ -217,7 +220,7 @@ public class MusicFragment extends android.support.v4.app.Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add:
-
+                startActivityForResult(new Intent(getContext(), AddPlantActivity.class), ADD_PLANT);
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.LocalActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -14,8 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,14 +24,27 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import plantopia.sungshin.plantopia.User.AutoLoginManager;
+import plantopia.sungshin.plantopia.User.UserData;
+import plantopia.sungshin.plantopia.User.SignInActivity;
 
 public class InfoFragment extends android.support.v4.app.Fragment {
     static final int SETTING = 1;
     private static final int LOGIN = 2;
+    private static final int ADD_PLANT = 3;
+    private static final int LOGOUT = 4;
+    private static final int LOGIN_SUCCESS = 5;
+
     private Unbinder unbinder;
     Activity activity;
     Context context;
-    UserData user;
+
+    @BindView(R.id.layout_need_login)
+    LinearLayout needLoginLayout;
+    @BindView(R.id.layout_login)
+    LinearLayout loginLayout;
+    @BindView(R.id.login_btn)
+    Button loginBtn;
 
     @BindView(android.R.id.tabhost)
     TabHost tabHost;
@@ -59,13 +73,10 @@ public class InfoFragment extends android.support.v4.app.Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         //자동로그인이 되어있지 않을 경우 로그인 창으로 이동
-        if (!AutoLoginManager.getInstance(context).isLoggedIn()) {
-            Toast.makeText(context, "로그인이 필요한 기능입니다.", Toast.LENGTH_SHORT).show();
-            startActivityForResult(new Intent(context, SignInActivity.class), LOGIN);
-        }
 
-        UserData user = AutoLoginManager.getInstance(context).getUser();
-        idText.setText(user.getUserName());
+        Log.d("로그인 여부", AutoLoginManager.getInstance(context).isLoggedIn() + "");
+
+        setLoginLayout(AutoLoginManager.getInstance(context).isLoggedIn());
 
         LocalActivityManager mLocalActivityManager = new LocalActivityManager(getActivity(), false);
         mLocalActivityManager.dispatchCreate(savedInstanceState);
@@ -83,12 +94,24 @@ public class InfoFragment extends android.support.v4.app.Fragment {
                 startActivityForResult(intent, SETTING);
             }
         });
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(context, SignInActivity.class), LOGIN);
+            }
+        });
         return view;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == LOGOUT)
+            setLoginLayout(false);
+        else
+            setLoginLayout(true);
     }
 
     @Override
@@ -107,12 +130,13 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add:
-
+                startActivityForResult(new Intent(context, AddPlantActivity.class), ADD_PLANT);
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     // 탭 위젯 설정 및 추가
     public void setupTab(final View view, final String tag) {
@@ -155,5 +179,18 @@ public class InfoFragment extends android.support.v4.app.Fragment {
         }
 
         return view;
+    }
+
+    private void setLoginLayout(boolean isLoggined) {
+        if (isLoggined) {
+            needLoginLayout.setVisibility(View.GONE);
+            loginLayout.setVisibility(View.VISIBLE);
+
+            UserData user = AutoLoginManager.getInstance(context).getUser();
+            idText.setText(user.getUser_name());
+        } else {
+            needLoginLayout.setVisibility(View.VISIBLE);
+            loginLayout.setVisibility(View.GONE);
+        }
     }
 }
