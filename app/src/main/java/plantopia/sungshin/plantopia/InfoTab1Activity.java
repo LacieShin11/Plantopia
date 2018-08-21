@@ -33,7 +33,7 @@ public class InfoTab1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_tab1);
 
-        //생성자-plantName, plantType, plantImg, 온도, 습도, 빛 등등!
+        //생성자-plantName, plantType, plantImg, 온도, 습도, 빛 등등! 임의로 데이터 넣음
         plantItems.add(new PlantItem("코코", "여염옥", "", 30, 10, 3, 1, 300, 100));
         plantItems.add(new PlantItem("아이비", "스투키", "", 30, 10, 3, 1, 300, 100));
         plantItems.add(new PlantItem("산세", "칼라데아", "", 30, 10, 3, 1, 300, 100));
