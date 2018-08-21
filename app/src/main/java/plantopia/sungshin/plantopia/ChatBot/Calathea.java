@@ -1,12 +1,15 @@
 package plantopia.sungshin.plantopia.ChatBot;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -21,6 +24,8 @@ import com.ibm.watson.developer_cloud.http.ServiceCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import plantopia.sungshin.plantopia.R;
 
@@ -35,11 +40,28 @@ public class Calathea extends AppCompatActivity {
     String formatTime;
     String formatDate;
     LinearLayout scroll;
+    Map context;
+    Double Temp, Light, Humidity; //아두이노로부터 받아온 현재 식물 정보
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_chat);
+
+        //액션바에 식물 애칭 넣기
+        Intent intent = getIntent();
+
+        // 툴바 생성
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // 툴바에 별명 작성
+        getSupportActionBar().setTitle(intent.getStringExtra("plantName"));
+        toolbar.setTitleTextColor(Color.WHITE);
+        //toolbar.setTitleText
+        // 툴바에 홈버튼 활성화
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // 툴바의 홈버튼 이미지 변경
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_back);
 
         //네트워크 연결 유무 확인
         NetworkInfo mNetworkState = getNetworkInfo();
@@ -49,9 +71,12 @@ public class Calathea extends AppCompatActivity {
         }//네트워크 끊김-Toast 메시지
 
         //액션바에 식물 애칭 넣기
-        Intent intent = getIntent();
+        //Intent intent = getIntent();
         setTitle(intent.getStringExtra("plantName"));
-        //setTitle(Color.TRANSPARENT);
+        Temp = intent.getDoubleExtra("Temp", 30);
+        Light = intent.getDoubleExtra("Light", 3);
+        Humidity = intent.getDoubleExtra("Humidity", 300);
+        //아두이노에서 현재 값 받아오기
 
         // 어댑터 생성
         m_Adapter = new ChatbotAdapter();
@@ -77,6 +102,64 @@ public class Calathea extends AppCompatActivity {
 
         m_Adapter.notifyDataSetChanged();
 
+        // 현재 시간 구하기
+        long now = System.currentTimeMillis();
+        // 현재 시간을 date 변수에 저장
+        Date date = new Date(now);
+        // 시간을 나타낼 포맷 정하기
+        SimpleDateFormat sdfNow = new SimpleDateFormat("aa HH:mm");
+        // 날짜를 나타낼 포맷 정하기
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy년 MM월 dd일");
+        // nowDate 변수에 값을 저장
+
+        formatTime = sdfNow.format(date); //현재 시간
+        formatDate = sdfDate.format(date); //현재 날짜
+
+      /*//현재의 온도, 습도, 빛 정보와 비교해서 채팅창 열때마다 해당 내역 출력
+        if(Temp<13){
+                String inputText3 = "나 너무 추워어~~ㅠㅠ 온도 좀 높여줄 수 있니~?!" + "\n\n" + formatTime;
+                if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
+                    chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                    chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);
+                }
+                else{  chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime); }
+        }
+        else if(Temp>25){
+            String inputText3 = "나 너무 더워어~~!! 온도 좀 낮춰줄 수 있니~?!" + "\n\n" + formatTime;
+            if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
+                chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);
+            } else {  chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);}
+        }//온도 정보
+        if(Light < 800){
+                String inputText3 = "빛이..부족해...햇빛 좀 보여줄 수 있니...?!" + "\n\n" + formatTime;;
+                if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
+                    chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                    chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);
+                } else {  chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);}
+        }else if(Light > 10000){
+                String inputText3 = "빛을 너무 많이 쐬었어~!! 이대로는 타 죽을거야ㅜㅜ 서늘한 곳으로 데려다주지 않을래~?!";
+                if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
+                    chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                    chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);
+                } else {  chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);}
+        }//빛 정보
+
+        if(Humidity < 0.4){
+                String inputText3 = "너무 목 말라...물 좀 주지 않을래~~?!" + "\n\n" + formatTime;;
+                if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
+                    chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                    chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);
+                } else {  chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);}
+        }else if(Humidity > 0.7){
+                String inputText3 = "당분간은 물 안 마셔도 될 것 같아~~ 당분간은 물 진짜 전혀 안 줘도 돼!(제발!!)";
+                if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
+                    chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                    chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);
+                } else {  chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);}
+        }//습도 정보*/
+
+        //유저와 챗봇간 대화
         userInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -107,6 +190,52 @@ public class Calathea extends AppCompatActivity {
                     }else {
                         chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText2, 1, formatDate, formatTime); //db에 넣기
                     }
+/*
+
+                    //현재의 온도, 습도, 빛 정보와 비교해서 채팅창 열때마다 해당 내역 출력
+                    if(Temp<13){
+                        String inputText3 = "나 너무 추워어~~ㅠㅠ 온도 좀 높여줄 수 있니~?!" + "\n\n" + formatTime;
+                        if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
+                            chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                            chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);
+                        }
+                        else{  chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime); }
+                    }
+                    else if(Temp>25){
+                        String inputText3 = "나 너무 더워어~~!! 온도 좀 낮춰줄 수 있니~?!" + "\n\n" + formatTime;
+                        if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
+                            chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                            chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);
+                        } else {  chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);}
+                    }//온도 정보
+                    if(Light < 800){
+                        String inputText3 = "빛이..부족해...햇빛 좀 보여줄 수 있니...?!" + "\n\n" + formatTime;;
+                        if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
+                            chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                            chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);
+                        } else {  chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);}
+                    }else if(Light > 10000){
+                        String inputText3 = "빛을 너무 많이 쐬었어~!! 이대로는 타 죽을거야ㅜㅜ 서늘한 곳으로 데려다주지 않을래~?!";
+                        if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
+                            chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                            chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);
+                        } else {  chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);}
+                    }//빛 정보
+
+                    if(Humidity < 0.4){
+                        String inputText3 = "너무 목 말라...물 좀 주지 않을래~~?!" + "\n\n" + formatTime;;
+                        if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
+                            chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                            chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);
+                        } else {  chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);}
+                    }else if(Humidity > 0.7){
+                        String inputText3 = "당분간은 물 안 마셔도 될 것 같아~~ 당분간은 물 진짜 전혀 안 줘도 돼!(제발!!)";
+                        if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
+                            chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                            chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);
+                        } else {  chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText3, 0, formatDate, formatTime);}
+                    }//습도 정보
+*/
 
                     userInput.setText("");
                     m_Adapter.notifyDataSetChanged();
@@ -118,7 +247,18 @@ public class Calathea extends AppCompatActivity {
                         //빈 레이아웃 띄우기
                     } //db가 비어있으면(즉, 한번도 대화를 한 적이 없다면 새로운 레이아웃 띄우기
 
-                    MessageRequest request = new MessageRequest.Builder().inputText(inputText).build();
+
+                    //**컨텍스트 넣기
+                    if(context == null){
+                        context = new HashMap<String, Object>();
+                    }
+
+                    final MessageRequest request = new MessageRequest.Builder().inputText(inputText).context(context).build();
+
+                    //context로 아두이노로부터 받은 실시간 정보 넣기
+                    context.put("Temp",Temp);
+                    context.put("Light", Light);
+                    context.put("Humidity", Humidity);
 
                     myConversationService.message(getString(R.string.calathea_workspace), request).enqueue(new ServiceCallback<MessageResponse>() {
                         @Override
@@ -136,20 +276,23 @@ public class Calathea extends AppCompatActivity {
                             formatDate = sdfDate.format(date);
                             String timeText = "\n\n" + formatTime;
                             final String outputText = response.getText().get(0) + timeText;//이 위치 맞음
+                            final MessageResponse resPonse = response;
 
                             runOnUiThread(new Runnable() {
 
                                 @Override
                                 public void run() {
+
                                     if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
                                         chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
-                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText, 0, formatDate, formatTime); //db에 넣기
+                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText+context, 0, formatDate, formatTime); //db에 넣기
                                         //첫 대화 시 날짜 띄우기(해당 디비 내역이 비어있을 시, 그리고 db에 그 날짜에 대화한 목록이 없을 때 날짜 띄우기(db에 내용은 있는데)
                                     }else {
-                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText, 0, formatDate, formatTime); //db에 넣기
+                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText+context, 0, formatDate, formatTime); //db에 넣기
                                     }
-                                    //chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText, 0, formatDate, formatTime); //db에 넣기
+
                                     m_Adapter.notifyDataSetChanged();
+
                                     if(!chatBotDbHelper.isEmpty(PLANT_NAME)) {
                                         setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
                                     }
@@ -200,4 +343,13 @@ public class Calathea extends AppCompatActivity {
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo;
     }// 현재 네트워크 상태를 반환
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // some doing
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -1,12 +1,15 @@
 package plantopia.sungshin.plantopia.ChatBot;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -20,6 +23,8 @@ import com.ibm.watson.developer_cloud.http.ServiceCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import plantopia.sungshin.plantopia.R;
 
@@ -33,6 +38,8 @@ public class Oroya extends AppCompatActivity {
     ChatbotAdapter m_Adapter;
     String formatTime;
     String formatDate;
+    Map context;
+    Double Temp, Light, Humidity; //아두이노로부터 받아온 현재 식물 정보
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +55,24 @@ public class Oroya extends AppCompatActivity {
 
         //액션바에 식물 애칭 넣기
         Intent intent = getIntent();
+        Temp = intent.getDoubleExtra("Temp", 30);
+        Light = intent.getDoubleExtra("Light", 3);
+        Humidity = intent.getDoubleExtra("Humidity", 300);
+        //아두이노에서 현재 값 받아오기
+
+        // 툴바 생성
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // 툴바에 별명 작성
+        getSupportActionBar().setTitle(intent.getStringExtra("plantName"));
+        toolbar.setTitleTextColor(Color.WHITE);
+        //toolbar.setTitleText
+        // 툴바에 홈버튼 활성화
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // 툴바의 홈버튼 이미지 변경
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_back);
+        //액션바에 식물 애칭 넣기
+        //Intent intent = getIntent();
         setTitle(intent.getStringExtra("plantName"));
 
         // 어댑터 생성
@@ -108,7 +133,17 @@ public class Oroya extends AppCompatActivity {
                     m_Adapter.notifyDataSetChanged();
                     if(!chatBotDbHelper.isEmpty(PLANT_NAME)) setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
 
-                    MessageRequest request = new MessageRequest.Builder().inputText(inputText).build();
+                    //**컨텍스트 넣기
+                    if(context == null){
+                        context = new HashMap<String, Object>();
+                    }
+
+                    final MessageRequest request = new MessageRequest.Builder().inputText(inputText).context(context).build();
+
+                    //context로 아두이노로부터 받은 실시간 정보 넣기
+                    context.put("Temp",Temp);
+                    context.put("Light", Light);
+                    context.put("Humidity", Humidity);
 
                     myConversationService.message(getString(R.string.oroya_workspace), request).enqueue(new ServiceCallback<MessageResponse>() {
                         @Override
@@ -133,10 +168,10 @@ public class Oroya extends AppCompatActivity {
                                 public void run() {
                                     if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
                                         chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
-                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText, 0, formatDate, formatTime); //db에 넣기
+                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText+context, 0, formatDate, formatTime); //db에 넣기
                                         //첫 대화 시 날짜 띄우기(해당 디비 내역이 비어있을 시, 그리고 db에 그 날짜에 대화한 목록이 없을 때 날짜 띄우기(db에 내용은 있는데)
                                     }else {
-                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText, 0, formatDate, formatTime); //db에 넣기
+                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText+context, 0, formatDate, formatTime); //db에 넣기
                                     }
                                     //chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText, 0, formatDate, formatTime); //db에 넣기
                                     m_Adapter.notifyDataSetChanged();
@@ -186,4 +221,13 @@ public class Oroya extends AppCompatActivity {
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo;
     }// 현재 네트워크 상태를 반환
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // some doing
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
