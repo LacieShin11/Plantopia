@@ -38,13 +38,6 @@
             android:paddingHorizontal="5dp"
             android:textColor="@android:color/black"
             android:textSize="16sp" />
-
-            <ImageButton
-                android:id="@+id/scrap_btn"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_star_border_24dp"/>
         </LinearLayout>
 
         <TextView

@@ -34,9 +34,8 @@ public class PlantRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerPlant
         RecyclerPlantViewHolder mainHolder = (RecyclerPlantViewHolder) holder;
         PlantItem item = arrayList.get(position);
 
-//        Bitmap img = BitmapFactory.decodeResource(mContext.getResources(), item.getImg());
         mainHolder.plantNameText.setText(item.getPlantName());
-        mainHolder.plantImg.setImageResource(R.drawable.test2);
+        mainHolder.plantImg.setImageResource(item.getPlantImg());
     }
 
     @Override

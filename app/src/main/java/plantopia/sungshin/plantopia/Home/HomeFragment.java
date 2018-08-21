@@ -420,7 +420,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                         }
                         else if(node.getNodeName().equals("lprice")) {
                             String image = (String) node.getFirstChild().getTextContent();
-                            result_lprice_list.add(image);
+                            result_lprice_list.add(image + "원");
                         }
                     }
                 }

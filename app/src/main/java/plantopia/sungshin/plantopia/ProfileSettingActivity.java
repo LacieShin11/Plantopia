@@ -21,10 +21,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,6 +55,7 @@ import retrofit2.Response;
 public class ProfileSettingActivity extends AppCompatActivity {
     private static final int TAKING_PIC = 10;
     private static final int LOGOUT = 4;
+    private static final String BUCKET_NAME = "plantopiabucket";
 
     private ServiceApiForUser service;
     UserData loginedUser;
@@ -238,35 +249,60 @@ public class ProfileSettingActivity extends AppCompatActivity {
     }
 
     //프로필 이미지 변경
-    public void changeImg(final Uri filePath) {
+    public void changeImg(final Uri fileUri) {
         progressBar.setVisibility(View.VISIBLE);
-        File file = new File(filePath.getPath());
+        File uploadFile = new File(fileUri.getPath());
 
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
-        RequestBody email = RequestBody.create(MediaType.parse("text/plain"), loginedUser.getUser_name());
+        CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                getApplicationContext(),
+                "us-east-2:f6e0a9b0-267d-46c4-9512-01c8d7502762", // 자격 증명 풀 ID
+                Regions.US_EAST_2 // 리전
+        );
 
-        retrofit2.Call<okhttp3.ResponseBody> req = service.updateUserImg(email, body);
-        req.enqueue(new Callback<ResponseBody>() {
+        if (fileUri != null)
+            profileImg.setImageURI(fileUri);
+
+        String keyUser = AutoLoginManager.getInstance(getApplicationContext()).getUser().getUser_email();
+        keyUser.substring(keyUser.lastIndexOf("@"));
+        Log.d("이름", keyUser + Calendar.getInstance().getTime() + ".png");
+
+        AmazonS3 s3 = new AmazonS3Client(credentialsProvider);
+        s3.setRegion(Region.getRegion(Regions.AP_NORTHEAST_2));
+        s3.setEndpoint("s3.ap-northeast-2.amazonaws.com");
+        TransferUtility utility = new TransferUtility(s3, getApplicationContext());
+
+        TransferObserver observer = utility.upload(
+                BUCKET_NAME,
+                keyUser + Calendar.getInstance().getTime() + ".png",
+                uploadFile
+        );
+
+        RequestBody email = RequestBody.create(MultipartBody.FORM, AutoLoginManager.getInstance(getApplicationContext()).getUser().getUser_email());
+        RequestBody filePart = RequestBody.create(MediaType.parse("image/*"), uploadFile);
+
+        progressBar.setVisibility(View.INVISIBLE);
+
+        /*MultipartBody.Part file = MultipartBody.Part.createFormData("photo", uploadFile.getName(), filePart);
+        Call<ResponseBody> call = service.updateUserImg(email, file);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                progressBar.setVisibility(View.INVISIBLE);
-                if (response.isSuccessful()) {
-                    profileImg.setImageURI(filePath);
-                    AutoLoginManager.getInstance(getApplicationContext()).setUserImg(filePath.getPath());
-                    Log.d("이미지 변경 성공", filePath.getPath());
-                } else {
+                if (!response.isSuccessful())
                     Toast.makeText(ProfileSettingActivity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
-                }
+                else
+                    Toast.makeText(ProfileSettingActivity.this, "변경 성공!", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(ProfileSettingActivity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
+
                 t.printStackTrace();
+                Toast.makeText(ProfileSettingActivity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
+
     }
 
     public void deleteAccountBtnOnClicked(View view) {

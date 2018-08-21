@@ -3,7 +3,7 @@ package plantopia.sungshin.plantopia;
 public class PlantItem {
     private String plantName;
     private String plantType;
-    private String plantImg;
+    private int plantImg;
     private double maxTemp, minTemp, maxLight, minLignt, maxHumidity, minHumidity;
 
     public double getMaxTemp() {
@@ -54,7 +54,7 @@ public class PlantItem {
         this.minHumidity = minHumidity;
     }
 
-    public PlantItem(String plantName, String plantType, String plantImg, double maxTemp, double minTemp, double maxLight, double minLignt, double maxHumidity, double minHumidity) {
+    public PlantItem(String plantName, String plantType, int plantImg, double maxTemp, double minTemp, double maxLight, double minLignt, double maxHumidity, double minHumidity) {
         this.plantName = plantName;
         this.plantType = plantType;
         this.plantImg = plantImg;
@@ -66,7 +66,7 @@ public class PlantItem {
         this.minHumidity = minHumidity;
     }
 
-    public PlantItem(String plantName, String plantType, String plantImg) {
+    public PlantItem(String plantName, String plantType, int plantImg) {
         this.plantName = plantName;
         this.plantType = plantType;
         this.plantImg = plantImg;
@@ -80,11 +80,11 @@ public class PlantItem {
         this.plantName = plantName;
     }
 
-    public String getPlantImg() {
+    public int getPlantImg() {
         return plantImg;
     }
 
-    public void setPlantImg(String plantImg) {
+    public void setPlantImg(int plantImg) {
         this.plantImg = plantImg;
     }
 

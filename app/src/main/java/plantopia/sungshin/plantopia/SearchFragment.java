@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -40,16 +41,18 @@ public class SearchFragment extends android.support.v4.app.Fragment {
     ListView searchListView;
     @BindView(R.id.search_edit_text)
     EditText editText;
+    @BindView(R.id.progressbar)
+    ProgressBar progressbar;
 
     SearchListAdapter adapter;
 
-    String key = "20180814WAQFXYCPVL972GCN79KFQ";
+    static final String key = "20180814WAQFXYCPVL972GCN79KFQ";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        GetPlantDataTask ayncTask = new GetPlantDataTask();
+        getPlantDataTask ayncTask = new getPlantDataTask();
         ayncTask.execute();
     }
 
@@ -59,6 +62,7 @@ public class SearchFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.fragment_tab2, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        progressbar.setVisibility(View.VISIBLE);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -101,6 +105,7 @@ public class SearchFragment extends android.support.v4.app.Fragment {
             }
         });
 
+        progressbar.setVisibility(View.INVISIBLE);
         return view;
     }
 
@@ -110,7 +115,7 @@ public class SearchFragment extends android.support.v4.app.Fragment {
         unbinder.unbind();
     }
 
-    private class GetPlantDataTask extends AsyncTask<String, Void, HttpResponseCache>
+    private class getPlantDataTask extends AsyncTask<String, Void, HttpResponseCache>
     {
         @Override
         protected HttpResponseCache doInBackground(String... strings) {
