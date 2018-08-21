@@ -3,10 +3,11 @@ package plantopia.sungshin.plantopia;
 public class PlantItem {
     private String plantName;
     private String plantType;
-    private int plantImg;
-    private double maxTemp, minTemp, maxLight, minLignt, maxHumidity, minHumidity;
+    private String plantImg;
+    //private double maxTemp, minTemp, maxLight, minLignt, maxHumidity, minHumidity;
+    private Double Temp, Light, Humidity;
 
-    public double getMaxTemp() {
+   /* public double getMaxTemp() {
         return maxTemp;
     }
 
@@ -53,23 +54,38 @@ public class PlantItem {
     public void setMinHumidity(double minHumidity) {
         this.minHumidity = minHumidity;
     }
-
-    public PlantItem(String plantName, String plantType, int plantImg, double maxTemp, double minTemp, double maxLight, double minLignt, double maxHumidity, double minHumidity) {
+*/
+    public PlantItem(String plantName, String plantType, String plantImg, double Temp, double Light, double Humidity){//double maxTemp, double minTemp, double maxLight, double minLignt, double maxHumidity, double minHumidity) {
         this.plantName = plantName;
         this.plantType = plantType;
         this.plantImg = plantImg;
-        this.maxTemp = maxTemp;
+        this.Temp = Temp;
+        this.Light = Light;
+        this.Humidity = Humidity;
+        /*this.maxTemp = maxTemp;
         this.minTemp = minTemp;
         this.maxLight = maxLight;
         this.minLignt = minLignt;
         this.maxHumidity = maxHumidity;
-        this.minHumidity = minHumidity;
+        this.minHumidity = minHumidity;*/
     }
 
-    public PlantItem(String plantName, String plantType, int plantImg) {
+    public PlantItem(String plantName, String plantType, String plantImg) {
         this.plantName = plantName;
         this.plantType = plantType;
         this.plantImg = plantImg;
+    }
+
+    public double getTemp(){
+        return Temp;
+    }
+
+    public double getLight(){
+        return Light;
+    }
+
+    public double getHumidity(){
+        return Humidity;
     }
 
     public String getPlantName() {
@@ -80,11 +96,11 @@ public class PlantItem {
         this.plantName = plantName;
     }
 
-    public int getPlantImg() {
+    public String getPlantImg() {
         return plantImg;
     }
 
-    public void setPlantImg(int plantImg) {
+    public void setPlantImg(String plantImg) {
         this.plantImg = plantImg;
     }
 

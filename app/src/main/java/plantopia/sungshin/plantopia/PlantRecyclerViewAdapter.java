@@ -1,7 +1,6 @@
 package plantopia.sungshin.plantopia;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,7 +34,7 @@ public class PlantRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerPlant
         PlantItem item = arrayList.get(position);
 
         mainHolder.plantNameText.setText(item.getPlantName());
-        mainHolder.plantImg.setImageResource(item.getPlantImg());
+//        mainHolder.plantImg.setImageResource(item.getPlantImg());
     }
 
     @Override
