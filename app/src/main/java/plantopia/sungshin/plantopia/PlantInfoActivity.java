@@ -16,6 +16,7 @@ import plantopia.sungshin.plantopia.ChatBot.Stuckyi;
 
 public class PlantInfoActivity extends AppCompatActivity {
     String plantName, plantType;
+    double maxTemp, minTemp, maxLight, minLight, maxHumidity, minHumidity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         setTitle(intent.getStringExtra("plantName"));
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_plant, menu);
@@ -40,6 +42,8 @@ public class PlantInfoActivity extends AppCompatActivity {
         Intent intent2 = getIntent();
         plantType = intent2.getStringExtra("plantType");
         plantName = intent2.getStringExtra("plantName");
+        //maxTemp = intent2.getDoubleExtra("maxTemp", 30);
+       // minTemp = intent2.getDoubleExtra(minTemp, ), maxLight, minLight, maxHumidity, minHumidity
 
         switch (item.getItemId()) {
             case R.id.menu_chat: //챗봇 누르기

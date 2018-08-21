@@ -1,6 +1,7 @@
 package plantopia.sungshin.plantopia.ChatBot;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,7 +105,8 @@ public class ChatbotAdapter extends BaseAdapter {
             viewRight.setVisibility(View.GONE);
             viewLeft.setVisibility(View.GONE);
         }else if(listContents.getType() == 2){
-            conversation.setBackgroundResource(R.drawable.datebg);
+            //conversation.setBackgroundResource(R.drawable.datebg);
+            conversation.setBackgroundColor(Color.TRANSPARENT); //배경 투명하게 하기
             layout.setGravity(Gravity.CENTER);
             viewRight.setVisibility(View.VISIBLE);
             viewLeft.setVisibility(View.VISIBLE);

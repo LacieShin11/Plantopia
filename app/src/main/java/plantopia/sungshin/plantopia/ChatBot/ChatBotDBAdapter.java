@@ -97,7 +97,7 @@ public class ChatBotDBAdapter {
             i++;
         } //커서 객체 이용해서 테이블의 talking 내용 가져오기
         return talking;
-    }
+    }//대화목록 반환하기
 
     public Integer[] displayType(String plant) {
         int i=0;
@@ -109,6 +109,21 @@ public class ChatBotDBAdapter {
             i++;
         } //커서 객체 이용해서 테이블의 talking 내용 가져오기
         return type;
+    }//타입-0,1,2값 받아오기
+
+    public boolean isCheckDatelog(String date){
+        int i=0;
+        Cursor c = mDB.rawQuery("Select * from CHATBOTTABLE where DATE='" + date + "';", null);
+
+        String dates[] = new String[c.getCount()];
+
+        while(c.moveToNext()){
+            dates[i] = c.getString(c.getColumnIndex("date"));
+            i++;
+        }
+
+        if(dates.length == 0) return true;//해당 날짜에 대화한 내역이 없다
+        else return false;
     }
 
     public String[] displayTime(String plant){
@@ -121,7 +136,7 @@ public class ChatBotDBAdapter {
             i++;
         } //커서 객체 이용해서 테이블의 talking 내용 가져오기
         return times;
-    }
+    }//시간 받아오기
 
     public String[] displayDate(String plant){
         int i=0;
@@ -133,7 +148,7 @@ public class ChatBotDBAdapter {
             i++;
         } //커서 객체 이용해서 테이블의 talking 내용 가져오기
         return dates;
-    }
+    } //날짜정보 받아오기
 
     public Cursor getTable() {
         Cursor res = rDB.rawQuery("select * from CHATBOTTABLE", null);
