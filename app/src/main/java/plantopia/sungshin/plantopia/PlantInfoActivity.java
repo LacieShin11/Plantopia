@@ -14,7 +14,6 @@ import plantopia.sungshin.plantopia.ChatBot.Oroya;
 import plantopia.sungshin.plantopia.ChatBot.Palm;
 import plantopia.sungshin.plantopia.ChatBot.Stuckyi;
 
-//
 public class PlantInfoActivity extends AppCompatActivity {
     String plantName, plantType;
     double maxTemp, minTemp, maxLight, minLight, maxHumidity, minHumidity;
@@ -30,6 +29,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         setTitle(intent.getStringExtra("plantName"));
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
