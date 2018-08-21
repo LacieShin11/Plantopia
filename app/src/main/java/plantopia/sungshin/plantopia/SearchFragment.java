@@ -123,7 +123,7 @@ public class SearchFragment extends android.support.v4.app.Fragment {
                 StringBuffer sb = new StringBuffer(3);
                 sb.append(apiurl);
                 sb.append("?apiKey=" + key);
-                sb.append("&numOfRows=100");
+                sb.append("&numOfRows=300");
 
                 String query = sb.toString();
                 URL url = new URL(query);
