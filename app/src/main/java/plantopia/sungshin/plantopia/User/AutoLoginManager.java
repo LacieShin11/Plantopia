@@ -13,6 +13,9 @@ public class AutoLoginManager {
     private static final String KEY_EMAIL = "keyemail";
     private static final String KEY_IMG = "keyimg";
     private static final String KEY_ID = "keyid";
+    private static final String KEY_POT_COUNT = "keycountpot";
+    private static final String KEY_DIARY_COUNT = "keycountdiary";
+    private static final String KEY_SCRAP_COUNT = "keycountscrap";
 
     private static AutoLoginManager mInstance;
     private static Context mContext;
@@ -36,6 +39,9 @@ public class AutoLoginManager {
         editor.putString(KEY_NAME, user.getUser_name());
         editor.putString(KEY_EMAIL, user.getUser_email());
         editor.putString(KEY_IMG, user.getUser_img());
+        editor.putInt(KEY_POT_COUNT, user.getCount_pot());
+        editor.putInt(KEY_DIARY_COUNT, user.getCount_diary());
+        editor.putInt(KEY_SCRAP_COUNT, user.getCount_scrap());
         editor.apply();
     }
 
@@ -62,11 +68,14 @@ public class AutoLoginManager {
     //로그인한 유저 정보 제공
     public UserData getUser() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-
         return new UserData(
                 sharedPreferences.getInt(KEY_ID, -1),
                 sharedPreferences.getString(KEY_EMAIL, null),
-                sharedPreferences.getString(KEY_NAME, null)
+                sharedPreferences.getString(KEY_NAME, null),
+                sharedPreferences.getString(KEY_IMG, null),
+                sharedPreferences.getInt(KEY_POT_COUNT, -1),
+                sharedPreferences.getInt(KEY_DIARY_COUNT, -1),
+                sharedPreferences.getInt(KEY_SCRAP_COUNT, -1)
         );
     }
 

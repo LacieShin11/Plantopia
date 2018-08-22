@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import plantopia.sungshin.plantopia.R;
@@ -35,11 +37,9 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
         RecyclerViewHolder mainHolder = (RecyclerViewHolder) holder;
         PostItem item = arrayList.get(position);
 
-//        Bitmap img = BitmapFactory.decodeResource(mContext.getResources(), item.getImg());
-
         mainHolder.titleText.setText(item.getTitle());
         mainHolder.sourceText.setText(item.getSource());
-        mainHolder.postImg.setImageResource(R.drawable.test);
+        Glide.with(mContext).load(R.drawable.test).into(mainHolder.postImg);
     }
 
     @Override
@@ -57,8 +57,5 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
 
     public void addItem(PostItem item) {
         arrayList.add(item);
-        /*for (int i = 0; i < arrayList.size(); i++) {
-            Log.d("아이템", arrayList.get(i).getTitle());
-        }*/
     }
 }

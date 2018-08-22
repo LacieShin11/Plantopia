@@ -47,7 +47,7 @@
         <activity android:name=".PlantInfoActivity" />
         <activity android:name=".AddPlantActivity" />
         <activity android:name=".ModifyPlantActivity" />
-        <activity android:name=".DetailActivity" />
+        <activity android:name=".Search.DetailActivity" />
         <!--챗봇 연결-->
         <activity android:name=".ChatBot.Calathea"></activity>
         <activity android:name=".ChatBot.Stuckyi"></activity>

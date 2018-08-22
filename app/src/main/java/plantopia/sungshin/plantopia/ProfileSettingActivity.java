@@ -22,27 +22,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.bumptech.glide.Glide;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import plantopia.sungshin.plantopia.User.ApplicationController;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
 import plantopia.sungshin.plantopia.User.ServerURL;
@@ -94,6 +89,12 @@ public class ProfileSettingActivity extends AppCompatActivity {
         emailAddressText.setText(loginedUser.getUser_email());
         idText.setText(loginedUser.getUser_name());
 
+        if (loginedUser.getUser_img() == null)
+            profileImg.setImageResource(R.drawable.add_profile_images_02);
+        else
+            Glide.with(getApplicationContext()).load(loginedUser.getUser_img()).into(profileImg);
+
+        //닉네임 최대 글자수 표시
         inputLayout.setCounterEnabled(true);
         inputLayout.setCounterMaxLength(10);
         inputLayout.setVisibility(View.GONE);
@@ -107,7 +108,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (idEdit.getText().toString().length() > 10)
-                    showMessage("10자 이하로 입력해주세요.");
+                    showMessage(getString(R.string.check_name2));
                 else hideMessage();
             }
 
@@ -132,9 +133,9 @@ public class ProfileSettingActivity extends AppCompatActivity {
             changeNameBtn.setImageResource(R.drawable.submit);
         } else {
             if (idEdit.getText().toString().isEmpty())
-                showMessage("이름을 입력해주세요.");
+                showMessage(getString(R.string.check_name));
             else if (idEdit.getText().toString().length() > 10)
-                showMessage("10자 이하로 입력해주세요.");
+                showMessage(getString(R.string.check_name2));
                 //닉네임 변경
             else {
                 hideMessage();
@@ -162,20 +163,20 @@ public class ProfileSettingActivity extends AppCompatActivity {
     //닉네임 변경
     public void changeName(String name) {
         progressBar.setVisibility(View.VISIBLE);
-        UserData sendData = new UserData(loginedUser.getUser_id(), loginedUser.getUser_email(), name);
+        final UserData sendData = new UserData();
+        sendData.setUser_email(loginedUser.getUser_email());
+        sendData.setUser_name(name);
 
         Call<UserData> userDataCall = service.setUserName(sendData);
         userDataCall.enqueue(new Callback<UserData>() {
             @Override
             public void onResponse(Call<UserData> call, Response<UserData> response) {
                 progressBar.setVisibility(View.INVISIBLE);
-                Log.d("닉네임", response.body().getMsg());
+                Log.d("닉네임", response.body().getUser_name());
 
                 if (response.isSuccessful()) {
-                    UserData newName = response.body(); //받아온 데이터 받을 객체
-                    AutoLoginManager.getInstance(getApplicationContext()).setUserName(newName.getUser_name());
-                    Log.d("닉네임", newName.getMsg());
-                    idText.setText(newName.getUser_name());
+                    AutoLoginManager.getInstance(getApplicationContext()).setUserName(sendData.getUser_name());
+                    idText.setText(sendData.getUser_name());
                 } else {
                     Toast.makeText(ProfileSettingActivity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
                 }
@@ -213,7 +214,6 @@ public class ProfileSettingActivity extends AppCompatActivity {
         builder.show();
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -229,19 +229,14 @@ public class ProfileSettingActivity extends AppCompatActivity {
     }
 
     private void beginCrop(Uri source) {
-        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));
+        String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        Uri destination = Uri.fromFile(new File(getCacheDir(), timestamp));
         Crop.of(source, destination).withAspect(1, 1).start(this);
     }
 
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == RESULT_OK) {
             changeImg(Crop.getOutput(result));
-
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), Crop.getOutput(result));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
         } else if (resultCode == Crop.RESULT_ERROR) {
             Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
@@ -251,7 +246,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
     //프로필 이미지 변경
     public void changeImg(final Uri fileUri) {
         progressBar.setVisibility(View.VISIBLE);
-        File uploadFile = new File(fileUri.getPath());
+        final File uploadFile = new File(fileUri.getPath());
 
         CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
                 getApplicationContext(),
@@ -259,50 +254,37 @@ public class ProfileSettingActivity extends AppCompatActivity {
                 Regions.US_EAST_2 // 리전
         );
 
-        if (fileUri != null)
-            profileImg.setImageURI(fileUri);
-
-        String keyUser = AutoLoginManager.getInstance(getApplicationContext()).getUser().getUser_email();
-        keyUser.substring(keyUser.lastIndexOf("@"));
-        Log.d("이름", keyUser + Calendar.getInstance().getTime() + ".png");
-
         AmazonS3 s3 = new AmazonS3Client(credentialsProvider);
         s3.setRegion(Region.getRegion(Regions.AP_NORTHEAST_2));
         s3.setEndpoint("s3.ap-northeast-2.amazonaws.com");
         TransferUtility utility = new TransferUtility(s3, getApplicationContext());
 
-        TransferObserver observer = utility.upload(
-                BUCKET_NAME,
-                keyUser + Calendar.getInstance().getTime() + ".png",
-                uploadFile
-        );
+        utility.upload(BUCKET_NAME, "profile_" + uploadFile.getName() + ".png", uploadFile); //s3에 파일 업로드
 
-        RequestBody email = RequestBody.create(MultipartBody.FORM, AutoLoginManager.getInstance(getApplicationContext()).getUser().getUser_email());
-        RequestBody filePart = RequestBody.create(MediaType.parse("image/*"), uploadFile);
+        final UserData userData = AutoLoginManager.getInstance(getApplicationContext()).getUser();
+        userData.setUser_img(ServerURL.BUCKET + "profile_" + uploadFile.getName() + ".png");
 
-        progressBar.setVisibility(View.INVISIBLE);
-
-        /*MultipartBody.Part file = MultipartBody.Part.createFormData("photo", uploadFile.getName(), filePart);
-        Call<ResponseBody> call = service.updateUserImg(email, file);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<UserData> userDataCall = service.updateUserImg(userData);
+        userDataCall.enqueue(new Callback<UserData>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (!response.isSuccessful())
-                    Toast.makeText(ProfileSettingActivity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(ProfileSettingActivity.this, "변경 성공!", Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<UserData> call, Response<UserData> response) {
                 progressBar.setVisibility(View.INVISIBLE);
+
+                if (response.isSuccessful()) {
+                    AutoLoginManager.getInstance(getApplicationContext()).setUserImg(response.body().getUser_img());
+
+                    profileImg.setImageURI(fileUri);
+                } else
+                    Toast.makeText(ProfileSettingActivity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<UserData> call, Throwable t) {
                 progressBar.setVisibility(View.INVISIBLE);
-
-                t.printStackTrace();
+                Log.d("이미지", t.getMessage());
                 Toast.makeText(ProfileSettingActivity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
             }
-        });*/
-
+        });
     }
 
     public void deleteAccountBtnOnClicked(View view) {

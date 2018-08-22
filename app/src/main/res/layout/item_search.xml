@@ -12,10 +12,10 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginRight="15dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/background" />
+        android:scaleType="centerCrop" />
 
     <TextView
+        android:paddingVertical="10dp"
         android:id="@+id/search_text"
         android:textSize="18sp"
         android:textColor="@android:color/black"

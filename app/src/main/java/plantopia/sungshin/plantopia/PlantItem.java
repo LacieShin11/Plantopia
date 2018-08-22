@@ -3,7 +3,8 @@ package plantopia.sungshin.plantopia;
 public class PlantItem {
     private String plantName;
     private String plantType;
-    private int plantImg;
+    private String plantNumber;
+    private String plantImg;
     private double maxTemp, minTemp, maxLight, minLignt, maxHumidity, minHumidity;
 
     public double getMaxTemp() {
@@ -54,7 +55,20 @@ public class PlantItem {
         this.minHumidity = minHumidity;
     }
 
-    public PlantItem(String plantName, String plantType, int plantImg, double maxTemp, double minTemp, double maxLight, double minLignt, double maxHumidity, double minHumidity) {
+    public String getPlantNumber() {
+        return plantNumber;
+    }
+
+    public void setPlantNumber(String plantNumber) {
+        this.plantNumber = plantNumber;
+    }
+
+    public PlantItem(String plantName, String plantNumber) {
+        this.plantName = plantName;
+        this.plantNumber = plantNumber;
+    }
+
+    public PlantItem(String plantName, String plantType, String plantImg, double maxTemp, double minTemp, double maxLight, double minLignt, double maxHumidity, double minHumidity) {
         this.plantName = plantName;
         this.plantType = plantType;
         this.plantImg = plantImg;
@@ -66,9 +80,16 @@ public class PlantItem {
         this.minHumidity = minHumidity;
     }
 
-    public PlantItem(String plantName, String plantType, int plantImg) {
+    public PlantItem(String plantName, String plantType, String plantNumber, String plantImg) {
         this.plantName = plantName;
         this.plantType = plantType;
+        this.plantNumber = plantNumber;
+        this.plantImg = plantImg;
+    }
+
+    public PlantItem(String plantName, String plantNumber, String plantImg) {
+        this.plantName = plantName;
+        this.plantNumber = plantNumber;
         this.plantImg = plantImg;
     }
 
@@ -80,11 +101,11 @@ public class PlantItem {
         this.plantName = plantName;
     }
 
-    public int getPlantImg() {
+    public String getPlantImg() {
         return plantImg;
     }
 
-    public void setPlantImg(int plantImg) {
+    public void setPlantImg(String plantImg) {
         this.plantImg = plantImg;
     }
 

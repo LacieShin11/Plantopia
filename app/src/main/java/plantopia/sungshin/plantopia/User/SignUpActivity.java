@@ -22,6 +22,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
+
+    static final int NEXT = 7;
     boolean isOk = false;
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
@@ -87,6 +89,10 @@ public class SignUpActivity extends AppCompatActivity {
             mEmailView.setError(getString(R.string.sign_up_warning5));
             focusView = mEmailView;
             cancel = true;
+        } else if (checkDuplication(email)) {
+            mEmailView.setError(getString(R.string.sign_up_warning));
+            focusView = mEmailView;
+            cancel = true;
         }
 
         if (cancel) {
@@ -95,39 +101,38 @@ public class SignUpActivity extends AppCompatActivity {
             Intent intent = new Intent(SignUpActivity.this, SignUpActivity2.class);
             intent.putExtra("email", email);
             intent.putExtra("password", password);
-            startActivity(intent);
+            startActivityForResult(intent, NEXT);
             finish();
         }
     }
 
+    //이메일 중복 확인
     private boolean checkDuplication(String email) {
         progressBar.setVisibility(View.VISIBLE);
 
-        Call<UserData> userDataCall = service.checkDuplication(email);
+        UserData userData = new UserData();
+        userData.setUser_email(email);
+
+        Call<UserData> userDataCall = service.checkDuplication(userData);
         userDataCall.enqueue(new Callback<UserData>() {
             @Override
             public void onResponse(Call<UserData> call, Response<UserData> response) {
                 progressBar.setVisibility(View.INVISIBLE);
 
-                if (response.isSuccessful()) {
-                    UserData checkResult = response.body(); //받아온 데이터 받을 객체
+                UserData checkResult = response.body(); //받아온 데이터 받을 객체
+                Log.d("checkResult", checkResult.getMsg());
 
-                    Log.d("checkResult", checkResult.getMsg());
+                isOk = checkResult.getMsg().equals("Already exist");
 
-                    if (checkResult.isResult()) {
-                    }
-                    //아이디, 비밀번호를 잘못 입력했을 경우
-
-                } else {
-                    isOk = false;
+                if (checkResult.getMsg().equals("Already exist")) {
+                    mEmailView.setError(getString(R.string.sign_up_warning));
                 }
             }
 
             @Override
             public void onFailure(Call<UserData> call, Throwable t) {
                 progressBar.setVisibility(View.INVISIBLE);
-
-                isOk = false;
+                Toast.makeText(SignUpActivity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
             }
         });
 

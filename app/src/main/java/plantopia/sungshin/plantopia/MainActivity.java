@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import plantopia.sungshin.plantopia.Music.MusicFragment;
+import plantopia.sungshin.plantopia.Search.SearchFragment;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
 import plantopia.sungshin.plantopia.User.SignInActivity;
 

@@ -30,6 +30,7 @@
     <string name="sign_up_warning6">비밀번호를 잘못 입력하셨습니다.</string>
     <string name="sign_up_warning7">존재하지 않는 계정입니다.</string>
     <string name="sign_up_warning8">비밀번호를 한번 더 입력해주세요.</string>
+    <string name="sign_up_success">가입에 성공했습니다. 다시 로그인해주세요.</string>
 
     <string name="cancel">취소</string>
     <string name="ok">확인</string>
@@ -65,4 +66,11 @@
     <string name="oroya_workspace">d4a60bf3-0726-4ee1-b916-d1f06a689c18</string>
     <string name="palm_workspace">2aa88f2a-e2f5-4730-9a00-7bff60a918c7</string>
     <string name="nagi_workspace">a0d2db0f-5097-46b5-bedd-60387eb96545</string>
+
+    <string name="add_plant">플랜트 추가</string>
+    <string name="search_plant">식물을 검색하세요.</string>
+    <string name="cancel_join">회원가입 취소</string>
+    <string name="cancel_join_msg">회원가입을 취소하시겠습니까?</string>
+    <string name="check_name">이름을 입력해주세요.</string>
+    <string name="check_name2">10자 이하로 입력해주세요.</string>
 </resources>

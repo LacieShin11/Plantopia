@@ -7,11 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import plantopia.sungshin.plantopia.User.AutoLoginManager;
+import plantopia.sungshin.plantopia.User.UserData;
 
 public class InfoTab1Activity extends AppCompatActivity {
     static final int DEVICE_CONNECTION = 33;
@@ -34,13 +37,18 @@ public class InfoTab1Activity extends AppCompatActivity {
         setContentView(R.layout.info_tab1);
 
         //생성자-plantName, plantType, plantImg, 온도, 습도, 빛 등등!
-        plantItems.add(new PlantItem("코코", "여염옥", R.drawable.plant1));
-        plantItems.add(new PlantItem("아이비", "스투키", R.drawable.plant2));
-
-        plantopiaItems.add(new PlantItem("아모레", "여명옥", R.drawable.plant3));
+        plantItems.add(new PlantItem("코코", "여염옥", "여염옥", ""));
+        plantItems.add(new PlantItem("아이비", "스투키", "스투키", ""));
+        plantopiaItems.add(new PlantItem("아모레", "여명옥", " 여염옥", ""));
 
         getSupportActionBar().hide();
         ButterKnife.bind(this);
+
+        UserData user = AutoLoginManager.getInstance(getApplicationContext()).getUser();
+        if (AutoLoginManager.getInstance(getApplicationContext()).isLoggedIn()) {
+            //if (user.getCount_pot() == 0)
+
+        }
 
         plantAdapter = new PlantRecyclerViewAdapter(plantItems, getApplicationContext());
         plantListView.setHasFixedSize(true);

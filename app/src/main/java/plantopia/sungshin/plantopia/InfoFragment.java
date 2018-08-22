@@ -17,13 +17,17 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
 import plantopia.sungshin.plantopia.User.UserData;
 import plantopia.sungshin.plantopia.User.SignInActivity;
@@ -35,6 +39,7 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     private static final int LOGOUT = 4;
     private static final int LOGIN_SUCCESS = 5;
 
+    private Menu menu;
     private Unbinder unbinder;
     Activity activity;
     Context context;
@@ -45,6 +50,8 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     LinearLayout loginLayout;
     @BindView(R.id.login_btn)
     Button loginBtn;
+    @BindView(R.id.profile_img)
+    CircleImageView profileImg;
 
     @BindView(android.R.id.tabhost)
     TabHost tabHost;
@@ -52,6 +59,15 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     ImageButton settingBtn;
     @BindView(R.id.id_text)
     TextView idText;
+
+    @BindView(R.id.save_count_text)
+    TextView saveCountText;
+    @BindView(R.id.diary_count_text)
+    TextView diaryCountText;
+    @BindView(R.id.flowerpot_count_text)
+    TextView flowerpotCountText;
+    @BindView(R.id.progressbar)
+    ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +89,6 @@ public class InfoFragment extends android.support.v4.app.Fragment {
         unbinder = ButterKnife.bind(this, view);
 
         //자동로그인이 되어있지 않을 경우 로그인 창으로 이동
-
         Log.d("로그인 여부", AutoLoginManager.getInstance(context).isLoggedIn() + "");
 
         setLoginLayout(AutoLoginManager.getInstance(context).isLoggedIn());
@@ -101,6 +116,7 @@ public class InfoFragment extends android.support.v4.app.Fragment {
                 startActivityForResult(new Intent(context, SignInActivity.class), LOGIN);
             }
         });
+
         return view;
     }
 
@@ -108,10 +124,7 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == LOGOUT)
-            setLoginLayout(false);
-        else
-            setLoginLayout(true);
+        setLoginLayout(AutoLoginManager.getInstance(context).isLoggedIn());
     }
 
     @Override
@@ -124,13 +137,17 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_tab, menu);
+        this.menu = menu;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_add:
-                startActivityForResult(new Intent(context, AddPlantActivity.class), ADD_PLANT);
+                if (AutoLoginManager.getInstance(context).isLoggedIn())
+                    startActivityForResult(new Intent(context, AddPlantActivity.class), ADD_PLANT);
+                else
+                    Toast.makeText(context, getString(R.string.need_login), Toast.LENGTH_SHORT).show();
                 break;
         }
 
@@ -181,16 +198,32 @@ public class InfoFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
+    //로그인여부에 따라 레이아웃 변경
     private void setLoginLayout(boolean isLoggined) {
+        progressBar.setVisibility(View.VISIBLE);
+
         if (isLoggined) {
             needLoginLayout.setVisibility(View.GONE);
             loginLayout.setVisibility(View.VISIBLE);
 
             UserData user = AutoLoginManager.getInstance(context).getUser();
-            idText.setText(user.getUser_name());
+            idText.setText(user.getUser_name()); //닉네임 설정http://examplebucket.s3-website-us-west-2.amazonaws.com/photo.jpg
+
+            if (user.getUser_img() == null) //프로필 사진 설정
+                profileImg.setImageResource(R.drawable.add_profile_images_02);
+            else {
+                Glide.with(context).load(user.getUser_img()).into(profileImg);
+            }
+
+            flowerpotCountText.setText(String.valueOf(user.getCount_pot()));
+            diaryCountText.setText(String.valueOf(user.getCount_diary()));
+            saveCountText.setText(String.valueOf(user.getCount_scrap()));
         } else {
             needLoginLayout.setVisibility(View.VISIBLE);
             loginLayout.setVisibility(View.GONE);
         }
+
+        progressBar.setVisibility(View.INVISIBLE);
     }
+
 }

@@ -67,7 +67,7 @@ public class PlantInfoActivity extends AppCompatActivity {
             case R.id.menu_setting:
                 startActivity(new Intent(PlantInfoActivity.this, ModifyPlantActivity.class));
                 break;
-            case R.id.home:
+            case android.R.id.home:
                 finish();
                 break;
         }

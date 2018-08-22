@@ -25,14 +25,12 @@ public interface ServiceApiForUser {
     Call<UserData> setUserName(@Body UserData editResult);
 
     //프로필 이미지 수정
-    @Multipart
     @POST("/user/updateImg")
-    Call<ResponseBody> updateUserImg(@Part("user_email") RequestBody userEmail, @Part MultipartBody.Part userImg);
+    Call<UserData> updateUserImg(@Body UserData updateData);
 
     // 아이디 중복 확인
-    @FormUrlEncoded
     @POST("/user/emailCheck")
-    Call<UserData> checkDuplication(@Field("user_email") String userEmail);
+    Call<UserData> checkDuplication(@Body UserData userEmail);
 
     // 식물 정보 받아오기
 

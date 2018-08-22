@@ -7,45 +7,46 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/actionbar_text"
-        android:layout_gravity="bottom"
-        android:background="#d8d8d8" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/search_edit_text"
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@+id/search_img"
-            android:hint="식물을 검색하세요"
-            android:inputType="text"
-            android:maxLines="1" />
+            android:layout_height="1dp"
+            android:layout_below="@+id/actionbar_text"
+            android:layout_gravity="bottom"
+            android:background="#d8d8d8" />
 
-        <ImageButton
-            android:id="@+id/search_img"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@android:color/white"
-            android:scaleType="fitCenter"
-            android:src="@drawable/search" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </RelativeLayout>
+            <EditText
+                android:id="@+id/search_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@+id/search_img"
+                android:hint="@string/search_plant"
+                android:inputType="text"
+                android:maxLines="1" />
 
-    <ListView
-        android:id="@+id/search_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textFilterEnabled="true" />
+            <ImageButton
+                android:id="@+id/search_img"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:background="@android:color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/search" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/search_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textFilterEnabled="true" />
     </LinearLayout>
 
     <ProgressBar

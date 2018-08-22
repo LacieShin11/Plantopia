@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import plantopia.sungshin.plantopia.R;
@@ -35,11 +37,9 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerPro
         RecyclerProductViewHolder mainHolder = (RecyclerProductViewHolder) holder;
         ProductItem item = arrayList.get(position);
 
-//        Bitmap img = BitmapFactory.decodeResource(mContext.getResources(), item.getImg());
-
         mainHolder.titleText.setText(item.getName());
         mainHolder.priceText.setText(item.getPrice());
-        mainHolder.postImg.setImageResource(R.drawable.test);
+        Glide.with(mContext).load(R.drawable.test).into(mainHolder.postImg);
     }
 
     @Override

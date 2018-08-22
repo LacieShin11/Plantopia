@@ -44,11 +44,11 @@ public class MusicFragment extends android.support.v4.app.Fragment {
             new MusicListItem("Moonlight Dream", "by 현경이", "3:01"),
             new MusicListItem("Wish Upon a Shooting Star", "by 의정부의 딸", "2:45"),
             new MusicListItem("새벽별", "by Hope of Uijungbu", "4:04"),
-            new MusicListItem("그림자와 빛", "by 갓.현.경", "5:00")
+            new MusicListItem("Ending", "by 갓.현.경", "1:37")
     };
     private int[] musicID =
             {R.raw.time_travel_in_the_dream, R.raw.moonlight_dream,
-                    R.raw.wish_upon_a_shooting_star, R.raw.dawn_star, R.raw.shadow_and_light};
+                    R.raw.wish_upon_a_shooting_star, R.raw.dawn_star, R.raw.ending};
 
     @BindView(R.id.music_list)
     ListView musicList;
@@ -208,22 +208,6 @@ public class MusicFragment extends android.support.v4.app.Fragment {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_tab, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_add:
-                startActivityForResult(new Intent(getContext(), AddPlantActivity.class), ADD_PLANT);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     public void changeMusicLayout(boolean isVisible) {
