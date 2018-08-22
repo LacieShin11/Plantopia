@@ -25,7 +25,6 @@ import plantopia.sungshin.plantopia.User.SignInActivity;
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_EXTERNAL_STORAGE = 0;
     static final int WRITE_DIARY = 2;
-    static final int LOGIN = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +67,7 @@ public class MainActivity extends AppCompatActivity {
                             Intent intent = new Intent(MainActivity.this, WriteNewDiaryActivity.class);
                             startActivityForResult(intent, WRITE_DIARY);
                         } else {
-                            Toast.makeText(getApplicationContext(), "로그인이 필요합니다.", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(MainActivity.this, SignInActivity.class);
-                            startActivityForResult(intent, LOGIN);
+                            Toast.makeText(getApplicationContext(), "로그인이 필요한 기능입니다.", Toast.LENGTH_SHORT).show();
                         }
                         break;
 

@@ -62,6 +62,7 @@ public class SearchFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab2, container, false);
         unbinder = ButterKnife.bind(this, view);
+        adapter = new SearchListAdapter();
 
         progressbar.setVisibility(View.VISIBLE);
         getPlantDataTask ayncTask = new getPlantDataTask();
@@ -111,7 +112,6 @@ public class SearchFragment extends android.support.v4.app.Fragment {
     private class getPlantDataTask extends AsyncTask<String, Void, HttpResponseCache> {
         @Override
         protected HttpResponseCache doInBackground(String... strings) {
-            adapter = new SearchListAdapter();
 
             HttpResponseCache response = null;
             final String apiurl = "http://api.nongsaro.go.kr/service/garden/gardenList";

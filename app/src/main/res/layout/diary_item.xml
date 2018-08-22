@@ -29,6 +29,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/diary_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
@@ -39,11 +40,11 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/diary_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
                     android:gravity="right"
-                    android:text="2018년 4월 30일"
                     android:textSize="12sp" />
             </LinearLayout>
         </LinearLayout>

@@ -1,8 +1,12 @@
 package plantopia.sungshin.plantopia.User;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import plantopia.sungshin.plantopia.Diray.DiaryItem;
+import plantopia.sungshin.plantopia.PlantItem;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -35,4 +39,13 @@ public interface ServiceApiForUser {
     // 식물 정보 받아오기
 
     // 식물 정보 보내기
+    @POST("/plant/add")
+    Call<UserData> checkDuplication(@Body PlantItem plantItem);
+
+    @POST("/diary/add")
+    Call<UserData> addDiary(@Body DiaryItem diaryItem);
+
+//    @POST("/diary/get")
+//    Call<List<DiaryItem>> addDiary(@Body DiaryItem diaryItem);
+
 }

@@ -44,7 +44,7 @@ import retrofit2.Response;
 public class SignUpActivity2 extends AppCompatActivity {
     private static final int TAKING_PIC = 10;
     private static final String BUCKET_NAME = "plantopiabucket";
-    private Uri profileImgUri;
+    private Uri profileImgUri = null;
 
     private ServiceApiForUser service;
     private UserData joinUser = new UserData();
@@ -179,15 +179,18 @@ public class SignUpActivity2 extends AppCompatActivity {
     }
 
     public void finishBtnOnClicked(View view) {
+        boolean cancel = true;
+
         if (TextUtils.isEmpty(mNameView.getText()))
             showMessage(getString(R.string.check_name));
         else if (mNameView.getText().toString().length() > 10)
             showMessage(getString(R.string.check_name2));
+        else if (profileImgUri == null)
+            Toast.makeText(this, "프로필 사진을 선택해주세요.", Toast.LENGTH_SHORT).show();
         else {
             hideMessage();
             userJoin(joinUser);
         }
-
     }
 
     public void cameraBtnOnClicked(View view) {

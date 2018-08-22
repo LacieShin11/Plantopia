@@ -195,7 +195,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
     public void cameraBtnOnClicked(View view) {
         CharSequence[] list = {"사진 촬영", "갤러리 사진 선택"};
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileSettingActivity.this);
-        builder.setTitle("사진 추가")
+        builder.setTitle("프로필 사진 변경")
                 .setItems(list, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

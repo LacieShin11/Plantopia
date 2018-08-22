@@ -1,11 +1,20 @@
 package plantopia.sungshin.plantopia;
 
 public class PlantItem {
+    private int ownerID;
     private String plantName;
     private String plantType;
     private String plantNumber; //xml에서 구분하는 데 필요한, 식물 구분 번호
     private String plantImg;
     private double maxTemp, minTemp, maxLight, minLignt, maxHumidity, minHumidity, Temp, Light, Humidity;
+
+    public int getOwnerID() {
+        return ownerID;
+    }
+
+    public void setOwnerID(int ownerID) {
+        this.ownerID = ownerID;
+    }
 
     //Temp, Light, Humidity는 현재 식물의 정보
     public double getTemp(){
@@ -86,6 +95,9 @@ public class PlantItem {
 
     public void setPlantNumber(String plantNumber) {
         this.plantNumber = plantNumber;
+    }
+
+    public PlantItem() {
     }
 
     public PlantItem(String plantName, String plantType, String plantImg, double Temp, double Light, double Humidity){
