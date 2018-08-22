@@ -92,10 +92,13 @@ public class Oroya extends AppCompatActivity {
 
         final TextView conversation = (TextView)findViewById(R.id.conversation);
         final EditText userInput = (EditText)findViewById(R.id.user_input);
+        final TextView emptyView = (TextView) findViewById(R.id.empty_view);
 
         //db, listView 어댑터
         chatBotDbHelper = new ChatBotDBAdapter(getApplicationContext());
         chatBotDbHelper.open();
+
+        m_ListView.setEmptyView(emptyView);
 
         m_Adapter.notifyDataSetChanged();
 
