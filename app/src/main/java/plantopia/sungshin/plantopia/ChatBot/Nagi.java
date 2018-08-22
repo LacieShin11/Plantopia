@@ -92,10 +92,13 @@ public class Nagi extends AppCompatActivity {
 
         final TextView conversation = (TextView)findViewById(R.id.conversation);
         final EditText userInput = (EditText)findViewById(R.id.user_input);
+        final TextView emptyView = (TextView) findViewById(R.id.empty_view);
 
         //db, listView 어댑터
         chatBotDbHelper = new ChatBotDBAdapter(getApplicationContext());
         chatBotDbHelper.open();
+
+        m_ListView.setEmptyView(emptyView);
 
         m_Adapter.notifyDataSetChanged();
 
@@ -117,6 +120,18 @@ public class Nagi extends AppCompatActivity {
                     final String inputText = userInput.getText().toString();
                     String inputText2 = userInput.getText().toString();
 
+                    //**컨텍스트 넣기-여기에 넣어야지만 맨 처음에 갑작스럽게 습도, 온도, 빛 정보 물어봐도 식물의 현재 상태 정보 알려줌
+                    if(context == null){
+                        context = new HashMap<String, Object>();
+                    }
+
+                    //context로 아두이노로부터 받은 실시간 정보 넣기
+                    context.put("Temp",Temp);
+                    context.put("Light", Light);
+                    context.put("Humidity", Humidity);
+
+                    final MessageRequest request = new MessageRequest.Builder().inputText(inputText).context(context).build();
+
                     final String timeText = "\n\n" + formatTime;
                     inputText2 += timeText;
 
@@ -132,19 +147,6 @@ public class Nagi extends AppCompatActivity {
                     userInput.setText("");
                     m_Adapter.notifyDataSetChanged();
                     if(!chatBotDbHelper.isEmpty(PLANT_NAME)) setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
-
-                    //**컨텍스트 넣기
-                    if(context == null){
-                        context = new HashMap<String, Object>();
-                    }
-
-                    final MessageRequest request = new MessageRequest.Builder().inputText(inputText).context(context).build();
-
-                    //context로 아두이노로부터 받은 실시간 정보 넣기
-                    context.put("Temp",Temp);
-                    context.put("Light", Light);
-                    context.put("Humidity", Humidity);
-
 
                     myConversationService.message(getString(R.string.nagi_workspace), request).enqueue(new ServiceCallback<MessageResponse>() {
                         @Override

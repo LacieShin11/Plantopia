@@ -36,28 +36,17 @@
                 android:transcriptMode="alwaysScroll"/>
         </FrameLayout>
 
-        <LinearLayout
-            android:id="@+id/android:empty"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/leaves_white"
-                android:layout_gravity="center"/>
             <TextView
                 android:id="@+id/empty_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="당신의 식물과 대화를 나눠 보세요!"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="당신의 식물과\n대화를 나눠 보세요!"
+                android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textSize="22dp"
-                android:layout_gravity="center"
+                android:textSize="24dp"
+                android:gravity="center"
+                android:fontFamily="@font/myeongjo"
                 />
-
-        </LinearLayout>
     </LinearLayout>
 
 

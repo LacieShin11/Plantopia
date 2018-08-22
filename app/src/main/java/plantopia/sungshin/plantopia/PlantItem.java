@@ -3,9 +3,34 @@ package plantopia.sungshin.plantopia;
 public class PlantItem {
     private String plantName;
     private String plantType;
-    private String plantNumber;
+    private String plantNumber; //xml에서 구분하는 데 필요한, 식물 구분 번호
     private String plantImg;
-    private double maxTemp, minTemp, maxLight, minLignt, maxHumidity, minHumidity;
+    private double maxTemp, minTemp, maxLight, minLignt, maxHumidity, minHumidity, Temp, Light, Humidity;
+
+    //Temp, Light, Humidity는 현재 식물의 정보
+    public double getTemp(){
+        return Temp;
+    }
+
+    public double getLight(){
+        return Light;
+    }
+
+    public double getHumidity(){
+        return Humidity;
+    }
+
+    public void setTemp(double Temp){
+        this.Temp = Temp;
+    }
+
+    public void setLight(double Light){
+        this.Light = Light;
+    }
+
+    public void setHumidity(double Humidity){
+        this.Humidity = Humidity;
+    }
 
     public double getMaxTemp() {
         return maxTemp;
@@ -63,8 +88,14 @@ public class PlantItem {
         this.plantNumber = plantNumber;
     }
 
-    public PlantItem() {
-    }
+    public PlantItem(String plantName, String plantType, String plantImg, double Temp, double Light, double Humidity){
+        this.plantName = plantName;
+        this.plantType = plantType;
+        this.plantImg = plantImg;
+        this.Temp = Temp;
+        this.Light = Light;
+        this.Humidity = Humidity;
+    }//챗봇용 생성자
 
     public PlantItem(String plantName, String plantNumber) {
         this.plantName = plantName;
