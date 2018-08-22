@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
 
     <application
         android:name=".User.ApplicationController"
@@ -49,10 +52,15 @@
         <activity android:name=".ModifyPlantActivity" />
         <activity android:name=".Search.DetailActivity" />
         <!--챗봇 연결-->
-        <activity android:name=".ChatBot.Calathea"></activity>
-        <activity android:name=".ChatBot.Stuckyi"></activity>
-        <activity android:name=".ChatBot.Oroya"></activity>
-        <activity android:name=".ChatBot.Palm"></activity>
-        <activity android:name=".ChatBot.Nagi"></activity>
+        <activity android:name=".ChatBot.Calathea"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ChatBot.Stuckyi"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ChatBot.Oroya"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ChatBot.Palm"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ChatBot.Nagi"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 </manifest>
