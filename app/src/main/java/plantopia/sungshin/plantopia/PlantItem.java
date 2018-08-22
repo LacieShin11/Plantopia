@@ -63,6 +63,9 @@ public class PlantItem {
         this.plantNumber = plantNumber;
     }
 
+    public PlantItem() {
+    }
+
     public PlantItem(String plantName, String plantNumber) {
         this.plantName = plantName;
         this.plantNumber = plantNumber;

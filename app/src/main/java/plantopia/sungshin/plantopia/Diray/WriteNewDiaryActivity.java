@@ -1,4 +1,4 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.Diray;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,10 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.soundcloud.android.crop.Crop;
@@ -27,6 +24,7 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import plantopia.sungshin.plantopia.R;
 import plantopia.sungshin.plantopia.customView.SquareImgView;
 
 public class WriteNewDiaryActivity extends AppCompatActivity {

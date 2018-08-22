@@ -1,61 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/plant_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tab1_text1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginVertical="10dp"
-                android:text="@string/info_tab1_text1"
-                android:textColor="@android:color/black"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/tab1_plantopia_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:overScrollMode="never" />
-
-            <TextView
-                android:id="@+id/tab1_text2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="20dp"
-                android:text="@string/info_tab1_text2"
-                android:textColor="@android:color/black"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/tab1_plants_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="10dp"
-                android:overScrollMode="never" />
-        </LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/none_plant_text"
+            android:id="@+id/tab1_text1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/none_plant"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginVertical="10dp"
+            android:text="@string/info_tab1_text1"
+            android:textColor="@android:color/black"
+            android:textSize="17sp"
+            android:textStyle="bold" />
 
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title" />
-    </FrameLayout>
-</ScrollView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tab1_plantopia_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:overScrollMode="never" />
+
+        <TextView
+            android:id="@+id/tab1_text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:text="@string/info_tab1_text2"
+            android:textColor="@android:color/black"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tab1_plants_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:overScrollMode="never" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/none_plant_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/none_plant"
+        android:textColor="@android:color/black"
+        android:textSize="22sp"
+        android:visibility="invisible" />
+</FrameLayout>
