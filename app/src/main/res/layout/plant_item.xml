@@ -10,6 +10,7 @@
         android:id="@+id/plant_item_img"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:background="#BDBDBD"
         android:scaleType="centerCrop"
         app:sriv_left_bottom_corner_radius="30dp"
         app:sriv_left_top_corner_radius="30dp"

@@ -11,9 +11,11 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 public interface ServiceApiForUser {
     //로그인
@@ -37,15 +39,17 @@ public interface ServiceApiForUser {
     Call<UserData> checkDuplication(@Body UserData userEmail);
 
     // 식물 정보 받아오기
+    @GET("/plant/get/{user_id}")
+    Call<List<PlantItem>> getPlant(@Path("user_id") String userId);
 
     // 식물 정보 보내기
     @POST("/plant/add")
     Call<UserData> checkDuplication(@Body PlantItem plantItem);
 
+    // 다이어리 추가하기
     @POST("/diary/add")
     Call<UserData> addDiary(@Body DiaryItem diaryItem);
 
-//    @POST("/diary/get")
-//    Call<List<DiaryItem>> addDiary(@Body DiaryItem diaryItem);
-
+    @GET("/diary/get/{user_id}")
+    Call<List<DiaryItem>> getDiary(@Path("user_id") int userId);
 }

@@ -86,7 +86,8 @@
                         android:maxLines="1"
                         android:paddingVertical="15dp"
                         android:textColor="@android:color/black"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:completionThreshold="1" />
 
                     <ImageButton
                         android:id="@+id/search_plant_btn"

@@ -4,22 +4,23 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="horizontal"
-    android:paddingVertical="5dp"
-    android:paddingHorizontal="15dp">
+    android:paddingHorizontal="15dp"
+    android:paddingVertical="5dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/search_img"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginRight="15dp"
+        android:background="@drawable/logo"
         android:scaleType="centerCrop" />
 
     <TextView
-        android:paddingVertical="10dp"
         android:id="@+id/search_text"
-        android:textSize="18sp"
-        android:textColor="@android:color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="선인장" />
+        android:paddingVertical="10dp"
+        android:text="선인장"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 </LinearLayout>

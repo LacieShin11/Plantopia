@@ -4,9 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="1dp"
+        android:background="#BDBDBD" />
 
         <LinearLayout
             android:id="@+id/layout_login"
@@ -192,7 +193,6 @@
                 </LinearLayout>
             </TabHost>
         </LinearLayout>
-    </ScrollView>
 
     <LinearLayout
         android:id="@+id/layout_need_login"

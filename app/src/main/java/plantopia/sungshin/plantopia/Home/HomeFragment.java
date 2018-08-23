@@ -31,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import plantopia.sungshin.plantopia.R;
-import plantopia.sungshin.plantopia.RecyclerItemClickListener;
+import plantopia.sungshin.plantopia.customView.RecyclerItemClickListener;
 
 public class HomeFragment extends android.support.v4.app.Fragment implements RecyclerView.OnItemTouchListener {
     @BindView(R.id.post_gallery)

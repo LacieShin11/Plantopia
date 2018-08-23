@@ -35,6 +35,7 @@ import java.util.GregorianCalendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import plantopia.sungshin.plantopia.MainActivity;
 import plantopia.sungshin.plantopia.R;
 import plantopia.sungshin.plantopia.User.ApplicationController;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
@@ -175,7 +176,7 @@ public class WriteNewDiaryActivity extends AppCompatActivity {
                 int month = today.get(today.MONTH) + 1;
                 int day = today.get(today.DAY_OF_MONTH);
 
-                final DiaryItem diaryItem = new DiaryItem(userData.getUser_id(), ServerURL.BUCKET + "plant_" + uploadFile.getName() + ".png",
+                final DiaryItem diaryItem = new DiaryItem(userData.getUser_id(), ServerURL.BUCKET + "diary_" + uploadFile.getName() + ".png",
                         diaryEdit.getText().toString(), year + "년 " + month + "월 " + day + "일");
 
                 //다이어리 insert 통신
@@ -184,7 +185,7 @@ public class WriteNewDiaryActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<UserData> call, Response<UserData> response) {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(WriteNewDiaryActivity.this, "다이어리 작성 완료.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WriteNewDiaryActivity.this, "다이어리 작성 완료", Toast.LENGTH_SHORT).show();
                         finish();
                     }
 

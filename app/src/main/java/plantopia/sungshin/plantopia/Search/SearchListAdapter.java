@@ -22,6 +22,13 @@ public class SearchListAdapter extends BaseAdapter implements Filterable {
     ArrayList<PlantItem> filteredArrayList = arrayList;
     Filter listFilter;
 
+    public SearchListAdapter() {
+    }
+
+    public SearchListAdapter(ArrayList<PlantItem> arrayList) {
+        this.arrayList = arrayList;
+    }
+
     @Override
     public int getCount() {
         return filteredArrayList.size();
@@ -67,6 +74,10 @@ public class SearchListAdapter extends BaseAdapter implements Filterable {
         arrayList.add(plant);
     }
 
+    public void addPlant(PlantItem item) {
+        arrayList.add(item);
+    }
+
     @Override
     public Filter getFilter() {
         if (listFilter == null) {
@@ -110,5 +121,6 @@ public class SearchListAdapter extends BaseAdapter implements Filterable {
             }
 
         }
+
     }
 }

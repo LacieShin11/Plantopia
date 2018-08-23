@@ -1,48 +1,48 @@
 package plantopia.sungshin.plantopia.Diray;
 
 public class DiaryItem {
-    private int ownerID;
-    private String diaryImg, diaryContent, diaryDate;
+    private int owner_id;
+    private String diary_img, diary_content, diary_date;
 
     public DiaryItem() {
     }
 
-    public DiaryItem(int ownerID, String diaryImg, String diaryContent, String diaryDate) {
-        this.ownerID = ownerID;
-        this.diaryImg = diaryImg;
-        this.diaryContent = diaryContent;
-        this.diaryDate = diaryDate;
+    public DiaryItem(int owner_id, String diary_img, String diary_content, String diary_date) {
+        this.owner_id = owner_id;
+        this.diary_img = diary_img;
+        this.diary_content = diary_content;
+        this.diary_date = diary_date;
     }
 
-    public int getOwnerID() {
-        return ownerID;
+    public int getOwner_id() {
+        return owner_id;
     }
 
-    public void setOwnerID(int ownerID) {
-        this.ownerID = ownerID;
+    public void setOwner_id(int owner_id) {
+        this.owner_id = owner_id;
     }
 
-    public String getDiaryImg() {
-        return diaryImg;
+    public String getDiary_img() {
+        return diary_img;
     }
 
-    public void setDiaryImg(String diaryImg) {
-        this.diaryImg = diaryImg;
+    public void setDiary_img(String diary_img) {
+        this.diary_img = diary_img;
     }
 
-    public String getDiaryContent() {
-        return diaryContent;
+    public String getDiary_content() {
+        return diary_content;
     }
 
-    public void setDiaryContent(String diaryContent) {
-        this.diaryContent = diaryContent;
+    public void setDiary_content(String diary_content) {
+        this.diary_content = diary_content;
     }
 
-    public String getDiaryDate() {
-        return diaryDate;
+    public String getDiary_date() {
+        return diary_date;
     }
 
-    public void setDiaryDate(String diaryDate) {
-        this.diaryDate = diaryDate;
+    public void setDiary_date(String diary_date) {
+        this.diary_date = diary_date;
     }
 }

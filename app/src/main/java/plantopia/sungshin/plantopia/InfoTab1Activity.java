@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
 import plantopia.sungshin.plantopia.User.UserData;
+import plantopia.sungshin.plantopia.customView.RecyclerItemClickListener;
 
 public class InfoTab1Activity extends AppCompatActivity {
     static final int DEVICE_CONNECTION = 33;
@@ -42,10 +43,9 @@ public class InfoTab1Activity extends AppCompatActivity {
         setContentView(R.layout.info_tab1);
 
         //생성자-plantName, plantType, plantImg, 온도, 습도, 빛 등등!
-        /*plantItems.add(new PlantItem("코코", "여염옥", "여염옥", ""));
-        plantItems.add(new PlantItem("아이비", "스투키", "스투키", ""));
-        plantopiaItems.add(new PlantItem("아모레", "여명옥", " 여염옥", ""));
-*/
+        plantItems.add(new PlantItem("코코", "여염옥", "여염옥", "https://s3.ap-northeast-2.amazonaws.com/plantopiabucket/profile_20180822150650.png"));
+        plantItems.add(new PlantItem("아이비", "스투키", "스투키", "https://s3.ap-northeast-2.amazonaws.com/plantopiabucket/profile_20180822070335.png"));
+        plantopiaItems.add(new PlantItem("아모레", "여명옥", " 여염옥", "https://s3.ap-northeast-2.amazonaws.com/plantopiabucket/profile_20180823195438.png"));
         getSupportActionBar().hide();
         ButterKnife.bind(this);
 

@@ -1,27 +1,49 @@
 package plantopia.sungshin.plantopia;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 import plantopia.sungshin.plantopia.Diray.DiaryItem;
 import plantopia.sungshin.plantopia.Diray.DiaryRecyclerViewAdapter;
+import plantopia.sungshin.plantopia.Diray.ShowDiaryActivity;
+import plantopia.sungshin.plantopia.User.ApplicationController;
+import plantopia.sungshin.plantopia.User.AutoLoginManager;
+import plantopia.sungshin.plantopia.User.ServerURL;
+import plantopia.sungshin.plantopia.User.ServiceApiForUser;
+import plantopia.sungshin.plantopia.User.UserData;
+import plantopia.sungshin.plantopia.customView.RecyclerItemClickListener;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class InfoTab2Activity extends AppCompatActivity {
+    final static int SHOW_DIARY = 8;
     DiaryRecyclerViewAdapter adapter;
+    ServiceApiForUser service;
 
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
     @BindView(R.id.diary_list)
     RecyclerView diaryList;
     @BindView(R.id.none_diary_text)
     TextView noneDiaryText;
-    ArrayList<DiaryItem> arrayList = new ArrayList<>();
+    List<DiaryItem> arrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,22 +52,93 @@ public class InfoTab2Activity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         adapter = new DiaryRecyclerViewAdapter(arrayList, InfoTab2Activity.this);
-        diaryList.setAdapter(adapter);
+
+        //서버 연결
+        ApplicationController applicationController = ApplicationController.getInstance();
+        applicationController.buildService(ServerURL.URL, 3000);
+        service = ApplicationController.getInstance().getService();
+
+        ScaleInAnimationAdapter alphaAdapter = new ScaleInAnimationAdapter(adapter);
+        alphaAdapter.setDuration(200);
+
+        //다이어리 아이템 채우기
+        getDiaryItems(AutoLoginManager.getInstance(getApplicationContext()).getUser());
+
+        diaryList.setAdapter(new AlphaInAnimationAdapter(alphaAdapter));
         diaryList.setHasFixedSize(true);
+        diaryList.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 
-        adapter.addItem(new DiaryItem(10, "https://s3.ap-northeast-2.amazonaws.com/plantopiabucket/plant_cropped.png",
-                "할말이 없다...",
-                "2018년 8월 23일"));
+        diaryList.addOnItemTouchListener(new RecyclerItemClickListener(InfoTab2Activity.this, diaryList, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(InfoTab2Activity.this, ShowDiaryActivity.class);
+                intent.putExtra("content", arrayList.get(position).getDiary_content());
+                intent.putExtra("imgPath", arrayList.get(position).getDiary_img());
+                intent.putExtra("id", arrayList.get(position).getOwner_id());
+                startActivityForResult(intent, SHOW_DIARY);
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+        }));
+
+        getSupportActionBar().hide();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getDiaryItems(AutoLoginManager.getInstance(getApplicationContext()).getUser());
+
         adapter.notifyDataSetChanged();
+    }
 
-        if (adapter.getItemCount() < 1) {
+    private void getDiaryItems(UserData userData) {
+        progressBar.setVisibility(View.VISIBLE);
+
+        Call<List<DiaryItem>> diaryCall = service.getDiary(userData.getUser_id());
+        diaryCall.enqueue(new Callback<List<DiaryItem>>() {
+            @Override
+            public void onResponse(Call<List<DiaryItem>> call, Response<List<DiaryItem>> response) {
+                progressBar.setVisibility(View.INVISIBLE);
+                if (response.isSuccessful()) {
+                    arrayList = response.body();
+                    setDiaryItems();
+                    setLayout();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DiaryItem>> call, Throwable t) {
+                progressBar.setVisibility(View.INVISIBLE);
+                t.printStackTrace();
+                Log.d("실패", t.getMessage());
+                Toast.makeText(InfoTab2Activity.this, getString(R.string.name_error), Toast.LENGTH_SHORT).show();
+                setLayout();
+            }
+        });
+    }
+
+    private void setDiaryItems() {
+        adapter.clear();
+
+        for (int i = 0; i < arrayList.size(); i++) {
+            adapter.addItem(arrayList.get(i));
+        }
+
+        adapter.notifyDataSetChanged();
+        setLayout();
+    }
+
+    private void setLayout() {
+        if (adapter.getItemCount() == 0) {
             noneDiaryText.setVisibility(View.VISIBLE);
             diaryList.setVisibility(View.INVISIBLE);
         } else {
             noneDiaryText.setVisibility(View.INVISIBLE);
             diaryList.setVisibility(View.VISIBLE);
         }
-
-        getSupportActionBar().hide();
     }
 }

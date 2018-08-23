@@ -19,14 +19,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.joooonho.SelectableRoundedImageView;
@@ -44,6 +41,7 @@ import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -80,11 +78,11 @@ public class AddPlantActivity extends AppCompatActivity {
     @BindView(R.id.plant_type_edit)
     AutoCompleteTextView plantTypeEdit;
 
-    final SearchListAdapter adapter = new SearchListAdapter();
-
     static final String KEY = "20180814WAQFXYCPVL972GCN79KFQ";
     static final String IMG_PATH1 = "http://www.nongsaro.go.kr/cms_contents/301/";
     static final String IMG_PATH2 = "_MF_REPR_ATTACH_01_TMB.jpg";
+
+    ArrayList<PlantItem> plants = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -125,6 +123,7 @@ public class AddPlantActivity extends AppCompatActivity {
             }
         });
 
+        plantTypeEdit.setAdapter(new SearchListAdapter(plants));
     }
 
     private void showMessage(String msg) {
@@ -254,11 +253,11 @@ public class AddPlantActivity extends AppCompatActivity {
                     if (!node.getNodeName().equals("item")) {
                         continue;
                     }
-                    String plantNum = node.getChildNodes().item(0).getFirstChild().getNodeValue();
+                     String plantNum = node.getChildNodes().item(0).getFirstChild().getNodeValue();
                     String plantName = node.getChildNodes().item(1).getFirstChild().getNodeValue();
-                    String plantImgPath = IMG_PATH1 + plantNum + IMG_PATH2;
+                     String plantImgPath = IMG_PATH1 + plantNum + IMG_PATH2;
 
-                    adapter.addPlant(plantName, plantNum, plantImgPath);
+                    plants.add(new PlantItem(plantName, plantNum, plantImgPath));
                 }
                 publishProgress();
 
@@ -278,7 +277,7 @@ public class AddPlantActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
-            progressBar.setVisibility(View.VISIBLE);
+            /*progressBar.setVisibility(View.VISIBLE);
 
             try {
                 plantTypeEdit.setAdapter(adapter);
@@ -286,7 +285,7 @@ public class AddPlantActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 }
