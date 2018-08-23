@@ -31,8 +31,6 @@
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
-
-        <receiver android:name=".ChatBot.AlramReceiver"/>
         
         <service android:name=".FCM.MyFirebaseInstanceIDService">
             <intent-filter>
@@ -52,9 +50,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity android:name=".ChatBot.Notification">
         </activity>
 
         <activity
@@ -90,6 +85,22 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ChatBot.Nagi"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <service android:name=".ChatBot.PersistentService"
+            android:enabled="true"
+            android:process=":remote" >
+        </service>
+
+        <receiver android:name=".ChatBot.RestartService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartService"
+            android:process=":remote" >
+            <intent-filter>
+                <action android:name="ACTION.RESTART.PersistentService" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 
