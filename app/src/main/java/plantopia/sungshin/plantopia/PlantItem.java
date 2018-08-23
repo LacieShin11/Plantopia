@@ -6,7 +6,7 @@ public class PlantItem {
     private String plantType;
     private String plantNumber; //xml에서 구분하는 데 필요한, 식물 구분 번호
     private String plantImg;
-    private double maxTemp, minTemp, maxLight, minLignt, maxHumidity, minHumidity, Temp, Light, Humidity;
+    private double winterMinTemp, maxTemp, minTemp, maxLight, minLignt, maxHumidity, minHumidity, Temp, Light, Humidity;
 
     public int getOwnerID() {
         return ownerID;
@@ -97,6 +97,14 @@ public class PlantItem {
         this.plantNumber = plantNumber;
     }
 
+    public void setWinterMinTemp(double winterMinTemp) {
+        this.winterMinTemp = winterMinTemp;
+    }
+
+    public double getWinterMinTemp() {
+        return winterMinTemp;
+    }
+
     public PlantItem() {
     }
 
@@ -161,5 +169,10 @@ public class PlantItem {
 
     public void setPlantType(String plantType) {
         this.plantType = plantType;
+    }
+
+    @Override
+    public String toString() {
+        return plantName;
     }
 }
