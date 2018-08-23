@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import plantopia.sungshin.plantopia.MainActivity;
 import plantopia.sungshin.plantopia.R;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,7 +24,8 @@ import retrofit2.Response;
 
 public class SignInActivity extends AppCompatActivity {
     private static final int LOGIN_SUCCESS = 5;
-    private ServiceApiForUser service;
+    private ServiceApiForUser service2;
+    public static boolean isOktoken = false;
 
     @BindView(R.id.email)
     AutoCompleteTextView mEmailView;
@@ -50,7 +52,9 @@ public class SignInActivity extends AppCompatActivity {
         //서버 연결
         ApplicationController applicationController = ApplicationController.getInstance();
         applicationController.buildService(ServerURL.URL, 3000);
-        service = ApplicationController.getInstance().getService();
+        service2 = ApplicationController.getInstance().getService();
+
+        isOktoken = checkToken(MainActivity.UserToken);
 
         signInFinishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,21 +64,59 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
+    //토큰 중복 확인
+    public boolean checkToken(String Token){
+        //progressBar.setVisibility(View.VISIBLE);
+        UserData userData = new UserData();
+        userData.setUser_device(Token);
+        //토큰값을 저장
+
+        Call<UserData> userDataCall = service2.checkToken(userData);
+
+        userDataCall.enqueue(new Callback<UserData>() {
+            @Override
+            public void onResponse(Call<UserData> call, Response<UserData> response) {
+                //progressBar.setVisibility(View.INVISIBLE);
+
+                UserData checkToken = response.body(); //받아온 데이터 받을 객체
+                Log.d("checkToken", checkToken.getMsg());
+
+                isOktoken = checkToken.getMsg().equals("Already exist");
+
+                if (checkToken.getMsg().equals("Already exist")) {
+                    //Toast.makeText(getApplicationContext(), "토큰 이미 존재", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserData> call, Throwable t) {
+                //progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        return isOktoken;
+    }
+
     public void cancelOnClicked(View view) {
         finish();
     }
 
     public void signUpBtnOnClicked(View view) {
-        Intent signUpIntent = new Intent(SignInActivity.this, SignUpActivity.class);
-        startActivity(signUpIntent);
-        finish();
+        if (isOktoken) {
+            Toast.makeText(getApplicationContext(), R.string.sign_up_warn_token, Toast.LENGTH_LONG).show();
+        } //같은 토큰이 있을 경우
+        else {
+            Intent signUpIntent = new Intent(SignInActivity.this, SignUpActivity.class);
+            startActivity(signUpIntent);
+            finish();
+        }
     }
 
     public void userLogin(final String userEmail, final String userPwd) {
         progressBar.setVisibility(View.VISIBLE);
 
         UserData loginResult = new UserData(userEmail, userPwd);
-        Call<UserData> userDataCall = service.getLoginResult(loginResult);
+        Call<UserData> userDataCall = service2.getLoginResult(loginResult);
         userDataCall.enqueue(new Callback<UserData>() {
             @Override
             public void onResponse(Call<UserData> call, Response<UserData> response) {
@@ -158,4 +200,6 @@ public class SignInActivity extends AppCompatActivity {
     private boolean isPasswordValid(String password) {
         return password.length() >= 8;
     }
+
+
 }

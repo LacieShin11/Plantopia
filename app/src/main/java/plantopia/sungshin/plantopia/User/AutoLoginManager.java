@@ -1,11 +1,7 @@
 package plantopia.sungshin.plantopia.User;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.widget.Toast;
-
-import plantopia.sungshin.plantopia.R;
 
 public class AutoLoginManager {
     private static final String SHARED_PREF_NAME = "plantopia_sharedpref";
@@ -39,9 +35,6 @@ public class AutoLoginManager {
         editor.putString(KEY_NAME, user.getUser_name());
         editor.putString(KEY_EMAIL, user.getUser_email());
         editor.putString(KEY_IMG, user.getUser_img());
-        editor.putInt(KEY_POT_COUNT, user.getCount_pot());
-        editor.putInt(KEY_DIARY_COUNT, user.getCount_diary());
-        editor.putInt(KEY_SCRAP_COUNT, user.getCount_scrap());
         editor.apply();
     }
 
@@ -73,9 +66,9 @@ public class AutoLoginManager {
                 sharedPreferences.getString(KEY_EMAIL, null),
                 sharedPreferences.getString(KEY_NAME, null),
                 sharedPreferences.getString(KEY_IMG, null),
-                sharedPreferences.getInt(KEY_POT_COUNT, -1),
-                sharedPreferences.getInt(KEY_DIARY_COUNT, -1),
-                sharedPreferences.getInt(KEY_SCRAP_COUNT, -1)
+                sharedPreferences.getInt(KEY_POT_COUNT, 0),
+                sharedPreferences.getInt(KEY_DIARY_COUNT, 0),
+                sharedPreferences.getInt(KEY_SCRAP_COUNT, 0)
         );
     }
 

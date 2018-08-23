@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "540095232017",
+    "firebase_url": "https://plantopia-b699e.firebaseio.com",
+    "project_id": "plantopia-b699e",
+    "storage_bucket": "plantopia-b699e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:540095232017:android:4e55eb1070ca5721",
+        "android_client_info": {
+          "package_name": "plantopia.sungshin.plantopia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "540095232017-7dh38b96vqohngn7p5k7k08j48g6tkr1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpeiw1oAdhxlXKxmRXANxydiuiReO1H-o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

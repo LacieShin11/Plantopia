@@ -35,7 +35,6 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import plantopia.sungshin.plantopia.ProfileSettingActivity;
 import plantopia.sungshin.plantopia.R;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,6 +72,7 @@ public class SignUpActivity2 extends AppCompatActivity {
         Intent intent = getIntent();
         joinUser.setUser_email(intent.getStringExtra("email"));
         joinUser.setUser_pwd(intent.getStringExtra("password"));
+        joinUser.setUser_device(intent.getStringExtra("device")); //토큰
 
         progressBar.setVisibility(View.INVISIBLE);
 
@@ -133,10 +133,6 @@ public class SignUpActivity2 extends AppCompatActivity {
                 userData.setUser_img("");
             else
                 userData.setUser_img(ServerURL.BUCKET + "profile_" + uploadFile.getName() + ".png");
-
-            userData.setCount_pot(0);
-            userData.setCount_diary(0);
-            userData.setCount_scrap(0);
 
             Call<UserData> userDataCall = service.getJoinResult(userData);
             userDataCall.enqueue(new Callback<UserData>() {
@@ -272,4 +268,6 @@ public class SignUpActivity2 extends AppCompatActivity {
         mNameLayout.setErrorEnabled(false);
         mNameLayout.setError(null);
     }
+
+
 }

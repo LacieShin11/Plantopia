@@ -9,13 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import plantopia.sungshin.plantopia.MainActivity;
 import plantopia.sungshin.plantopia.R;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +24,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     static final int NEXT = 7;
     boolean isOk = false;
+    //static boolean isOk_token = false;
+
     @BindView(R.id.progressbar)
     ProgressBar progressBar;
     @BindView(R.id.sign_up_finish)
@@ -48,6 +49,8 @@ public class SignUpActivity extends AppCompatActivity {
         ApplicationController applicationController = ApplicationController.getInstance();
         applicationController.buildService(ServerURL.URL, 3000);
         service = ApplicationController.getInstance().getService();
+
+        /*attemptRegister();*/
     }
 
     private void attemptRegister() {
@@ -58,7 +61,9 @@ public class SignUpActivity extends AppCompatActivity {
         String email = mEmailView.getText().toString();
         String password = mPwdView.getText().toString();
         String passwordConfirm = mPwdConfirmView.getText().toString();
+        String userToken = MainActivity.UserToken; //내 기기의 토큰값 받아오기
 
+        //boolean ischeckToken = false;
         boolean cancel = false;
         View focusView = null;
 
@@ -97,10 +102,12 @@ public class SignUpActivity extends AppCompatActivity {
 
         if (cancel) {
             focusView.requestFocus();
-        } else { //닉네임 설정 페이지로 넘어가기
+        }
+        else{ //닉네임 설정 페이지로 넘어가기
             Intent intent = new Intent(SignUpActivity.this, SignUpActivity2.class);
             intent.putExtra("email", email);
             intent.putExtra("password", password);
+            intent.putExtra("device", userToken);
             startActivityForResult(intent, NEXT);
             finish();
         }
