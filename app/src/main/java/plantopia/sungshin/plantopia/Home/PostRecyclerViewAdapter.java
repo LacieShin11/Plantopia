@@ -39,7 +39,11 @@ public class PostRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
 
         mainHolder.titleText.setText(item.getTitle());
         mainHolder.sourceText.setText(item.getSource());
-        Glide.with(mContext).load(R.drawable.test).into(mainHolder.postImg);
+
+        if(item.getImage().isEmpty())
+            Glide.with(mContext).load(R.drawable.test).into(mainHolder.postImg);
+        else
+            Glide.with(mContext).load(item.getImage()).into(mainHolder.postImg);
     }
 
     @Override

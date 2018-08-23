@@ -39,7 +39,11 @@ public class ProductRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerPro
 
         mainHolder.titleText.setText(item.getName());
         mainHolder.priceText.setText(item.getPrice());
-        Glide.with(mContext).load(R.drawable.test).into(mainHolder.postImg);
+
+        if(item.getImage().isEmpty())
+            Glide.with(mContext).load(R.drawable.test).into(mainHolder.postImg);
+        else
+            Glide.with(mContext).load(item.getImage()).into(mainHolder.postImg);
     }
 
     @Override

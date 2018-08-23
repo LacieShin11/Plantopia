@@ -8,25 +8,24 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.StringReader;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -145,13 +144,12 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
         return view;
     }
 
-
     class NetworkThread extends Thread {
         String keyWord;
-        String clientId = "DRfB9SU8IQ1WNR4K3IIG";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "_DS6qAhAc3";//애플리케이션 클라이언트 시크릿값";
         ArrayList<String> result_title_list;
         ArrayList<String> result_link_list;
+        ArrayList<String> result_image_list;
+        String restKey = "9f6dea22ddfd77308c3a0a224de2ec9a";
 
         public NetworkThread(String keyWord) {
             this.keyWord = keyWord;
@@ -162,50 +160,50 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
             try {
                 result_title_list = new ArrayList<String>();
                 result_link_list = new ArrayList<String>();
+                result_image_list = new ArrayList<String>();
+                String query = "";
+                query = URLEncoder.encode(keyWord, "utf-8");
 
-                String text = URLEncoder.encode(keyWord, "UTF-8");
-                // String apiURL = "https://openapi.naver.com/v1/search/blog?query="+ text; // json 결과
-                String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query=" + text; // xml 결과
-                StringBuffer sb = new StringBuffer();
+                String address = "https://dapi.kakao.com/v2/search/blog?query=" + query;
 
-                URL url = new URL(apiURL);
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("GET");
-                con.setRequestProperty("X-Naver-Client-Id", clientId);
-                con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+                BufferedReader br;
+                URL url;
+                HttpURLConnection conn;
 
-                InputStream is = con.getInputStream();
+                String protocol = "GET";
 
-                // DOM  파서 생성
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = factory.newDocumentBuilder();
+                url = new URL(address);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod(protocol);
+                conn.setRequestProperty("Authorization", "KakaoAK " + restKey);
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("charset", "UTF-8");
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
-                byte[] bytes = new byte[4096];
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                while (true) {
-                    int red = is.read(bytes);
-                    if (red < 0) break;
-                    baos.write(bytes, 0, red);
+                StringBuffer result = new StringBuffer();
 
+                String line = "";
+                while ((line = br.readLine()) != null) {
+                    result.append(new String(URLDecoder.decode(line, "UTF-8")));
                 }
-                String xmlData = baos.toString("utf-8");
-                baos.close();
-                is.close();
-                con.disconnect();
-                org.w3c.dom.Document doc = builder.parse(new InputSource(new StringReader(xmlData)));
 
-                for (int i = 0; i < doc.getElementsByTagName("item").getLength(); i++) {
-                    org.w3c.dom.Element el = (org.w3c.dom.Element) doc.getElementsByTagName("item").item(i);
-                    for (int j = 0; j < ((Node) el).getChildNodes().getLength(); j++) {
-                        Node node = ((Node) el).getChildNodes().item(j);
-                        if (node.getNodeName().equals("title")) {
-                            String title = (String) node.getFirstChild().getTextContent();
-                            result_title_list.add(title);
-                        } else if (node.getNodeName().equals("link")) {
-                            String link = (String) node.getFirstChild().getTextContent();
-                            result_link_list.add(link);
-                        }
-                    }
+                Log.d("json : ", result.toString());
+
+                conn.disconnect();
+
+                String json = result.toString();
+
+                JsonParser jsonParser = new JsonParser();
+                JsonObject jsonObject = (JsonObject) jsonParser.parse(json);
+                JsonArray jsonArray = (JsonArray) jsonObject.get("documents");
+                int length = jsonArray.size();
+
+                for(int i = 0; i < length; i++)
+                {
+                    JsonObject jsonObject2 = (JsonObject) jsonArray.get(i);
+                    result_title_list.add(jsonObject2.get("title").toString());
+                    result_link_list.add(jsonObject2.get("url").toString());
+                    result_image_list.add(jsonObject2.get("thumbnail").toString());
                 }
 
                 for (int j = 0; j < result_title_list.size(); j++) {
@@ -214,7 +212,22 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                     result_title_list.set(j, title);
                 }
 
+                for (int j = 0; j < result_link_list.size(); j++) {
+                    String title = result_link_list.get(j).substring(1, result_link_list.get(j).length() - 1);
+                    result_link_list.set(j, title);
+                }
 
+                for (int j = 0; j < result_image_list.size(); j++) {
+                    String title = result_image_list.get(j).substring(1, result_image_list.get(j).length() - 1);
+                    result_image_list.set(j, title);
+                }
+
+                for(int i = 0; i < result_title_list.size(); i++)
+                {
+                    Log.d("title", result_title_list.get(i));
+                    Log.d("url", result_link_list.get(i));
+                    Log.d("thumbnail", result_image_list.get(i));
+                }
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -223,8 +236,9 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                 @Override
                 public void run() {
                     try {
-                        for (int i = 0; i < titles.length; i++) {
-                            PostItem item = new PostItem(result_link_list.get(i).toString(), result_title_list.get(i).toString(), "네이버 블로그", 0);
+                        for (int i = 0; i < result_title_list.size(); i++) {
+                            PostItem item = new PostItem(result_link_list.get(i).toString(), result_title_list.get(i).toString(),
+                                    "다음 블로그", result_image_list.get(i).toString());
                             postAdapter.addItem(item);
                         }
                         postAdapter.notifyDataSetChanged();
@@ -238,10 +252,10 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
 
     class NetworkThread2 extends Thread {
         String keyWord;
-        String clientId = "DRfB9SU8IQ1WNR4K3IIG";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "_DS6qAhAc3";//애플리케이션 클라이언트 시크릿값";
         ArrayList<String> resultTitleList;
         ArrayList<String> resultLinkList;
+        ArrayList<String> resultImageList;
+        String restKey = "9f6dea22ddfd77308c3a0a224de2ec9a";
 
         public NetworkThread2(String keyWord) {
             this.keyWord = keyWord;
@@ -252,56 +266,74 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
             try {
                 resultTitleList = new ArrayList<String>();
                 resultLinkList = new ArrayList<String>();
+                resultImageList = new ArrayList<String>();
 
-                String text = URLEncoder.encode(keyWord, "UTF-8");
-                // String apiURL = "https://openapi.naver.com/v1/search/blog?query="+ text; // json 결과
-                String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query=" + text; // xml 결과
-                StringBuffer sb = new StringBuffer();
+                String query = "";
+                query = URLEncoder.encode(keyWord, "utf-8");
 
-                URL url = new URL(apiURL);
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("GET");
-                con.setRequestProperty("X-Naver-Client-Id", clientId);
-                con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+                String address = "https://dapi.kakao.com/v2/search/vclip?query=" + query;
 
-                InputStream is = con.getInputStream();
+                BufferedReader br;
+                URL url;
+                HttpURLConnection conn;
 
-                // DOM  파서 생성
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = factory.newDocumentBuilder();
+                String protocol = "GET";
 
-                byte[] bytes = new byte[4096];
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                while (true) {
-                    int red = is.read(bytes);
-                    if (red < 0) break;
-                    baos.write(bytes, 0, red);
+                url = new URL(address);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod(protocol);
+                conn.setRequestProperty("Authorization", "KakaoAK " + restKey);
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("charset", "UTF-8");
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
+                StringBuffer result = new StringBuffer();
+
+                String line = "";
+                while ((line = br.readLine()) != null) {
+                    result.append(new String(URLDecoder.decode(line, "UTF-8")));
                 }
-                String xmlData = baos.toString("utf-8");
-                baos.close();
-                is.close();
-                con.disconnect();
-                org.w3c.dom.Document doc = builder.parse(new InputSource(new StringReader(xmlData)));
 
-                for (int i = 0; i < doc.getElementsByTagName("item").getLength(); i++) {
-                    org.w3c.dom.Element el = (org.w3c.dom.Element) doc.getElementsByTagName("item").item(i);
-                    for (int j = 0; j < ((Node) el).getChildNodes().getLength(); j++) {
-                        Node node = ((Node) el).getChildNodes().item(j);
-                        if (node.getNodeName().equals("title")) {
-                            String title = (String) node.getFirstChild().getTextContent();
-                            resultTitleList.add(title);
-                        } else if (node.getNodeName().equals("link")) {
-                            String link = (String) node.getFirstChild().getTextContent();
-                            resultLinkList.add(link);
-                        }
-                    }
+                Log.d("json : ", result.toString());
+
+                conn.disconnect();
+
+                String json = result.toString();
+
+                JsonParser jsonParser = new JsonParser();
+                JsonObject jsonObject = (JsonObject) jsonParser.parse(json);
+                JsonArray jsonArray = (JsonArray) jsonObject.get("documents");
+                int length = jsonArray.size();
+
+                for(int i = 0; i < length; i++)
+                {
+                    JsonObject jsonObject2 = (JsonObject) jsonArray.get(i);
+                    resultTitleList.add(jsonObject2.get("title").toString());
+                    resultLinkList.add(jsonObject2.get("url").toString());
+                    resultImageList.add(jsonObject2.get("thumbnail").toString());
                 }
 
                 for (int j = 0; j < resultTitleList.size(); j++) {
                     String title = resultTitleList.get(j).replace("<b>", "");
                     title = title.replace("</b>", "");
                     resultTitleList.set(j, title);
+                }
+
+                for (int j = 0; j < resultImageList.size(); j++) {
+                    String title = resultImageList.get(j).substring(1, resultImageList.get(j).length() - 1);
+                    resultImageList.set(j, title);
+                }
+
+                for (int j = 0; j < resultLinkList.size(); j++) {
+                    String title = resultLinkList.get(j).substring(1, resultLinkList.get(j).length() - 1);
+                    resultLinkList.set(j, title);
+                }
+
+                for(int i = 0; i < resultTitleList.size(); i++)
+                {
+                    Log.d("title", resultTitleList.get(i).toString());
+                    Log.d("url", resultLinkList.get(i).toString());
+                    Log.d("thumbnail", resultImageList.get(i).toString());
                 }
 
 
@@ -312,8 +344,9 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    for (int i = 0; i < titles.length; i++) {
-                        DIYItem item2 = new DIYItem(resultLinkList.get(i).toString(), resultTitleList.get(i).toString(), "네이버 블로그");
+                    for (int i = 0; i < resultTitleList.size(); i++) {
+                        DIYItem item2 = new DIYItem(resultLinkList.get(i).toString(), resultTitleList.get(i).toString(),
+                                "다음 블로그", resultImageList.get(i).toString());
 
                         diyAdapter.addItem(item2);
                     }
@@ -325,12 +358,11 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
 
     class NetworkCommercialThread extends Thread {
         String keyWord;
-        String clientId = "DRfB9SU8IQ1WNR4K3IIG";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "_DS6qAhAc3";//애플리케이션 클라이언트 시크릿값";
         ArrayList<String> resultTitleList;
         ArrayList<String> resultLinkList;
         ArrayList<String> resultImageList;
         ArrayList<String> resultLpriceList;
+        String restKey = "9f6dea22ddfd77308c3a0a224de2ec9a";
 
         public NetworkCommercialThread(String keyWord) {
             this.keyWord = keyWord;
@@ -344,60 +376,74 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                 resultImageList = new ArrayList<String>();
                 resultLpriceList = new ArrayList<String>();
 
-                String text = URLEncoder.encode(keyWord, "UTF-8");
-                String apiURL = "https://openapi.naver.com/v1/search/shop.xml?query=" + text; // xml 결과
-                StringBuffer sb = new StringBuffer();
+                String query = "";
+                query = URLEncoder.encode(keyWord, "utf-8");
 
-                URL url = new URL(apiURL);
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("GET");
-                con.setRequestProperty("X-Naver-Client-Id", clientId);
-                con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+                String address = "https://dapi.kakao.com/v2/search/book?query=" + query;
 
-                InputStream is = con.getInputStream();
+                BufferedReader br;
+                URL url;
+                HttpURLConnection conn;
 
-                // DOM  파서 생성
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = factory.newDocumentBuilder();
+                String protocol = "GET";
 
-                byte[] bytes = new byte[4096];
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                while (true) {
-                    int red = is.read(bytes);
-                    if (red < 0) break;
-                    baos.write(bytes, 0, red);
+                url = new URL(address);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod(protocol);
+                conn.setRequestProperty("Authorization", "KakaoAK " + restKey);
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("charset", "UTF-8");
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 
+                StringBuffer result = new StringBuffer();
+
+                String line = "";
+                while ((line = br.readLine()) != null) {
+                    result.append(new String(URLDecoder.decode(line, "UTF-8")));
                 }
-                String xmlData = baos.toString("utf-8");
-                baos.close();
-                is.close();
-                con.disconnect();
-                org.w3c.dom.Document doc = builder.parse(new InputSource(new StringReader(xmlData)));
 
-                for (int i = 0; i < doc.getElementsByTagName("item").getLength(); i++) {
-                    org.w3c.dom.Element el = (org.w3c.dom.Element) doc.getElementsByTagName("item").item(i);
-                    for (int j = 0; j < ((Node) el).getChildNodes().getLength(); j++) {
-                        Node node = ((Node) el).getChildNodes().item(j);
-                        if (node.getNodeName().equals("title")) {
-                            String title = (String) node.getFirstChild().getTextContent();
-                            resultTitleList.add(title);
-                        } else if (node.getNodeName().equals("link")) {
-                            String link = (String) node.getFirstChild().getTextContent();
-                            resultLinkList.add(link);
-                        } else if (node.getNodeName().equals("image")) {
-                            String image = (String) node.getFirstChild().getTextContent();
-                            resultImageList.add(image);
-                        } else if (node.getNodeName().equals("lprice")) {
-                            String image = (String) node.getFirstChild().getTextContent();
-                            resultLpriceList.add(image + "원");
-                        }
-                    }
+                Log.d("json : ", result.toString());
+
+                conn.disconnect();
+
+                String json = result.toString();
+
+                JsonParser jsonParser = new JsonParser();
+                JsonObject jsonObject = (JsonObject) jsonParser.parse(json);
+                JsonArray jsonArray = (JsonArray) jsonObject.get("documents");
+                int length = jsonArray.size();
+
+                for(int i = 0; i < length; i++)
+                {
+                    JsonObject jsonObject2 = (JsonObject) jsonArray.get(i);
+                    resultTitleList.add(jsonObject2.get("title").toString());
+                    resultLinkList.add(jsonObject2.get("url").toString());
+                    resultImageList.add(jsonObject2.get("thumbnail").toString());
+                    resultLpriceList.add(jsonObject2.get("price").toString());
                 }
 
                 for (int j = 0; j < resultTitleList.size(); j++) {
                     String title = resultTitleList.get(j).replace("<b>", "");
                     title = title.replace("</b>", "");
                     resultTitleList.set(j, title);
+                }
+
+                for (int j = 0; j < resultLinkList.size(); j++) {
+                    String title = resultLinkList.get(j).substring(1, resultLinkList.get(j).length() - 1);
+                    resultLinkList.set(j, title);
+                }
+
+                for (int j = 0; j < resultImageList.size(); j++) {
+                    String title = resultImageList.get(j).substring(1, resultImageList.get(j).length() - 1);
+                    resultImageList.set(j, title);
+                }
+
+                for(int i = 0; i < resultTitleList.size(); i++)
+                {
+                    Log.d("title", resultTitleList.get(i).toString());
+                    Log.d("url", resultLinkList.get(i).toString());
+                    Log.d("thumbnail", resultImageList.get(i).toString());
+                    Log.d("price", resultLpriceList.get(i).toString());
                 }
 
             } catch (Exception e) {
@@ -407,7 +453,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    for (int i = 0; i < titles.length; i++) {
+                    for (int i = 0; i < resultTitleList.size(); i++) {
                         ProductItem item = new ProductItem(resultTitleList.get(i).toString(), resultLpriceList.get(i).toString(),
                                 resultLinkList.get(i).toString(), resultImageList.get(i).toString());
 
@@ -418,7 +464,6 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
             });
         }
     }
-
 
     @Override
     public void onDestroyView() {
