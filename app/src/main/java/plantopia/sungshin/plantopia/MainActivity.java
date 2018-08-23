@@ -1,6 +1,8 @@
 package plantopia.sungshin.plantopia;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -10,28 +12,72 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
+import java.util.Calendar;
 
 import plantopia.sungshin.plantopia.Diray.WriteNewDiaryActivity;
 import plantopia.sungshin.plantopia.Music.MusicFragment;
 import plantopia.sungshin.plantopia.Search.SearchFragment;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
-import plantopia.sungshin.plantopia.User.SignInActivity;
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_EXTERNAL_STORAGE = 0;
     static final int WRITE_DIARY = 2;
+    static final int LOGIN = 3;
+    private static final String TAG = MainActivity.class.getSimpleName();
+    public static String myToken; //내 기기의 토큰값
+    public static String UserToken; //저장할 토큰값
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //푸시 알림-firebase
+        //String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+
+        myToken= FirebaseInstanceId.getInstance().getToken(); //토큰 받아오기
+
+        if (myToken != null) {
+            Log.d(TAG, "token = " + FirebaseInstanceId.getInstance().getToken());
+            UserToken = myToken;
+        } //토큰 받아오기-토큰 없으면 로그 띄우기
+        else{
+            Log.d(TAG, "refreshed = " + FirebaseInstanceId.getInstance().getToken());
+            //UserToken = MyFirebaseInstanceIDService.refreshedToken;
+        }//myToken == null
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.actionbar_custom);
+
+
+        //**푸시 알림
+      /*  final NotificationManager notifiationManager = (NotificationManager)MainActivity.this.getSystemService(MainActivity.this.NOTIFICATION_SERVICE);
+        final Intent intent = new Intent(MainActivity.this.getApplicationContext(), PlantInfoActivity.class);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification.Builder builder = new Notification.Builder(this);
+
+        builder.setTicker("설명");
+        builder.setContentTitle("제목");
+        builder.setContentText("내용");
+        builder.setWhen(System.currentTimeMillis());
+        builder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+        builder.setContentIntent(pendingIntent);
+        builder.setAutoCancel(true);
+
+        Notification.InboxStyle inboxStyle = new Notification.InboxStyle(builder);//이것 때문에 sdk 최소버전 16으로 변경함
+        inboxStyle.addLine("나 물 좀 줘~!");
+        builder.setStyle(inboxStyle);
+
+        notifiationManager.notify(0, builder.build());
+*/
 
         BottomNavigationViewEx bnve = (BottomNavigationViewEx) findViewById(R.id.bnve);
 
@@ -106,6 +152,34 @@ public class MainActivity extends AppCompatActivity {
                 android.Manifest.permission.CAMERA
         };
         ActivityCompat.requestPermissions(this, permissions, REQUEST_EXTERNAL_STORAGE);
+    }
+
+    //푸시 알림 연습
+    public class AlarmHATT {
+        private Context context;
+
+        public AlarmHATT(Context context) {
+            this.context = context;
+        }
+
+        public void Alarm() {
+            AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            //Intent intent = new Intent(MainActivity.this, BroadCast.class);
+
+            //PendingIntent sender = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+
+            Calendar calendar = Calendar.getInstance();
+            //알람시간 calendar에 set해주기
+
+/*            calendar.set(Calendar.YEAR, 2018);
+            calendar.set(Calendar.MONTH, 8);
+            calendar.set(Calendar.DATE, 22);*/
+
+            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 16, 38, 0);
+
+            //알람 예약
+            //am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), sender);
+        }
     }
 
     @Override

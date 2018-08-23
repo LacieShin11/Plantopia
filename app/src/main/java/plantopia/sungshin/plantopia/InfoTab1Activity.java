@@ -46,6 +46,20 @@ public class InfoTab1Activity extends AppCompatActivity {
         plantItems.add(new PlantItem("코코", "여염옥", "여염옥", "https://s3.ap-northeast-2.amazonaws.com/plantopiabucket/profile_20180822150650.png"));
         plantItems.add(new PlantItem("아이비", "스투키", "스투키", "https://s3.ap-northeast-2.amazonaws.com/plantopiabucket/profile_20180822070335.png"));
         plantopiaItems.add(new PlantItem("아모레", "여명옥", " 여염옥", "https://s3.ap-northeast-2.amazonaws.com/plantopiabucket/profile_20180823195438.png"));
+        plantItems.add(new PlantItem("오로야", "여염옥", "", 36 , 800, 0.7));
+        plantItems.add(new PlantItem("투키", "스투키", "",14, 350, 0.3));
+        plantItems.add(new PlantItem("칼라", "칼라데아", "", 10, 900, 0.5));
+        plantItems.add(new PlantItem("죽", "죽백", "", 20, 500, 0.5));
+        plantItems.add(new PlantItem("테이블", "테이블야자", "", 20, 11000, 0.9));
+        //연결 안 되었을 시
+
+        //생성자-plantName, plantType, plantImg, 온도, 습도, 빛 등등! 임의로 데이터 넣음
+        plantopiaItems.add(new PlantItem("오로야", "여염옥", "", 36 , 800, 0.7)); //너무 더워
+        plantopiaItems.add(new PlantItem("투키", "스투키", "", 14, 350, 0.3)); //너무 추워, 너무 건조해
+        plantopiaItems.add(new PlantItem("칼라", "칼라데아", "", 10, 900, 0.5)); //너무 추워
+        plantopiaItems.add(new PlantItem("죽", "죽백", "", 20, 500, 0.5)); //빛 부족
+        plantopiaItems.add(new PlantItem("테이블", "테이블야자", "", 20, 11000, 0.9)); //빛 많아, 너무 물 많아
+
         getSupportActionBar().hide();
         ButterKnife.bind(this);
 

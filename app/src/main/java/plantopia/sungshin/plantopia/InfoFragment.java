@@ -215,9 +215,6 @@ public class InfoFragment extends android.support.v4.app.Fragment {
                 Glide.with(context).load(user.getUser_img()).into(profileImg);
             }
 
-            flowerpotCountText.setText(String.valueOf(user.getCount_pot()));
-            diaryCountText.setText(String.valueOf(user.getCount_diary()));
-            saveCountText.setText(String.valueOf(user.getCount_scrap()));
         } else {
             needLoginLayout.setVisibility(View.VISIBLE);
             loginLayout.setVisibility(View.GONE);
