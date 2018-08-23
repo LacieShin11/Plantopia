@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -28,10 +31,12 @@ import plantopia.sungshin.plantopia.R;
 public class DetailActivity extends AppCompatActivity {
     final String key = "20180814WAQFXYCPVL972GCN79KFQ";
     String plantName = "";
-
     String plantNum = "";
+    String plantImage = "";
 
-    TextView titleView, textView1, textView2, textView3, textView4, textView5, textView6, textView7, textView8, textView9, textView10, textView11;
+    TextView titleView, titleView2, textView1, textView2, textView3, textView4, textView5, textView6, textView7,
+            textView8, textView9, textView10, textView11;
+    ImageView imageView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,9 +46,13 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         plantName = intent.getStringExtra("name");
         plantNum = intent.getStringExtra("number");
+        plantImage = intent.getStringExtra("image");
+
         setTitle(plantName);
 
         titleView = findViewById(R.id.title);
+        titleView2 = findViewById(R.id.title2);
+        imageView = findViewById(R.id.plant_image);
         textView1 = findViewById(R.id.text1);
         textView2 = findViewById(R.id.text2);
         textView3 = findViewById(R.id.text3);
@@ -57,6 +66,8 @@ public class DetailActivity extends AppCompatActivity {
         textView11 = findViewById(R.id.text11);
 
         titleView.setText(plantName);
+        titleView2.setText(plantName);
+        Glide.with(getApplicationContext()).load(plantImage).into(imageView);
 
         GetPlantDetailTask ayncTask = new GetPlantDetailTask();
         ayncTask.execute();
@@ -197,15 +208,15 @@ public class DetailActivity extends AppCompatActivity {
 
             textView1.setText("조언 정보 : " + detail[0]);
             textView2.setText("비료 정보 : " + detail[10]);
-            textView3.setText("생육 온도 코드 : " + detail[13]);
-            textView4.setText("겨울 최저 온도 코드 : " + detail[47]);
-            textView5.setText("생장속도 코드 : " + detail[14]);
-            textView6.setText("습도 코드 : " + detail[15]);
-            textView7.setText("관리요구도 코드 : " + detail[22]);
-            textView8.setText("물주기 봄 코드 : " + detail[40]);
-            textView9.setText("물주기 여름 코드 : " + detail[41]);
-            textView10.setText("물주기 가을 코드 : " + detail[42]);
-            textView11.setText("물주기 겨울 코드 : " + detail[43]);
+            textView3.setText("생육 온도 : " + detail[13]);
+            textView4.setText("겨울 최저 온도 : " + detail[47]);
+            textView5.setText("생장속도 : " + detail[14]);
+            textView6.setText("습도 : " + detail[15]);
+            textView7.setText("관리요구도 : " + detail[22]);
+            textView8.setText("물주기 봄 : " + detail[40]);
+            textView9.setText("물주기 여름 : " + detail[41]);
+            textView10.setText("물주기 가을 : " + detail[42]);
+            textView11.setText("물주기 겨울 : " + detail[43]);
         }
     }
 }

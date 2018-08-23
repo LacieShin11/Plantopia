@@ -92,10 +92,12 @@ public class SearchFragment extends android.support.v4.app.Fragment {
                 PlantItem plant = (PlantItem) adapter.getItem(position);
                 String name = plant.getPlantName();
                 String number = plant.getPlantNumber();
+                String image = plant.getPlantImg();
 
                 Intent intent = new Intent(getContext(), DetailActivity.class);
                 intent.putExtra("name", name);
                 intent.putExtra("number", number);
+                intent.putExtra("image", image);
 
                 startActivity(intent);
             }
