@@ -1,101 +1,101 @@
 package plantopia.sungshin.plantopia;
 
 public class PlantItem {
-    private int ownerID;
-    private String plantName;
-    private String plantType;
+    private int owner_id;
+    private String plant_name;
+    private String plant_type;
     private String plantNumber; //xml에서 구분하는 데 필요한, 식물 구분 번호
-    private String plantImg;
-    private double winterMinTemp, maxTemp, minTemp, maxLight, minLignt, maxHumidity, minHumidity, Temp, Light, Humidity;
-    private boolean isConnected;
+    private String plant_img;
+    private double winterMinTemp, temp_max, temp_min, light_max, light_min, humidity_max, humidity_min, temp, light, humidity;
+    private int plant_connect;
 
-    public boolean isConnected() {
-        return isConnected;
+    public int isPlant_connect() {
+        return plant_connect;
     }
 
-    public void setConnected(boolean connected) {
-        isConnected = connected;
+    public void setPlant_connect(int plant_connect) {
+        this.plant_connect = plant_connect;
     }
 
-    public int getOwnerID() {
-        return ownerID;
+    public int getOwner_id() {
+        return owner_id;
     }
 
-    public void setOwnerID(int ownerID) {
-        this.ownerID = ownerID;
+    public void setOwner_id(int owner_id) {
+        this.owner_id = owner_id;
     }
 
-    //Temp, Light, Humidity는 현재 식물의 정보
+    //temp, light, Humidity는 현재 식물의 정보
     public double getTemp(){
-        return Temp;
+        return temp;
     }
 
     public double getLight(){
-        return Light;
+        return light;
     }
 
     public double getHumidity(){
-        return Humidity;
+        return humidity;
     }
 
     public void setTemp(double Temp){
-        this.Temp = Temp;
+        this.temp = Temp;
     }
 
     public void setLight(double Light){
-        this.Light = Light;
+        this.light = Light;
     }
 
     public void setHumidity(double Humidity){
-        this.Humidity = Humidity;
+        this.humidity = Humidity;
     }
 
-    public double getMaxTemp() {
-        return maxTemp;
+    public double getTemp_max() {
+        return temp_max;
     }
 
-    public void setMaxTemp(double maxTemp) {
-        this.maxTemp = maxTemp;
+    public void setTemp_max(double temp_max) {
+        this.temp_max = temp_max;
     }
 
-    public double getMinTemp() {
-        return minTemp;
+    public double getTemp_min() {
+        return temp_min;
     }
 
-    public void setMinTemp(double minTemp) {
-        this.minTemp = minTemp;
+    public void setTemp_min(double temp_min) {
+        this.temp_min = temp_min;
     }
 
-    public double getMaxLight() {
-        return maxLight;
+    public double getLight_max() {
+        return light_max;
     }
 
-    public void setMaxLight(double maxLight) {
-        this.maxLight = maxLight;
+    public void setLight_max(double light_max) {
+        this.light_max = light_max;
     }
 
-    public double getMinLignt() {
-        return minLignt;
+    public double getLight_min() {
+        return light_min;
     }
 
-    public void setMinLignt(double minLignt) {
-        this.minLignt = minLignt;
+    public void setLight_min(double light_min) {
+        this.light_min = light_min;
     }
 
-    public double getMaxHumidity() {
-        return maxHumidity;
+    public double getHumidity_max() {
+        return humidity_max;
     }
 
-    public void setMaxHumidity(double maxHumidity) {
-        this.maxHumidity = maxHumidity;
+    public void setHumidity_max(double humidity_max) {
+        this.humidity_max = humidity_max;
     }
 
-    public double getMinHumidity() {
-        return minHumidity;
+    public double getHumidity_min() {
+        return humidity_min;
     }
 
-    public void setMinHumidity(double minHumidity) {
-        this.minHumidity = minHumidity;
+    public void setHumidity_min(double humidity_min) {
+        this.humidity_min = humidity_min;
     }
 
     public String getPlantNumber() {
@@ -118,77 +118,77 @@ public class PlantItem {
     }
 
     public PlantItem(String plantName, String plantType, String plantImg, double Temp, double Light, double Humidity){
-        this.plantName = plantName;
-        this.plantType = plantType;
-        this.plantImg = plantImg;
-        this.Temp = Temp;
-        this.Light = Light;
-        this.Humidity = Humidity;
+        this.plant_name = plantName;
+        this.plant_type = plantType;
+        this.plant_img = plantImg;
+        this.temp = Temp;
+        this.light = Light;
+        this.humidity = Humidity;
     }//챗봇용 생성자
 
     public PlantItem(String plantName, String plantNumber) {
-        this.plantName = plantName;
+        this.plant_name = plantName;
         this.plantNumber = plantNumber;
     }
 
-    public PlantItem(int ownerID, String plantName, String plantType, String plantNumber, String plantImg, double winterMinTemp, double maxTemp, double minTemp, double maxLight, double minLignt, double maxHumidity, double minHumidity, double temp, double light, double humidity, boolean isConnected) {
-        this.ownerID = ownerID;
-        this.plantName = plantName;
-        this.plantType = plantType;
+    public PlantItem(int ownerID, String plantName, String plantType, String plantNumber, String plantImg, double winterMinTemp, double maxTemp, double minTemp, double maxLight, double minLignt, double maxHumidity, double minHumidity, double temp, double light, double humidity, int isConnected) {
+        this.owner_id = ownerID;
+        this.plant_name = plantName;
+        this.plant_type = plantType;
         this.plantNumber = plantNumber;
-        this.plantImg = plantImg;
+        this.plant_img = plantImg;
         this.winterMinTemp = winterMinTemp;
-        this.maxTemp = maxTemp;
-        this.minTemp = minTemp;
-        this.maxLight = maxLight;
-        this.minLignt = minLignt;
-        this.maxHumidity = maxHumidity;
-        this.minHumidity = minHumidity;
-        Temp = temp;
-        Light = light;
-        Humidity = humidity;
-        this.isConnected = isConnected;
+        this.temp_max = maxTemp;
+        this.temp_min = minTemp;
+        this.light_max = maxLight;
+        this.light_min = minLignt;
+        this.humidity_max = maxHumidity;
+        this.humidity_min = minHumidity;
+        this.temp = temp;
+        this.light = light;
+        this.humidity = humidity;
+        this.plant_connect = isConnected;
     }
 
     public PlantItem(String plantName, String plantType, String plantNumber, String plantImg) {
-        this.plantName = plantName;
-        this.plantType = plantType;
+        this.plant_name = plantName;
+        this.plant_type = plantType;
         this.plantNumber = plantNumber;
-        this.plantImg = plantImg;
+        this.plant_img = plantImg;
     }
 
     public PlantItem(String plantName, String plantNumber, String plantImg) {
-        this.plantName = plantName;
+        this.plant_name = plantName;
         this.plantNumber = plantNumber;
-        this.plantImg = plantImg;
+        this.plant_img = plantImg;
     }
 
-    public String getPlantName() {
-        return plantName;
+    public String getPlant_name() {
+        return plant_name;
     }
 
-    public void setPlantName(String plantName) {
-        this.plantName = plantName;
+    public void setPlant_name(String plant_name) {
+        this.plant_name = plant_name;
     }
 
-    public String getPlantImg() {
-        return plantImg;
+    public String getPlant_img() {
+        return plant_img;
     }
 
-    public void setPlantImg(String plantImg) {
-        this.plantImg = plantImg;
+    public void setPlant_img(String plant_img) {
+        this.plant_img = plant_img;
     }
 
-    public String getPlantType() {
-        return plantType;
+    public String getPlant_type() {
+        return plant_type;
     }
 
-    public void setPlantType(String plantType) {
-        this.plantType = plantType;
+    public void setPlant_type(String plant_type) {
+        this.plant_type = plant_type;
     }
 
     @Override
     public String toString() {
-        return plantName;
+        return plant_name;
     }
 }

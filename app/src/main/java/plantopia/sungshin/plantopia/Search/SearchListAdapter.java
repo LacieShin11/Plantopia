@@ -58,8 +58,8 @@ public class SearchListAdapter extends BaseAdapter implements Filterable {
         ImageView imageView = v.findViewById(R.id.search_img);
         PlantItem plant = filteredArrayList.get(position);
 
-        textView.setText(plant.getPlantName());
-        Glide.with(context).load(plant.getPlantImg()).into(imageView);
+        textView.setText(plant.getPlant_name());
+        Glide.with(context).load(plant.getPlant_img()).into(imageView);
 
         return v;
     }
@@ -99,7 +99,7 @@ public class SearchListAdapter extends BaseAdapter implements Filterable {
                 ArrayList<PlantItem> plantList = new ArrayList<PlantItem>();
 
                 for (PlantItem plant : arrayList) {
-                    if (plant.getPlantName().toUpperCase().contains(constraint.toString().toUpperCase())) {
+                    if (plant.getPlant_name().toUpperCase().contains(constraint.toString().toUpperCase())) {
                         plantList.add(plant);
                     }
                 }

@@ -35,8 +35,8 @@ public class PlantRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerPlant
         RecyclerPlantViewHolder mainHolder = (RecyclerPlantViewHolder) holder;
         PlantItem item = arrayList.get(position);
 
-        mainHolder.plantNameText.setText(item.getPlantName());
-        Glide.with(mContext).load(item.getPlantImg()).into(mainHolder.plantImg);
+        mainHolder.plantNameText.setText(item.getPlant_name());
+        Glide.with(mContext).load(item.getPlant_img()).into(mainHolder.plantImg);
     }
 
     @Override

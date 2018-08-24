@@ -133,6 +133,21 @@ public class AddPlantActivity extends AppCompatActivity {
         });
 
         plantTypeEdit.setAdapter(new SearchListAdapter(plant_list));
+
+        searchPlantBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < plant_list.size(); i++) {
+                    if (plant_list.get(i).getPlant_name().equals(plantTypeEdit.getText().toString())) {
+                        plantNumber = plant_list.get(i).getPlantNumber();
+                        break;
+                    }
+                }
+
+                GetPlantDetailTask getPlantDetailTask = new GetPlantDetailTask();
+                getPlantDetailTask.execute();
+            }
+        });
     }
 
     private void showMessage(String msg) {
@@ -179,23 +194,19 @@ public class AddPlantActivity extends AppCompatActivity {
 
                 utility.upload(BUCKET_NAME, "plant_" + uploadFile.getName() + ".png", uploadFile); //s3에 파일 업로드
 
-                for (int i = 0; i < plant_list.size(); i++) {
-                    if (plant_list.get(i).getPlantName().equals(plantTypeEdit.getText().toString())) {
-                        plantNumber = plant_list.get(i).getPlantNumber();
-                        break;
-                    }
-                }
-
-                GetPlantDetailTask getPlantDetailTask = new GetPlantDetailTask();
-                getPlantDetailTask.execute();
-
                 progressBar.setVisibility(View.VISIBLE);
 
-                newPlant.setPlantImg(ServerURL.BUCKET + "plant_" + uploadFile.getName() + ".png");
-                newPlant.setPlantName(plantEdit.getText().toString());
-                newPlant.setPlantType(plantTypeEdit.getText().toString());
-                newPlant.setOwnerID(AutoLoginManager.getInstance(getApplicationContext()).getUser().getUser_id());
-                newPlant.setConnected(connectSwitch.isChecked());
+                Log.d("겨울 최저 온도", Double.toString(newPlant.getWinterMinTemp()));
+                Log.d("생육 최저 온도", Double.toString(newPlant.getTemp_min()));
+                Log.d("생육 최고 온도", Double.toString(newPlant.getTemp_max()));
+                Log.d("최저 습도", Double.toString(newPlant.getHumidity_min()));
+                Log.d("최고 습도", Double.toString(newPlant.getHumidity_max()));
+
+                newPlant.setPlant_img(ServerURL.BUCKET + "plant_" + uploadFile.getName() + ".png");
+                newPlant.setPlant_name(plantEdit.getText().toString());
+                newPlant.setPlant_type(plantTypeEdit.getText().toString());
+                newPlant.setOwner_id(AutoLoginManager.getInstance(getApplicationContext()).getUser().getUser_id());
+                newPlant.setPlant_connect(connectSwitch.isChecked() ? 1 : 0);
 
                 Call<UserData> submitCall = service.addPlant(newPlant);
                 submitCall.enqueue(new Callback<UserData>() {
@@ -440,26 +451,19 @@ public class AddPlantActivity extends AppCompatActivity {
             else if (detail[47].equals("10도") || detail[47].equals("13도 이상"))
                 newPlant.setWinterMinTemp(Double.parseDouble(detail[47].substring(0, 2))); // 겨울 최저 온도
 
-            newPlant.setMinTemp(Double.parseDouble(detail[13].substring(0, 2))); // 생육 온도
-            newPlant.setMaxTemp(Double.parseDouble(detail[13].substring(3, 5))); // 생육 온도
+            newPlant.setTemp_min(Double.parseDouble(detail[13].substring(0, 2))); // 생육 온도
+            newPlant.setTemp_max(Double.parseDouble(detail[13].substring(3, 5))); // 생육 온도
 
             if (detail[15].equals("40% 미만")) { // 습도
-                newPlant.setMinHumidity(0);
-                newPlant.setMaxHumidity(40);
+                newPlant.setHumidity_min(0);
+                newPlant.setHumidity_max(40);
             } else if (detail[15].equals("40% ~ 70%")) { // 습도
-                newPlant.setMinHumidity(40);
-                newPlant.setMaxHumidity(70);
+                newPlant.setHumidity_min(40);
+                newPlant.setHumidity_max(70);
             } else if (detail[15].equals("70% 이상")) { // 습도
-                newPlant.setMinHumidity(70);
-                newPlant.setMaxHumidity(100);
+                newPlant.setHumidity_min(70);
+                newPlant.setHumidity_max(100);
             }
-
-            Log.d("겨울 최저 온도", Double.toString(newPlant.getWinterMinTemp()));
-            Log.d("생육 최저 온도", Double.toString(newPlant.getMinTemp()));
-            Log.d("생육 최고 온도", Double.toString(newPlant.getMaxTemp()));
-            Log.d("최저 습도", Double.toString(newPlant.getMinHumidity()));
-            Log.d("최고 습도", Double.toString(newPlant.getMaxHumidity()));
-
         }
     }
 }

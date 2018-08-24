@@ -2,26 +2,43 @@ package plantopia.sungshin.plantopia;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import retrofit2.Call;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import plantopia.sungshin.plantopia.User.ApplicationController;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
+import plantopia.sungshin.plantopia.User.ServerURL;
+import plantopia.sungshin.plantopia.User.ServiceApiForUser;
 import plantopia.sungshin.plantopia.User.UserData;
 import plantopia.sungshin.plantopia.customView.RecyclerItemClickListener;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class InfoTab1Activity extends AppCompatActivity {
     static final int DEVICE_CONNECTION = 33;
     static final int NONE_CONNECTION = 34;
 
+    UserData user;
+    ServiceApiForUser service;
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.tab1_plants_list)
     RecyclerView plantListView;
     @BindView(R.id.tab1_plantopia_list)
@@ -30,10 +47,13 @@ public class InfoTab1Activity extends AppCompatActivity {
     TextView nonePlantText;
     @BindView(R.id.plant_layout)
     LinearLayout plantLayout;
+    @BindView(R.id.progressbar)
+    ProgressBar progressBar;
 
     PlantRecyclerViewAdapter plantAdapter;
     PlantRecyclerViewAdapter plantopiaAdapter;
 
+    List<PlantItem> items = new ArrayList<>();
     ArrayList<PlantItem> plantItems = new ArrayList<>();
     ArrayList<PlantItem> plantopiaItems = new ArrayList<>();
 
@@ -41,27 +61,15 @@ public class InfoTab1Activity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_tab1);
+        ButterKnife.bind(this);
 
-        //생성자-plantName, plantType, plantImg, 온도, 습도, 빛 등등!
-        plantItems.add(new PlantItem("코코", "여염옥", "여염옥", "https://s3.ap-northeast-2.amazonaws.com/plantopiabucket/profile_20180822150650.png"));
-        plantItems.add(new PlantItem("아이비", "스투키", "스투키", "https://s3.ap-northeast-2.amazonaws.com/plantopiabucket/profile_20180822070335.png"));
-        plantopiaItems.add(new PlantItem("아모레", "여명옥", " 여염옥", "https://s3.ap-northeast-2.amazonaws.com/plantopiabucket/profile_20180823195438.png"));
-        plantItems.add(new PlantItem("오로야", "여염옥", "", 36 , 800, 0.7));
-        plantItems.add(new PlantItem("투키", "스투키", "",14, 350, 0.3));
-        plantItems.add(new PlantItem("칼라", "칼라데아", "", 10, 900, 0.5));
-        plantItems.add(new PlantItem("죽", "죽백", "", 20, 500, 0.5));
-        plantItems.add(new PlantItem("테이블", "테이블야자", "", 20, 11000, 0.9));
-        //연결 안 되었을 시
+        ApplicationController applicationController = ApplicationController.getInstance();
+        applicationController.buildService(ServerURL.URL, 3000);
+        service = ApplicationController.getInstance().getService();
 
-        //생성자-plantName, plantType, plantImg, 온도, 습도, 빛 등등! 임의로 데이터 넣음
-        plantopiaItems.add(new PlantItem("오로야", "여염옥", "", 36 , 800, 0.7)); //너무 더워
-        plantopiaItems.add(new PlantItem("투키", "스투키", "", 14, 350, 0.3)); //너무 추워, 너무 건조해
-        plantopiaItems.add(new PlantItem("칼라", "칼라데아", "", 10, 900, 0.5)); //너무 추워
-        plantopiaItems.add(new PlantItem("죽", "죽백", "", 20, 500, 0.5)); //빛 부족
-        plantopiaItems.add(new PlantItem("테이블", "테이블야자", "", 20, 11000, 0.9)); //빛 많아, 너무 물 많아
+        user = AutoLoginManager.getInstance(getApplicationContext()).getUser();
 
         getSupportActionBar().hide();
-        ButterKnife.bind(this);
 
         UserData user = AutoLoginManager.getInstance(getApplicationContext()).getUser();
 
@@ -82,13 +90,13 @@ public class InfoTab1Activity extends AppCompatActivity {
         plantopiaAdapter.notifyDataSetChanged();
 
         //장치 연결된 식물
-        plantopiaListView.addOnItemTouchListener(new RecyclerItemClickListener(InfoTab1Activity.this, plantListView,
+        plantopiaListView.addOnItemTouchListener(new RecyclerItemClickListener(InfoTab1Activity.this, plantopiaListView,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(InfoTab1Activity.this, PlantInfoActivity.class);
-                        intent.putExtra("plantName", plantAdapter.getItem(position).getPlantName());
-                        intent.putExtra("plantType", plantAdapter.getItem(position).getPlantType());
+                        intent.putExtra("plantName", plantopiaAdapter.getItem(position).getPlant_name());
+                        intent.putExtra("plantType", plantopiaAdapter.getItem(position).getPlant_type());
                         startActivityForResult(intent, DEVICE_CONNECTION);
                     }
 
@@ -104,8 +112,8 @@ public class InfoTab1Activity extends AppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(InfoTab1Activity.this, PlantInfoActivity.class);
-                        intent.putExtra("plantName", plantAdapter.getItem(position).getPlantName());
-                        intent.putExtra("plantType", plantAdapter.getItem(position).getPlantType());
+                        intent.putExtra("plantName", plantAdapter.getItem(position).getPlant_name());
+                        intent.putExtra("plantType", plantAdapter.getItem(position).getPlant_type());
 
                         startActivityForResult(intent, NONE_CONNECTION);
                     }
@@ -116,14 +124,70 @@ public class InfoTab1Activity extends AppCompatActivity {
                     }
                 }));
 
-        //화분의 개수에 따라 화면 변경
+        getPlantItems();
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setEnabled(true);
+                getPlantItems();
+
+                //너무 오래걸릴 경우 갱신을 멈춤
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 1500);
+            }
+        });
+    }
+
+    private void getPlantItems() {
+        progressBar.setVisibility(View.VISIBLE);
+
+        Call<List<PlantItem>> plantCall = service.getPlant(user.getUser_id());
+        plantCall.enqueue(new Callback<List<PlantItem>>() {
+            @Override
+            public void onResponse(Call<List<PlantItem>> call, Response<List<PlantItem>> response) {
+                progressBar.setVisibility(View.INVISIBLE);
+                items = response.body();
+
+                setLayout();
+            }
+
+            @Override
+            public void onFailure(Call<List<PlantItem>> call, Throwable t) {
+                progressBar.setVisibility(View.INVISIBLE);
+                t.printStackTrace();
+                Toast.makeText(InfoTab1Activity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setEnabled(false);
+            }
+        });
+    }
+
+    //화분의 개수에 따라 화면 변경
+    private void setLayout() {
         if (AutoLoginManager.getInstance(getApplicationContext()).isLoggedIn()) {
-            if (user.getCount_pot() == 0) {
+            for (int i = 0; i < items.size(); i++) {
+                Log.i("확인" , items.get(i).getPlant_name());
+                if (items.get(i).isPlant_connect() == 1) {
+                    plantopiaAdapter.addItem(items.get(i));
+                } else {
+                    plantAdapter.addItem(items.get(i));
+                }
+            }
+
+            plantAdapter.notifyDataSetChanged();
+            plantopiaAdapter.notifyDataSetChanged();
+
+            swipeRefreshLayout.setEnabled(false);
+
+            if (plantopiaAdapter.getItemCount() == 0 && plantAdapter.getItemCount() == 0) {
                 nonePlantText.setVisibility(View.VISIBLE);
                 plantLayout.setVisibility(View.INVISIBLE);
-            }
-            else {
-                nonePlantText.setVisibility(View.VISIBLE);
+            } else {
+                nonePlantText.setVisibility(View.INVISIBLE);
                 plantLayout.setVisibility(View.VISIBLE);
             }
         }

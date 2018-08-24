@@ -46,7 +46,7 @@ public class SearchFragment extends android.support.v4.app.Fragment {
     @BindView(R.id.progressbar)
     ProgressBar progressbar;
 
-    SearchListAdapter adapter;
+    SearchListAdapter adapter = new SearchListAdapter();
 
     static final String KEY = "20180814WAQFXYCPVL972GCN79KFQ";
     static final String IMG_PATH1 = "http://www.nongsaro.go.kr/cms_contents/301/";
@@ -62,7 +62,6 @@ public class SearchFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab2, container, false);
         unbinder = ButterKnife.bind(this, view);
-        adapter = new SearchListAdapter();
 
         progressbar.setVisibility(View.VISIBLE);
         getPlantDataTask ayncTask = new getPlantDataTask();
@@ -90,9 +89,9 @@ public class SearchFragment extends android.support.v4.app.Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PlantItem plant = (PlantItem) adapter.getItem(position);
-                String name = plant.getPlantName();
+                String name = plant.getPlant_name();
                 String number = plant.getPlantNumber();
-                String image = plant.getPlantImg();
+                String image = plant.getPlant_img();
 
                 Intent intent = new Intent(getContext(), DetailActivity.class);
                 intent.putExtra("name", name);

@@ -112,16 +112,6 @@
                 android:src="@drawable/naver_login" />
 
             <ImageButton
-                android:id="@+id/facebook_btn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginHorizontal="5dp"
-                android:background="@android:color/transparent"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:scaleType="fitCenter"
-                android:src="@drawable/facebook_login" />
-
-            <ImageButton
                 android:id="@+id/ggl_btn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
