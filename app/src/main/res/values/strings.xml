@@ -30,6 +30,7 @@
     <string name="sign_up_warning6">비밀번호를 잘못 입력하셨습니다.</string>
     <string name="sign_up_warning7">존재하지 않는 계정입니다.</string>
     <string name="sign_up_warning8">비밀번호를 한번 더 입력해주세요.</string>
+    <string name="sign_up_warn_token">여러 계정을 만들 수 없습니다. 기존의 계정을 사용해주세요.</string>
     <string name="sign_up_success">가입에 성공했습니다. 다시 로그인해주세요.</string>
 
     <string name="cancel">취소</string>

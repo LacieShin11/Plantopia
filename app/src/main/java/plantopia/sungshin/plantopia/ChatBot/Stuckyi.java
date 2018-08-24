@@ -1,5 +1,8 @@
 package plantopia.sungshin.plantopia.ChatBot;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -29,7 +32,7 @@ import java.util.Map;
 import plantopia.sungshin.plantopia.R;
 
 public class Stuckyi extends AppCompatActivity {
-
+    private AlarmManager al;
     private static final String TAG = "CHATBOTTUTORIAL";
     private ChatBotDBAdapter chatBotDbHelper; // db 관련 객체
     public static final String PLANT_NAME = "STUCKYI";
@@ -39,12 +42,37 @@ public class Stuckyi extends AppCompatActivity {
     String formatTime;
     String formatDate;
     Map context;
+    //Double Temper; //현재 식물의 성격 상태
     Double Temp, Light, Humidity; //아두이노로부터 받아온 현재 식물 정보
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_chat);
+
+        //푸시 알림 시 바로 채팅방으로 이동
+        al = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+
+            CharSequence s = "전달 받은 값은 ";
+            int id=0;
+
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                s = "error";
+            }
+            else {
+                id = extras.getInt("notificationId");
+            }
+
+            //TextView t = (TextView) findViewById(R.id.textView);
+
+            s = s+" "+id;
+            Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
+            NotificationManager nm =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+            //노티피케이션 제거
+            nm.cancel(id);
 
         //네트워크 연결 유무 확인
         NetworkInfo mNetworkState = getNetworkInfo();
@@ -106,7 +134,6 @@ public class Stuckyi extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_DONE) {
-
                     // 현재 시간 구하기
                     long now = System.currentTimeMillis();
                     // 현재 시간을 date 변수에 저장
@@ -130,6 +157,7 @@ public class Stuckyi extends AppCompatActivity {
                     context.put("Temp",Temp);
                     context.put("Light", Light);
                     context.put("Humidity", Humidity);
+                    //context.put("Temper", Temper);
 
                     final MessageRequest request = new MessageRequest.Builder().inputText(inputText).context(context).build();
 
