@@ -7,6 +7,15 @@ public class PlantItem {
     private String plantNumber; //xml에서 구분하는 데 필요한, 식물 구분 번호
     private String plantImg;
     private double winterMinTemp, maxTemp, minTemp, maxLight, minLignt, maxHumidity, minHumidity, Temp, Light, Humidity;
+    private boolean isConnected;
+
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
+    }
 
     public int getOwnerID() {
         return ownerID;
@@ -122,16 +131,23 @@ public class PlantItem {
         this.plantNumber = plantNumber;
     }
 
-    public PlantItem(String plantName, String plantType, String plantImg, double maxTemp, double minTemp, double maxLight, double minLignt, double maxHumidity, double minHumidity) {
+    public PlantItem(int ownerID, String plantName, String plantType, String plantNumber, String plantImg, double winterMinTemp, double maxTemp, double minTemp, double maxLight, double minLignt, double maxHumidity, double minHumidity, double temp, double light, double humidity, boolean isConnected) {
+        this.ownerID = ownerID;
         this.plantName = plantName;
         this.plantType = plantType;
+        this.plantNumber = plantNumber;
         this.plantImg = plantImg;
+        this.winterMinTemp = winterMinTemp;
         this.maxTemp = maxTemp;
         this.minTemp = minTemp;
         this.maxLight = maxLight;
         this.minLignt = minLignt;
         this.maxHumidity = maxHumidity;
         this.minHumidity = minHumidity;
+        Temp = temp;
+        Light = light;
+        Humidity = humidity;
+        this.isConnected = isConnected;
     }
 
     public PlantItem(String plantName, String plantType, String plantNumber, String plantImg) {

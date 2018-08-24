@@ -40,16 +40,24 @@ public interface ServiceApiForUser {
 
     // 식물 정보 받아오기
     @GET("/plant/get/{user_id}")
-    Call<List<PlantItem>> getPlant(@Path("user_id") String userId);
+    Call<List<PlantItem>> getPlant(@Path("user_id") int userId);
 
     // 식물 정보 보내기
     @POST("/plant/add")
-    Call<UserData> checkDuplication(@Body PlantItem plantItem);
+    Call<UserData> addPlant(@Body PlantItem plantItem);
 
     // 다이어리 추가하기
     @POST("/diary/add")
     Call<UserData> addDiary(@Body DiaryItem diaryItem);
 
+    // 다이어리 전체 조회
     @GET("/diary/get/{user_id}")
     Call<List<DiaryItem>> getDiary(@Path("user_id") int userId);
+
+    // 다이어리 수정
+    @POST("/diary/update")
+    Call<UserData> updateDiary(@Body DiaryItem diaryItem);
+
+    @GET("/user/count/{user_id}")
+    Call<Count> getCount(@Path("user_id") int userId);
 }

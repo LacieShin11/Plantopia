@@ -52,6 +52,16 @@ public class AutoLoginManager {
         editor.apply();
     }
 
+    public void setUserCount(int count1, int count2, int count3) {
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_POT_COUNT, count1);
+        editor.putInt(KEY_DIARY_COUNT, count2);
+        editor.putInt(KEY_SCRAP_COUNT, count3);
+
+        editor.apply();
+    }
+
     public void setUserImg(String imgPath) {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

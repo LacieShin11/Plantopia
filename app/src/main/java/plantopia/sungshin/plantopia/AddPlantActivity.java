@@ -25,6 +25,12 @@ import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.joooonho.SelectableRoundedImageView;
 import com.soundcloud.android.crop.Crop;
 
@@ -50,8 +56,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import plantopia.sungshin.plantopia.Search.SearchListAdapter;
 import plantopia.sungshin.plantopia.User.ApplicationController;
+import plantopia.sungshin.plantopia.User.AutoLoginManager;
 import plantopia.sungshin.plantopia.User.ServerURL;
 import plantopia.sungshin.plantopia.User.ServiceApiForUser;
+import plantopia.sungshin.plantopia.User.UserData;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddPlantActivity extends AppCompatActivity {
     private static final int TAKING_PIC = 10;
@@ -72,8 +83,6 @@ public class AddPlantActivity extends AppCompatActivity {
     ImageButton searchPlantBtn;
     @BindView(R.id.connect_switch)
     Switch connectSwitch;
-    @BindView(R.id.push_switch)
-    Switch pushSwitch;
     @BindView(R.id.plant_type_edit)
     AutoCompleteTextView plantTypeEdit;
 
@@ -153,18 +162,58 @@ public class AddPlantActivity extends AppCompatActivity {
                 showMessage(getString(R.string.check_name3));
             else {
                 hideMessage();
-            }
 
-            Log.d("plantTypeEdit.getText()", plantTypeEdit.getText().toString());
-            for (int i = 0; i < plant_list.size(); i++)
-            {
-                if(plant_list.get(i).getPlantName().equals(plantTypeEdit.getText().toString()))
-                    plantNumber = plant_list.get(i).getPlantNumber();
-            }
-            Log.d("plantNumber", plantNumber);
+                //이미지 처리
+                final File uploadFile = new File(plantUri.getPath());
 
-            GetPlantDetailTask getPlantDetailTask = new GetPlantDetailTask();
-            getPlantDetailTask.execute();
+                CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCredentialsProvider(
+                        getApplicationContext(),
+                        "us-east-2:f6e0a9b0-267d-46c4-9512-01c8d7502762", // 자격 증명 풀 ID
+                        Regions.US_EAST_2 // 리전
+                );
+
+                AmazonS3 s3 = new AmazonS3Client(credentialsProvider);
+                s3.setRegion(Region.getRegion(Regions.AP_NORTHEAST_2));
+                s3.setEndpoint("s3.ap-northeast-2.amazonaws.com");
+                TransferUtility utility = new TransferUtility(s3, getApplicationContext());
+
+                utility.upload(BUCKET_NAME, "plant_" + uploadFile.getName() + ".png", uploadFile); //s3에 파일 업로드
+
+                for (int i = 0; i < plant_list.size(); i++) {
+                    if (plant_list.get(i).getPlantName().equals(plantTypeEdit.getText().toString())) {
+                        plantNumber = plant_list.get(i).getPlantNumber();
+                        break;
+                    }
+                }
+
+                GetPlantDetailTask getPlantDetailTask = new GetPlantDetailTask();
+                getPlantDetailTask.execute();
+
+                progressBar.setVisibility(View.VISIBLE);
+
+                newPlant.setPlantImg(ServerURL.BUCKET + "plant_" + uploadFile.getName() + ".png");
+                newPlant.setPlantName(plantEdit.getText().toString());
+                newPlant.setPlantType(plantTypeEdit.getText().toString());
+                newPlant.setOwnerID(AutoLoginManager.getInstance(getApplicationContext()).getUser().getUser_id());
+                newPlant.setConnected(connectSwitch.isChecked());
+
+                Call<UserData> submitCall = service.addPlant(newPlant);
+                submitCall.enqueue(new Callback<UserData>() {
+                    @Override
+                    public void onResponse(Call<UserData> call, Response<UserData> response) {
+                        if (response.isSuccessful()) {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserData> call, Throwable t) {
+                        progressBar.setVisibility(View.INVISIBLE);
+                        Toast.makeText(AddPlantActivity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         } else if (item.getItemId() == android.R.id.home) {
             finish();
         }
@@ -268,7 +317,6 @@ public class AddPlantActivity extends AppCompatActivity {
                     String plantName = node.getChildNodes().item(1).getFirstChild().getNodeValue();
                     String plantImgPath = IMG_PATH1 + plantNum + IMG_PATH2;
 
-                    // adapter.addPlant(plantName, plantNum, plantImgPath);
                     plant_list.add(new PlantItem(plantName, plantNum, plantImgPath));
                 }
                 publishProgress();
@@ -289,15 +337,6 @@ public class AddPlantActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
-            /*progressBar.setVisibility(View.VISIBLE);
-
-            try {
-                plantTypeEdit.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                progressBar.setVisibility(View.GONE);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
         }
     }
 
@@ -324,6 +363,7 @@ public class AddPlantActivity extends AppCompatActivity {
                 byte[] bytes = new byte[4096];
                 InputStream in = conn.getInputStream();
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
                 while (true) {
                     int red = in.read(bytes);
                     if (red < 0) break;
@@ -343,7 +383,6 @@ public class AddPlantActivity extends AppCompatActivity {
                 for (int i = 0; i < length; i++) {
                     Node node = ((Node) el).getChildNodes().item(i);
                     if (node.hasChildNodes()) {
-                        Log.d("getTextContent()", node.getFirstChild().getNodeValue());
                         detail[i] = (String) node.getFirstChild().getNodeValue();
                     } else {
                         detail[i] = "정보 없음";
@@ -396,7 +435,7 @@ public class AddPlantActivity extends AppCompatActivity {
                     detail[i] = "70% 이상";
             }
 
-            if (detail[47].equals("0도 이하") || detail[47].equals("5도") ||  detail[47].equals("7도"))
+            if (detail[47].equals("0도 이하") || detail[47].equals("5도") || detail[47].equals("7도"))
                 newPlant.setWinterMinTemp(Double.parseDouble(detail[47].substring(0, 1))); // 겨울 최저 온도
             else if (detail[47].equals("10도") || detail[47].equals("13도 이상"))
                 newPlant.setWinterMinTemp(Double.parseDouble(detail[47].substring(0, 2))); // 겨울 최저 온도
@@ -407,12 +446,10 @@ public class AddPlantActivity extends AppCompatActivity {
             if (detail[15].equals("40% 미만")) { // 습도
                 newPlant.setMinHumidity(0);
                 newPlant.setMaxHumidity(40);
-            }
-            else if (detail[15].equals("40% ~ 70%")) { // 습도
+            } else if (detail[15].equals("40% ~ 70%")) { // 습도
                 newPlant.setMinHumidity(40);
                 newPlant.setMaxHumidity(70);
-            }
-            else if (detail[15].equals("70% 이상")) { // 습도
+            } else if (detail[15].equals("70% 이상")) { // 습도
                 newPlant.setMinHumidity(70);
                 newPlant.setMaxHumidity(100);
             }

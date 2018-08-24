@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
@@ -40,6 +41,8 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
     RecyclerView diyGallery;
     @BindView(R.id.product_gallery)
     RecyclerView productGallery;
+    @BindView(R.id.progressbar)
+    ProgressBar progressBar;
 
     ArrayList<PostItem> postList = new ArrayList<>();
     ArrayList<DIYItem> diyList = new ArrayList<>();
@@ -141,8 +144,10 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
             public void onLongItemClick(View view, int position) {
             }
         }));
+
         return view;
     }
+
 
     class NetworkThread extends Thread {
         String keyWord;
@@ -198,8 +203,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                 JsonArray jsonArray = (JsonArray) jsonObject.get("documents");
                 int length = jsonArray.size();
 
-                for(int i = 0; i < length; i++)
-                {
+                for (int i = 0; i < length; i++) {
                     JsonObject jsonObject2 = (JsonObject) jsonArray.get(i);
                     result_title_list.add(jsonObject2.get("title").toString());
                     result_link_list.add(jsonObject2.get("url").toString());
@@ -222,8 +226,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                     result_image_list.set(j, title);
                 }
 
-                for(int i = 0; i < result_title_list.size(); i++)
-                {
+                for (int i = 0; i < result_title_list.size(); i++) {
                     Log.d("title", result_title_list.get(i));
                     Log.d("url", result_link_list.get(i));
                     Log.d("thumbnail", result_image_list.get(i));
@@ -305,8 +308,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                 JsonArray jsonArray = (JsonArray) jsonObject.get("documents");
                 int length = jsonArray.size();
 
-                for(int i = 0; i < length; i++)
-                {
+                for (int i = 0; i < length; i++) {
                     JsonObject jsonObject2 = (JsonObject) jsonArray.get(i);
                     resultTitleList.add(jsonObject2.get("title").toString());
                     resultLinkList.add(jsonObject2.get("url").toString());
@@ -329,8 +331,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                     resultLinkList.set(j, title);
                 }
 
-                for(int i = 0; i < resultTitleList.size(); i++)
-                {
+                for (int i = 0; i < resultTitleList.size(); i++) {
                     Log.d("title", resultTitleList.get(i).toString());
                     Log.d("url", resultLinkList.get(i).toString());
                     Log.d("thumbnail", resultImageList.get(i).toString());
@@ -413,8 +414,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                 JsonArray jsonArray = (JsonArray) jsonObject.get("documents");
                 int length = jsonArray.size();
 
-                for(int i = 0; i < length; i++)
-                {
+                for (int i = 0; i < length; i++) {
                     JsonObject jsonObject2 = (JsonObject) jsonArray.get(i);
                     resultTitleList.add(jsonObject2.get("title").toString());
                     resultLinkList.add(jsonObject2.get("url").toString());
@@ -438,8 +438,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                     resultImageList.set(j, title);
                 }
 
-                for(int i = 0; i < resultTitleList.size(); i++)
-                {
+                for (int i = 0; i < resultTitleList.size(); i++) {
                     Log.d("title", resultTitleList.get(i).toString());
                     Log.d("url", resultLinkList.get(i).toString());
                     Log.d("thumbnail", resultImageList.get(i).toString());
@@ -454,12 +453,13 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                 @Override
                 public void run() {
                     for (int i = 0; i < resultTitleList.size(); i++) {
-                        ProductItem item = new ProductItem(resultTitleList.get(i).toString(), resultLpriceList.get(i).toString(),
+                        ProductItem item = new ProductItem(resultTitleList.get(i).toString(), resultLpriceList.get(i).toString() + "원",
                                 resultLinkList.get(i).toString(), resultImageList.get(i).toString());
 
                         productAdapter.addItem(item);
                     }
                     productAdapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             });
         }

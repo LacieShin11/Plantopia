@@ -2,26 +2,40 @@ package plantopia.sungshin.plantopia;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import plantopia.sungshin.plantopia.User.ApplicationController;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
+import plantopia.sungshin.plantopia.User.ServerURL;
+import plantopia.sungshin.plantopia.User.ServiceApiForUser;
 import plantopia.sungshin.plantopia.User.UserData;
 import plantopia.sungshin.plantopia.customView.RecyclerItemClickListener;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class InfoTab1Activity extends AppCompatActivity {
     static final int DEVICE_CONNECTION = 33;
     static final int NONE_CONNECTION = 34;
+    ServiceApiForUser service;
 
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.tab1_plants_list)
     RecyclerView plantListView;
     @BindView(R.id.tab1_plantopia_list)
@@ -30,6 +44,7 @@ public class InfoTab1Activity extends AppCompatActivity {
     TextView nonePlantText;
     @BindView(R.id.plant_layout)
     LinearLayout plantLayout;
+    UserData user;
 
     PlantRecyclerViewAdapter plantAdapter;
     PlantRecyclerViewAdapter plantopiaAdapter;
@@ -41,15 +56,15 @@ public class InfoTab1Activity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.info_tab1);
-
-        //생성자-plantName, plantType, plantImg, 온도, 습도, 빛 등등!
-        plantItems.add(new PlantItem("코코", "여염옥", "여염옥", "https://s3.ap-northeast-2.amazonaws.com/plantopiabucket/profile_20180822150650.png"));
-        plantItems.add(new PlantItem("아이비", "스투키", "스투키", "https://s3.ap-northeast-2.amazonaws.com/plantopiabucket/profile_20180822070335.png"));
-        plantopiaItems.add(new PlantItem("아모레", "여명옥", " 여염옥", "https://s3.ap-northeast-2.amazonaws.com/plantopiabucket/profile_20180823195438.png"));
-        getSupportActionBar().hide();
         ButterKnife.bind(this);
+        getSupportActionBar().hide();
 
-        UserData user = AutoLoginManager.getInstance(getApplicationContext()).getUser();
+        user = AutoLoginManager.getInstance(getApplicationContext()).getUser();
+
+        //서버 연결
+        ApplicationController applicationController = ApplicationController.getInstance();
+        applicationController.buildService(ServerURL.URL, 3000);
+        service = ApplicationController.getInstance().getService();
 
         plantAdapter = new PlantRecyclerViewAdapter(plantItems, getApplicationContext());
         plantListView.setHasFixedSize(true);
@@ -102,16 +117,45 @@ public class InfoTab1Activity extends AppCompatActivity {
                     }
                 }));
 
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setEnabled(true);
+                //갱신 코드
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setEnabled(false);
+                    }
+                }, 1000);
+            }
+        });
+
         //화분의 개수에 따라 화면 변경
         if (AutoLoginManager.getInstance(getApplicationContext()).isLoggedIn()) {
             if (user.getCount_pot() == 0) {
                 nonePlantText.setVisibility(View.VISIBLE);
                 plantLayout.setVisibility(View.INVISIBLE);
-            }
-            else {
+            } else {
                 nonePlantText.setVisibility(View.VISIBLE);
                 plantLayout.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    public void getPlants() {
+        Call<List<PlantItem>> plantCall = service.getPlant(user.getUser_id());
+        plantCall.enqueue(new Callback<List<PlantItem>>() {
+            @Override
+            public void onResponse(Call<List<PlantItem>> call, Response<List<PlantItem>> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<List<PlantItem>> call, Throwable t) {
+                Toast.makeText(InfoTab1Activity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

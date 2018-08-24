@@ -34,7 +34,7 @@ public class DetailActivity extends AppCompatActivity {
     String plantNum = "";
     String plantImage = "";
 
-    TextView titleView, titleView2, textView1, textView2, textView3, textView4, textView5, textView6, textView7,
+    TextView titleView2, textView1, textView2, textView3, textView4, textView5, textView6, textView7,
             textView8, textView9, textView10, textView11;
     ImageView imageView;
 
@@ -50,7 +50,6 @@ public class DetailActivity extends AppCompatActivity {
 
         setTitle(plantName);
 
-        titleView = findViewById(R.id.title);
         titleView2 = findViewById(R.id.title2);
         imageView = findViewById(R.id.plant_image);
         textView1 = findViewById(R.id.text1);
@@ -65,7 +64,6 @@ public class DetailActivity extends AppCompatActivity {
         textView10 = findViewById(R.id.text10);
         textView11 = findViewById(R.id.text11);
 
-        titleView.setText(plantName);
         titleView2.setText(plantName);
         Glide.with(getApplicationContext()).load(plantImage).into(imageView);
 
@@ -206,17 +204,17 @@ public class DetailActivity extends AppCompatActivity {
                     detail[i] = "기타";
             }
 
-            textView1.setText("조언 정보 : " + detail[0]);
-            textView2.setText("비료 정보 : " + detail[10]);
-            textView3.setText("생육 온도 : " + detail[13]);
-            textView4.setText("겨울 최저 온도 : " + detail[47]);
-            textView5.setText("생장속도 : " + detail[14]);
-            textView6.setText("습도 : " + detail[15]);
-            textView7.setText("관리요구도 : " + detail[22]);
-            textView8.setText("물주기 봄 : " + detail[40]);
-            textView9.setText("물주기 여름 : " + detail[41]);
-            textView10.setText("물주기 가을 : " + detail[42]);
-            textView11.setText("물주기 겨울 : " + detail[43]);
+            textView1.setText("<조언 정보>\n" + detail[0]);
+            textView2.setText("<비료 정보>\n" + detail[10]);
+            textView3.setText("<생육 온도>\n" + detail[13]);
+            textView4.setText("<겨울 최저 온도>\n" + detail[47]);
+            textView5.setText("<생장속도>\n" + detail[14]);
+            textView6.setText("<습도>\n" + detail[15]);
+            textView7.setText("<관리요구도>\n" + detail[22]);
+            textView8.setText("<물주기 봄>\n" + detail[40]);
+            textView9.setText("<물주기 여름>\n" + detail[41]);
+            textView10.setText("<물주기 가을>\n" + detail[42]);
+            textView11.setText("<물주기 겨울>\n" + detail[43]);
         }
     }
 }

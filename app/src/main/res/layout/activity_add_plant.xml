@@ -8,13 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/progressbar"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:visibility="invisible" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -81,13 +74,13 @@
                         android:layout_marginLeft="15dp"
                         android:layout_toLeftOf="@id/search_plant_btn"
                         android:background="@android:color/transparent"
+                        android:completionThreshold="1"
                         android:gravity="left|center_vertical"
                         android:hint="@string/add_plant_text1"
                         android:maxLines="1"
                         android:paddingVertical="15dp"
                         android:textColor="@android:color/black"
-                        android:textSize="17sp"
-                        android:completionThreshold="1" />
+                        android:textSize="17sp" />
 
                     <ImageButton
                         android:id="@+id/search_plant_btn"
@@ -135,40 +128,14 @@
                             android:layout_marginRight="10dp" />
                     </LinearLayout>
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#BDBDBD" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:padding="15dp"
-                        android:text="@string/add_plant_text3"
-                        android:textColor="@android:color/black"
-                        android:textSize="17sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical|right"
-                        android:orientation="vertical">
-
-                        <Switch
-                            android:id="@+id/push_switch"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp" />
-                    </LinearLayout>
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
     </FrameLayout>
 </ScrollView>

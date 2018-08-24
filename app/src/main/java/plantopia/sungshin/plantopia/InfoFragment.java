@@ -28,9 +28,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
+import plantopia.sungshin.plantopia.User.ApplicationController;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
-import plantopia.sungshin.plantopia.User.UserData;
+import plantopia.sungshin.plantopia.User.Count;
+import plantopia.sungshin.plantopia.User.ServerURL;
+import plantopia.sungshin.plantopia.User.ServiceApiForUser;
 import plantopia.sungshin.plantopia.User.SignInActivity;
+import plantopia.sungshin.plantopia.User.UserData;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class InfoFragment extends android.support.v4.app.Fragment {
     static final int SETTING = 1;
@@ -43,6 +50,7 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     private Unbinder unbinder;
     Activity activity;
     Context context;
+    ServiceApiForUser service;
 
     @BindView(R.id.layout_need_login)
     LinearLayout needLoginLayout;
@@ -87,9 +95,18 @@ public class InfoFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab5, container, false);
         unbinder = ButterKnife.bind(this, view);
+        UserData user = AutoLoginManager.getInstance(context).getUser();
 
         //자동로그인이 되어있지 않을 경우 로그인 창으로 이동
         Log.d("로그인 여부", AutoLoginManager.getInstance(context).isLoggedIn() + "");
+        //서버 연결
+        ApplicationController applicationController = ApplicationController.getInstance();
+        applicationController.buildService(ServerURL.URL, 3000);
+        service = ApplicationController.getInstance().getService();
+
+        flowerpotCountText.setText(user.getCount_pot() + "");
+        diaryCountText.setText(user.getCount_diary() + "");
+        saveCountText.setText(user.getCount_scrap() + "");
 
         setLoginLayout(AutoLoginManager.getInstance(context).isLoggedIn());
 
@@ -118,6 +135,34 @@ public class InfoFragment extends android.support.v4.app.Fragment {
         });
 
         return view;
+    }
+
+    public void setCount() {
+        UserData user = AutoLoginManager.getInstance(context).getUser();
+
+        Call<Count> countCall = service.getCount(user.getUser_id());
+        countCall.enqueue(new Callback<Count>() {
+            @Override
+            public void onResponse(Call<Count> call, Response<Count> response) {
+                if (response.isSuccessful()) {
+                    flowerpotCountText.setText(String.valueOf(response.body().getPotCount()));
+                    diaryCountText.setText(String.valueOf(response.body().getDiaryCount()));
+                    saveCountText.setText(String.valueOf(response.body().getScrapCount()));
+
+                    AutoLoginManager.getInstance(context).setUserCount(
+                            response.body().getPotCount(),
+                            response.body().getDiaryCount(),
+                            response.body().getScrapCount()
+                    );
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Count> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(activity, R.string.name_error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -215,9 +260,7 @@ public class InfoFragment extends android.support.v4.app.Fragment {
                 Glide.with(context).load(user.getUser_img()).into(profileImg);
             }
 
-            flowerpotCountText.setText(String.valueOf(user.getCount_pot()));
-            diaryCountText.setText(String.valueOf(user.getCount_diary()));
-            saveCountText.setText(String.valueOf(user.getCount_scrap()));
+            setCount();
         } else {
             needLoginLayout.setVisibility(View.VISIBLE);
             loginLayout.setVisibility(View.GONE);

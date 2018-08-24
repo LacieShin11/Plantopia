@@ -51,6 +51,7 @@
         <activity android:name=".ModifyPlantActivity" />
         <activity android:name=".Search.DetailActivity" />
         <activity android:name=".Diray.ShowDiaryActivity" />
+        <activity android:name=".Diray.EditDiaryActivity" />
         <!--챗봇 연결-->
         <activity android:name=".ChatBot.Calathea"
             android:theme="@style/AppTheme.NoActionBar"></activity>

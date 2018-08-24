@@ -5,12 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class InfoTab2Activity extends AppCompatActivity {
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     @BindView(R.id.diary_list)
-    RecyclerView diaryList;
+    XRecyclerView diaryList;
     @BindView(R.id.none_diary_text)
     TextView noneDiaryText;
     List<DiaryItem> arrayList = new ArrayList<>();
@@ -52,6 +53,7 @@ public class InfoTab2Activity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         adapter = new DiaryRecyclerViewAdapter(arrayList, InfoTab2Activity.this);
+        getSupportActionBar().hide();
 
         //서버 연결
         ApplicationController applicationController = ApplicationController.getInstance();
@@ -64,6 +66,8 @@ public class InfoTab2Activity extends AppCompatActivity {
         //다이어리 아이템 채우기
         getDiaryItems(AutoLoginManager.getInstance(getApplicationContext()).getUser());
 
+        diaryList.setNoMore(true);
+        diaryList.setFootViewText("새로고침 중", "");
         diaryList.setAdapter(new AlphaInAnimationAdapter(alphaAdapter));
         diaryList.setHasFixedSize(true);
         diaryList.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
@@ -72,9 +76,9 @@ public class InfoTab2Activity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(InfoTab2Activity.this, ShowDiaryActivity.class);
-                intent.putExtra("content", arrayList.get(position).getDiary_content());
-                intent.putExtra("imgPath", arrayList.get(position).getDiary_img());
-                intent.putExtra("id", arrayList.get(position).getOwner_id());
+                intent.putExtra("content", arrayList.get(position - 1).getDiary_content());
+                intent.putExtra("imgPath", arrayList.get(position - 1).getDiary_img());
+                intent.putExtra("id", arrayList.get(position - 1).getOwner_id());
                 startActivityForResult(intent, SHOW_DIARY);
             }
 
@@ -84,15 +88,25 @@ public class InfoTab2Activity extends AppCompatActivity {
             }
         }));
 
-        getSupportActionBar().hide();
+        diaryList.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                getDiaryItems(AutoLoginManager.getInstance(getApplicationContext()).getUser());
+                diaryList.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                diaryList.setNoMore(true);
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        getDiaryItems(AutoLoginManager.getInstance(getApplicationContext()).getUser());
 
-        adapter.notifyDataSetChanged();
+        getDiaryItems(AutoLoginManager.getInstance(getApplicationContext()).getUser());
     }
 
     private void getDiaryItems(UserData userData) {
