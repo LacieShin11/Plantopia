@@ -10,6 +10,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +112,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
         postGallery.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), postGallery, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getContext(), postAdapter.getItem(position).getUrl(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), postAdapter.getItem(position).getUrl(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(postAdapter.getItem(position).getUrl()));
                 startActivity(intent);
             }
@@ -122,7 +125,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
         diyGallery.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), diyGallery, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getContext(), diyAdapter.getItem(position).getUrl(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), diyAdapter.getItem(position).getUrl(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(diyAdapter.getItem(position).getUrl()));
                 startActivity(intent);
             }
@@ -135,7 +138,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
         productGallery.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), productGallery, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(getContext(), productAdapter.getItem(position).getUrl(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), productAdapter.getItem(position).getUrl(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(productAdapter.getItem(position).getUrl()));
                 startActivity(intent);
             }
