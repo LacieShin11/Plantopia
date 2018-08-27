@@ -23,6 +23,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import java.util.Calendar;
 
 import plantopia.sungshin.plantopia.Diray.WriteNewDiaryActivity;
+import plantopia.sungshin.plantopia.FCM.MyFirebaseInstanceIDService;
 import plantopia.sungshin.plantopia.Music.MusicFragment;
 import plantopia.sungshin.plantopia.Search.SearchFragment;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //푸시 알림-firebase
-        //String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
 
         myToken= FirebaseInstanceId.getInstance().getToken(); //토큰 받아오기
 
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         } //토큰 받아오기-토큰 없으면 로그 띄우기
         else{
             Log.d(TAG, "refreshed = " + FirebaseInstanceId.getInstance().getToken());
-            //UserToken = MyFirebaseInstanceIDService.refreshedToken;
+            UserToken = MyFirebaseInstanceIDService.refreshedToken;
         }//myToken == null
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.actionbar_custom);

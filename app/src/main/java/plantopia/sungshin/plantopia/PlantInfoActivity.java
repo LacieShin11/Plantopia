@@ -1,15 +1,8 @@
 package plantopia.sungshin.plantopia;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +16,7 @@ import plantopia.sungshin.plantopia.ChatBot.Palm;
 import plantopia.sungshin.plantopia.ChatBot.Stuckyi;
 
 public class PlantInfoActivity extends AppCompatActivity {
-    String plantName, plantType;
+    String plantName, plantNickName, plantType;
     Double Temp, Light, Humidity;
     Double latestTemp, latestLight, latestHumidity;
 
@@ -34,7 +27,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //여기서 아두이노 정보 받은 후에, 1시간 간격으로 푸시 알람(값 전후로 비교해서)
-        NotificationSomethings();
+        //NotificationSomethings();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -51,16 +44,16 @@ public class PlantInfoActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent2 = getIntent();
-        plantType = intent2.getStringExtra("plantType");
-        plantName = intent2.getStringExtra("plantName");
+        plantType = intent2.getStringExtra("plantType");//식물 타입
+        plantName = intent2.getStringExtra("plantName");//식물 애칭
         Temp = intent2.getDoubleExtra("Temp", 30);
         Light = intent2.getDoubleExtra("Light", 3);
         Humidity = intent2.getDoubleExtra("Humidity", 300);
 
-        //여기까진 정보 잘 받아옴..테스팅
+        /*//여기까진 정보 잘 받아옴..테스팅
         Toast.makeText(getApplicationContext(), Temp.toString(), Toast.LENGTH_SHORT).show();
         Toast.makeText(getApplicationContext(), Light.toString(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), Humidity.toString(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), Humidity.toString(), Toast.LENGTH_SHORT).show();*/
 
         switch (item.getItemId()) {
             case R.id.menu_chat: //챗봇 누르기
@@ -92,14 +85,16 @@ public class PlantInfoActivity extends AppCompatActivity {
                     intent.putExtra("Light", Light);
                     intent.putExtra("Humidity", Humidity);
                     startActivityForResult(intent, RESULT_OK);
-                }else if(plantType.equals("죽백")){
+                }else if(plantType.equals("죽백나무")){
                     Intent intent = new Intent(PlantInfoActivity.this, Nagi.class);
                     intent.putExtra("plantName", plantName);
                     intent.putExtra("Temp", Temp);
                     intent.putExtra("Light", Light);
                     intent.putExtra("Humidity", Humidity);
                     startActivityForResult(intent, RESULT_OK);
-                }
+                }else{
+                    Toast.makeText(getApplicationContext(), "아직 인간의 언어를 배우고 있는 중입니다. 조금만 더 기다려주세요", Toast.LENGTH_LONG).show();
+                } //다섯 종류의 식물 이외는 아직 챗봇 준비 중
                 break;
             case R.id.menu_setting:
                 startActivity(new Intent(PlantInfoActivity.this, ModifyPlantActivity.class));
@@ -111,7 +106,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //푸시 알람 함수
+   /* //푸시 알람 함수
     public void NotificationSomethings() {
         //식물 정보 받아오기
         Intent intent3 = getIntent();
@@ -145,5 +140,5 @@ public class PlantInfoActivity extends AppCompatActivity {
 
         NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(1234, builder.build());
-    }
+    }*/
 }

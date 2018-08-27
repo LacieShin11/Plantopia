@@ -33,8 +33,8 @@ public class Calathea extends AppCompatActivity {
 
     private static final String TAG = "CHATBOTTUTORIAL";
     private ChatBotDBAdapter chatBotDbHelper; // db 관련 객체
-    public static final String PLANT_NAME = "CALATHEA";
-    public static final String PLANT_NICKNAME = "칼라"; //임의로 지정한 유저 이름
+    public static final String PLANT_TYPE = "CALATHEA"; //식물 종류-PLANT_NAME이 아니라 PLANT_TYPE으로 변경
+    String PLANT_NAME; //식물 애칭
     ListView m_ListView;
     ChatbotAdapter m_Adapter;
     String formatTime;
@@ -73,10 +73,38 @@ public class Calathea extends AppCompatActivity {
         //액션바에 식물 애칭 넣기
         //Intent intent = getIntent();
         setTitle(intent.getStringExtra("plantName"));
+        PLANT_NAME = intent.getStringExtra("plantName");
         Temp = intent.getDoubleExtra("Temp", 30);
         Light = intent.getDoubleExtra("Light", 3);
         Humidity = intent.getDoubleExtra("Humidity", 300);
         //아두이노에서 현재 값 받아오기
+
+        //만약 현재 정보가 원래의 생육 정보랑 다르다면 푸시 알람
+//        if(Temp < 13) {
+           /* Intent intentPush = new Intent(Calathea.this, PersistentService.class);
+            intentPush.putExtra("Temp", Temp);
+            startActivityForResult(intentPush, RESULT_OK);*/
+       /*// }else if(Temp > 25){
+            Intent intentPush = new Intent(Calathea.this, PersistentService.class);
+            intentPush.putExtra("Temp", Temp);
+            startActivityForResult(intentPush, RESULT_OK);
+        }else if(Light < 800){
+            Intent intentPush = new Intent(Calathea.this, PersistentService.class);
+            intentPush.putExtra("Light", Light);
+            startActivityForResult(intentPush, RESULT_OK);
+        }else if(Light > 10000){
+            Intent intentPush = new Intent(Calathea.this, PersistentService.class);
+            intentPush.putExtra("Light", Light);
+            startActivityForResult(intentPush, RESULT_OK);
+        }else if(Humidity < 0.4){
+            Intent intentPush = new Intent(Calathea.this, PersistentService.class);
+            intentPush.putExtra("Humidity", Light);
+            startActivityForResult(intentPush, RESULT_OK);
+        }else if(Humidity > 0.7){
+            Intent intentPush = new Intent(Calathea.this, PersistentService.class);
+            intentPush.putExtra("Light", Light);
+            startActivityForResult(intentPush, RESULT_OK);
+        }*/
 
         // 어댑터 생성
         m_Adapter = new ChatbotAdapter();
@@ -198,12 +226,12 @@ public class Calathea extends AppCompatActivity {
                     final String timeText = "\n\n" + formatTime;
                     inputText2 += timeText;
 
-                    if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
-                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
-                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText2, 1, formatDate, formatTime); //db에 넣기
+                    if(chatBotDbHelper.isEmpty(PLANT_TYPE,PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate,PLANT_TYPE,PLANT_NAME)) {
+                        chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                        chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, inputText2, 1, formatDate, formatTime); //db에 넣기
                         //첫 대화 시 날짜 띄우기(해당 디비 내역이 비어있을 시, 그리고 db에 그 날짜에 대화한 목록이 없을 때 날짜 띄우기(db에 내용은 있는데)
                     }else {
-                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText2, 1, formatDate, formatTime); //db에 넣기
+                        chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, inputText2, 1, formatDate, formatTime); //db에 넣기
                     }
 /*
 
@@ -255,7 +283,7 @@ public class Calathea extends AppCompatActivity {
                     userInput.setText("");
                     m_Adapter.notifyDataSetChanged();
 
-                    if(!chatBotDbHelper.isEmpty(PLANT_NAME)) {
+                    if(!chatBotDbHelper.isEmpty(PLANT_TYPE, PLANT_NAME)) {
                         setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
                     }
                     else {
@@ -284,18 +312,17 @@ public class Calathea extends AppCompatActivity {
 
                                 @Override
                                 public void run() {
-
-                                    if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
-                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
-                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText+context, 0, formatDate, formatTime); //db에 넣기
+                                    if(chatBotDbHelper.isEmpty(PLANT_TYPE, PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate, PLANT_TYPE, PLANT_NAME)) {
+                                        chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                                        chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, outputText, 0, formatDate, formatTime); //db에 넣기
                                         //첫 대화 시 날짜 띄우기(해당 디비 내역이 비어있을 시, 그리고 db에 그 날짜에 대화한 목록이 없을 때 날짜 띄우기(db에 내용은 있는데)
                                     }else {
-                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText+context, 0, formatDate, formatTime); //db에 넣기
+                                        chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, outputText, 0, formatDate, formatTime); //db에 넣기
                                     }
 
                                     m_Adapter.notifyDataSetChanged();
 
-                                    if(!chatBotDbHelper.isEmpty(PLANT_NAME)) {
+                                    if(!chatBotDbHelper.isEmpty(PLANT_TYPE, PLANT_NAME)) {
                                         setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
                                     }
                                 }
@@ -313,7 +340,7 @@ public class Calathea extends AppCompatActivity {
         });
 
         m_Adapter.notifyDataSetChanged();
-        if(!chatBotDbHelper.isEmpty(PLANT_NAME)) {
+        if(!chatBotDbHelper.isEmpty(PLANT_TYPE, PLANT_NAME)) {
             setListItem();
         }
 
@@ -323,10 +350,10 @@ public class Calathea extends AppCompatActivity {
     public void setListItem() {
         m_Adapter.clear();
 
-        String[] talks = chatBotDbHelper.displayTalking(PLANT_NAME); //대화내용
-        String[] times = chatBotDbHelper.displayTime(PLANT_NAME); //시간
-        Integer[] types = chatBotDbHelper.displayType(PLANT_NAME); // 타입
-        String[] dates = chatBotDbHelper.displayDate(PLANT_NAME); // 날짜
+        String[] talks = chatBotDbHelper.displayTalking(PLANT_TYPE, PLANT_NAME); //대화내용
+        String[] times = chatBotDbHelper.displayTime(PLANT_TYPE, PLANT_NAME); //시간
+        Integer[] types = chatBotDbHelper.displayType(PLANT_TYPE, PLANT_NAME); // 타입
+        String[] dates = chatBotDbHelper.displayDate(PLANT_TYPE, PLANT_NAME); // 날짜
         //adapter를 통한 값 전달
 
         for (int i = 0; i < talks.length; i++) {

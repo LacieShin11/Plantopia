@@ -60,9 +60,9 @@ public class ChatBotDBAdapter {
         mDB.close();
     }//DB닫기
 
-    public boolean isEmpty(String plant){
+    public boolean isEmpty(String plant, String plant_nick){
         int i=0;
-        Cursor c = mDB.rawQuery("Select * from CHATBOTTABLE where PLANT='" + plant + "';", null);
+        Cursor c = mDB.rawQuery("Select * from CHATBOTTABLE where PLANT='" + plant + "' and PLANT_NICK = '" + plant_nick + "';", null);
 
         String talking[] = new String[c.getCount()];
 
@@ -87,9 +87,9 @@ public class ChatBotDBAdapter {
         return mDB.insert(_TABLENAME, null, values);
     } //DB에 내용 추가
 
-    public String[] displayTalking(String plant) {
+    public String[] displayTalking(String plant, String plant_nick) {
         int i=0;
-        Cursor c = mDB.rawQuery("Select * from CHATBOTTABLE where PLANT='" + plant + "';", null);
+        Cursor c = mDB.rawQuery("Select * from CHATBOTTABLE where PLANT='" + plant + "' and PLANT_NICK='" + plant_nick + "';", null);
         String[] talking = new String[c.getCount()];
 
         while(c.moveToNext()){
@@ -99,21 +99,21 @@ public class ChatBotDBAdapter {
         return talking;
     }//대화목록 반환하기
 
-    public Integer[] displayType(String plant) {
+    public Integer[] displayType(String plant, String plant_nick) {
         int i=0;
-        Cursor c = mDB.rawQuery("Select * from CHATBOTTABLE where PLANT='" + plant + "';", null);
+        Cursor c = mDB.rawQuery("Select * from CHATBOTTABLE where PLANT='" + plant + "' and PLANT_NICK='" + plant_nick + "';", null);
         Integer[] type = new Integer[c.getCount()];
 
         while(c.moveToNext()){
             type[i] = (c.getInt(c.getColumnIndex("messagetype")));
             i++;
-        } //커서 객체 이용해서 테이블의 talking 내용 가져오기
+        }
         return type;
     }//타입-0,1,2값 받아오기
 
-    public boolean isCheckDatelog(String date){
+    public boolean isCheckDatelog(String date, String plant, String plant_nick){
         int i=0;
-        Cursor c = mDB.rawQuery("Select * from CHATBOTTABLE where DATE='" + date + "';", null);
+        Cursor c = mDB.rawQuery("Select * from CHATBOTTABLE where DATE='" + date + "' and PLANT = '" + plant + "' and PLANT_NICK='" + plant_nick + "';", null);
 
         String dates[] = new String[c.getCount()];
 
@@ -126,9 +126,9 @@ public class ChatBotDBAdapter {
         else return false;
     }
 
-    public String[] displayTime(String plant){
+    public String[] displayTime(String plant, String plant_nick){
         int i=0;
-        Cursor c = mDB.rawQuery("Select * from CHATBOTTABLE where PLANT='" + plant + "';", null);
+        Cursor c = mDB.rawQuery("Select * from CHATBOTTABLE where PLANT='" + plant + "' and PLANT_NICK='" + plant_nick + "';", null);
         String[] times = new String[c.getCount()];
 
         while(c.moveToNext()){
@@ -138,9 +138,9 @@ public class ChatBotDBAdapter {
         return times;
     }//시간 받아오기
 
-    public String[] displayDate(String plant){
+    public String[] displayDate(String plant, String plant_nick){
         int i=0;
-        Cursor c = mDB.rawQuery("Select * from CHATBOTTABLE where PLANT='" + plant + "';", null);
+        Cursor c = mDB.rawQuery("Select * from CHATBOTTABLE where PLANT='" + plant + "' and PLANT_NICK='" + plant_nick + "';", null);
         String[] dates = new String[c.getCount()];
 
         while(c.moveToNext()){

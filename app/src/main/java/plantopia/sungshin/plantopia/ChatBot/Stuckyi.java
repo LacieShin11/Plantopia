@@ -1,8 +1,6 @@
 package plantopia.sungshin.plantopia.ChatBot;
 
 import android.app.AlarmManager;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -35,8 +33,8 @@ public class Stuckyi extends AppCompatActivity {
     private AlarmManager al;
     private static final String TAG = "CHATBOTTUTORIAL";
     private ChatBotDBAdapter chatBotDbHelper; // db 관련 객체
-    public static final String PLANT_NAME = "STUCKYI";
-    public static final String PLANT_NICKNAME = "스투키"; //임의로 지정한 유저 이름
+    public static final String PLANT_TYPE = "STUCKYI";
+    String PLANT_NAME;// = "스투키"; //임의로 지정한 유저 이름
     ListView m_ListView;
     ChatbotAdapter m_Adapter;
     String formatTime;
@@ -50,7 +48,7 @@ public class Stuckyi extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_chat);
 
-        //푸시 알림 시 바로 채팅방으로 이동
+       /* //푸시 알림 시 바로 채팅방으로 이동
         al = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 
             CharSequence s = "전달 받은 값은 ";
@@ -73,7 +71,7 @@ public class Stuckyi extends AppCompatActivity {
 
             //노티피케이션 제거
             nm.cancel(id);
-
+*/
         //네트워크 연결 유무 확인
         NetworkInfo mNetworkState = getNetworkInfo();
 
@@ -83,6 +81,7 @@ public class Stuckyi extends AppCompatActivity {
 
         //액션바에 식물 애칭 넣기
         Intent intent = getIntent();
+        PLANT_NAME = intent.getStringExtra("plantName");
         Temp = intent.getDoubleExtra("Temp", 30);
         Light = intent.getDoubleExtra("Light", 3);
         Humidity = intent.getDoubleExtra("Humidity", 300);
@@ -164,17 +163,17 @@ public class Stuckyi extends AppCompatActivity {
                     final String timeText = "\n\n" + formatTime;
                     inputText2 += timeText;
 
-                    if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
-                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
-                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText2, 1, formatDate, formatTime); //db에 넣기
+                    if(chatBotDbHelper.isEmpty(PLANT_TYPE,PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate,PLANT_TYPE,PLANT_NAME)) {
+                        chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                        chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, inputText2, 1, formatDate, formatTime); //db에 넣기
                         //첫 대화 시 날짜 띄우기(해당 디비 내역이 비어있을 시, 그리고 db에 그 날짜에 대화한 목록이 없을 때 날짜 띄우기(db에 내용은 있는데)
                     }else {
-                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText2, 1, formatDate, formatTime); //db에 넣기
+                        chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, inputText2, 1, formatDate, formatTime); //db에 넣기
                     }
                     //chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText2, 1, formatDate, formatTime); //db에 넣기
                     userInput.setText("");
                     m_Adapter.notifyDataSetChanged();
-                    if(!chatBotDbHelper.isEmpty(PLANT_NAME)) setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
+                    if(!chatBotDbHelper.isEmpty(PLANT_TYPE,PLANT_NAME)) setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
 
                     myConversationService.message(getString(R.string.stuckyi_workspace), request).enqueue(new ServiceCallback<MessageResponse>() {
                         @Override
@@ -197,16 +196,16 @@ public class Stuckyi extends AppCompatActivity {
                                 @Override
                                 public void run() {
 
-                                    if(chatBotDbHelper.isEmpty(PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate)) {
-                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, formatDate, 2, formatDate, formatTime); //db에 넣기
-                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText+context, 0, formatDate, formatTime); //db에 넣기
+                                    if(chatBotDbHelper.isEmpty(PLANT_TYPE,PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate,PLANT_TYPE,PLANT_NAME)) {
+                                        chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                                        chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, outputText, 0, formatDate, formatTime); //db에 넣기
                                         //첫 대화 시 날짜 띄우기(해당 디비 내역이 비어있을 시, 그리고 db에 그 날짜에 대화한 목록이 없을 때 날짜 띄우기(db에 내용은 있는데)
                                     }else {
-                                        chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText+context, 0, formatDate, formatTime); //db에 넣기
+                                        chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, outputText, 0, formatDate, formatTime); //db에 넣기
                                     }
                                     //chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, outputText, 0, formatDate, formatTime); //db에 넣기
                                     m_Adapter.notifyDataSetChanged();
-                                    if(!chatBotDbHelper.isEmpty(PLANT_NAME)) setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
+                                    if(!chatBotDbHelper.isEmpty(PLANT_TYPE,PLANT_NAME)) setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
 
                                 }
                             });
@@ -224,17 +223,17 @@ public class Stuckyi extends AppCompatActivity {
         });
 
         m_Adapter.notifyDataSetChanged();
-        if(!chatBotDbHelper.isEmpty(PLANT_NAME)) setListItem();
+        if(!chatBotDbHelper.isEmpty(PLANT_TYPE,PLANT_NAME)) setListItem();
         //앱 껐다 켜도 db저장된 거 나올 수 있도록
     }
 
     public void setListItem() {
         m_Adapter.clear();
 
-        String[] talks = chatBotDbHelper.displayTalking(PLANT_NAME); //대화내용
-        String[] times = chatBotDbHelper.displayTime(PLANT_NAME); //시간
-        Integer[] types = chatBotDbHelper.displayType(PLANT_NAME); // 타입
-        String[] dates = chatBotDbHelper.displayDate(PLANT_NAME); // 날짜
+        String[] talks = chatBotDbHelper.displayTalking(PLANT_TYPE,PLANT_NAME); //대화내용
+        String[] times = chatBotDbHelper.displayTime(PLANT_TYPE,PLANT_NAME); //시간
+        Integer[] types = chatBotDbHelper.displayType(PLANT_TYPE,PLANT_NAME); // 타입
+        String[] dates = chatBotDbHelper.displayDate(PLANT_TYPE,PLANT_NAME); // 날짜
         //adapter를 통한 값 전달
 
         for (int i = 0; i < talks.length; i++) {

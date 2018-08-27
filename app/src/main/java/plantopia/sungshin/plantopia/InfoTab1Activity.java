@@ -15,8 +15,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import retrofit2.Call;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +26,7 @@ import plantopia.sungshin.plantopia.User.ServerURL;
 import plantopia.sungshin.plantopia.User.ServiceApiForUser;
 import plantopia.sungshin.plantopia.User.UserData;
 import plantopia.sungshin.plantopia.customView.RecyclerItemClickListener;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 

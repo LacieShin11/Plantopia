@@ -95,9 +95,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService{
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setContentTitle("누군가이(가) 당신에게 할 말이 있는 것 같군요") //제목
-                        .setSmallIcon(R.mipmap.ic_launcher) //아이콘
-                        .setContentText(messageBody) //messageBody로 설정하면 파이어베이스에서 보낸 메시지가 나오게 됨
+                        .setContentTitle("오로야이(가) 당신에게 할 말이 있는 것 같군요") //제목
+                        .setSmallIcon(R.drawable.round_logo) //아이콘
+                        .setContentText("나 너무 춥거든? 흥") //messageBody로 설정하면 파이어베이스에서 보낸 메시지가 나오게 됨
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent); //누르면 어디로 갈 지
