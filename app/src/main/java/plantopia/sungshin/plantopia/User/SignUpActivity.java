@@ -63,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
         String passwordConfirm = mPwdConfirmView.getText().toString();
         String userToken = MainActivity.UserToken; //내 기기의 토큰값 받아오기
 
-        //boolean ischeckToken = false;
+        boolean ischeckToken = false;
         boolean cancel = false;
         View focusView = null;
 

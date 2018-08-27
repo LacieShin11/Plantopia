@@ -37,13 +37,14 @@ public interface ServiceApiForUser {
 
     // 식물 정보 보내기
 
-    //푸시 알림보내기
+    //푸시 알림보내기--수정 필요
     @POST("/user/push")
     Call<UserData> pushAlert(@Body UserData user);
 
     // 푸시 알림 체크
     @POST("/user/pushCheck")
     Call<UserData> checkToken(@Body UserData userToken);
+
     @POST("/plant/add")
     Call<UserData> addPlant(@Body PlantItem plantItem);
 

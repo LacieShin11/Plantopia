@@ -62,6 +62,32 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
+    //푸시 알람--어케 짜냐 대체... 막 지었음 수정 필요
+    public void pushAlert(String Token){
+        //progressBar.setVisibility(View.VISIBLE);
+        UserData userData = new UserData();
+        userData.getUser_device();//.setUser_device(Token);
+        //토큰값을 저장
+
+        Call<UserData> userDataCall = service2.pushAlert(userData);
+
+        userDataCall.enqueue(new Callback<UserData>() {
+            @Override
+            public void onResponse(Call<UserData> call, Response<UserData> response) {
+                //progressBar.setVisibility(View.INVISIBLE);
+
+                UserData pushAlert = response.body(); //받아온 데이터 받을 객체
+                Log.d("pushAlert", pushAlert.getMsg());
+
+            }
+
+            @Override
+            public void onFailure(Call<UserData> call, Throwable t) {
+                //progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
     //토큰 중복 확인
     public boolean checkToken(String Token){
         //progressBar.setVisibility(View.VISIBLE);

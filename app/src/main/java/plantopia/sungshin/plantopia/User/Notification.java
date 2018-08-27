@@ -1,3 +1,4 @@
+/*
 package plantopia.sungshin.plantopia.User;
 
 import android.app.Activity;
@@ -36,3 +37,4 @@ public class Notification  extends Activity {
         nm.cancel(id);
     }
 }
+*/
