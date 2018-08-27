@@ -3,9 +3,11 @@ package plantopia.sungshin.plantopia.User;
 import java.util.List;
 
 import plantopia.sungshin.plantopia.Diray.DiaryItem;
+import plantopia.sungshin.plantopia.Diray.ScrapItem;
 import plantopia.sungshin.plantopia.PlantItem;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -62,4 +64,16 @@ public interface ServiceApiForUser {
 
     @GET("/user/count/{user_id}")
     Call<Count> getCount(@Path("user_id") int userId);
+
+    @DELETE("/diary/delete/{diary_id}")
+    Call<UserData> deleteDiary(@Path("diary_id") int diaryId);
+
+    @POST("/scrap/add")
+    Call<UserData> addScrap(@Body ScrapItem scrapItem);
+
+    @POST("/scrap/get")
+    Call<List<ScrapItem>> getScrap(@Body UserData userData);
+
+    @DELETE("/scrap/delete/{scrap_id}")
+    Call<UserData> deleteScrap(@Path("scrap_id") int scrapId);
 }

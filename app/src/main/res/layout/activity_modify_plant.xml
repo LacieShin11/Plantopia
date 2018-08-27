@@ -140,7 +140,7 @@
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="left|center_vertical"
                 android:paddingHorizontal="15dp"
-                android:text="@string/add_plant_text3"
+                android:text="식물 삭제"
                 android:textColor="@android:color/black"
                 android:textSize="17sp" />
 

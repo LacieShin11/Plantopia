@@ -44,17 +44,15 @@
     <string name="skip_msg">닉네임과 프로필 사진 설정을 생략하시겠습니까? (이후 프로필 설정에서 수정이 가능합니다.)</string>
     <string name="profile_intro">Plantopia에서 사용할 프로필을 설정해주세요!</string>
 
-    <string name="plant_state1">&quot; 물 주세요! &quot;</string>
-    <string name="plant_state2">&quot; 햇빛이 필요해요! &quot;</string>
-    <string name="plant_state3">&quot; 너무 건조해요! &quot;</string>
-    <string name="plant_state4">&quot; 너무 더워요! &quot;</string>
-    <string name="plant_state5">&quot; 너무 추워요! &quot;</string>
-    <string name="plant_state6">&quot; 몸상태가 최악이예요... &quot;</string>
-    <string name="plant_state7">&quot; 기분이 좋아요! &quot;</string>
+    <string name="plant_state1">&quot; 몸상태가 최악이에요... &quot;</string>
+    <string name="plant_state2">&quot; 기분이 좋아요! &quot;</string>
+    <string name="plant_state3">" 식물 정보를 불러올 수 없습니다 "</string>
 
     <string name="state_good">GOOD</string>
+    <string name="state_high">HIGH!</string>
     <string name="state_bad">BAD</string>
     <string name="state_low">LOW!</string>
+    <string name="state_none">NO DATA</string>
 
     <string name="need_login">로그인이 필요합니다.</string>
     <string name="need_login2">Plantopia의 식물 관리 서비스를 \n이용하기 위해선 로그인이 필요합니다.</string>

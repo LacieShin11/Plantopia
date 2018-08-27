@@ -204,17 +204,17 @@ public class DetailActivity extends AppCompatActivity {
                     detail[i] = "기타";
             }
 
-            textView1.setText("<조언 정보>\n" + detail[0]);
-            textView2.setText("<비료 정보>\n" + detail[10]);
-            textView3.setText("<생육 온도>\n" + detail[13]);
-            textView4.setText("<겨울 최저 온도>\n" + detail[47]);
-            textView5.setText("<생장속도>\n" + detail[14]);
-            textView6.setText("<습도>\n" + detail[15]);
-            textView7.setText("<관리요구도>\n" + detail[22]);
-            textView8.setText("<물주기 봄>\n" + detail[40]);
-            textView9.setText("<물주기 여름>\n" + detail[41]);
-            textView10.setText("<물주기 가을>\n" + detail[42]);
-            textView11.setText("<물주기 겨울>\n" + detail[43]);
+            textView1.setText(detail[0]);
+            textView2.setText(detail[10]);
+            textView3.setText(detail[13]);
+            textView4.setText(detail[47]);
+            textView5.setText(detail[14]);
+            textView6.setText(detail[15]);
+            textView7.setText(detail[22]);
+            textView8.setText(detail[40]);
+            textView9.setText(detail[41]);
+            textView10.setText(detail[42]);
+            textView11.setText(detail[43]);
         }
     }
 }

@@ -216,6 +216,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                 for (int j = 0; j < result_title_list.size(); j++) {
                     String title = result_title_list.get(j).replace("<b>", "");
                     title = title.replace("</b>", "");
+                    title = title.substring(1, title.length() - 1);
                     result_title_list.set(j, title);
                 }
 
@@ -321,6 +322,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                 for (int j = 0; j < resultTitleList.size(); j++) {
                     String title = resultTitleList.get(j).replace("<b>", "");
                     title = title.replace("</b>", "");
+                    title = title.substring(1, title.length() - 1);
                     resultTitleList.set(j, title);
                 }
 
@@ -428,6 +430,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                 for (int j = 0; j < resultTitleList.size(); j++) {
                     String title = resultTitleList.get(j).replace("<b>", "");
                     title = title.replace("</b>", "");
+                    title = title.substring(1, title.length() - 1);
                     resultTitleList.set(j, title);
                 }
 

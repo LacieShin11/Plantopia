@@ -41,7 +41,8 @@ public class Stuckyi extends AppCompatActivity {
     String formatDate;
     Map context;
     //Double Temper; //현재 식물의 성격 상태
-    Double Temp, Light, Humidity; //아두이노로부터 받아온 현재 식물 정보
+    Double Temp, Light, Humidity, MaxTemp, MinTemp, MaxLight, MinLight, MaxHumidity, MinHumidity; //아두이노로부터 받아온 현재 식물 정보
+    int isConnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,10 +82,17 @@ public class Stuckyi extends AppCompatActivity {
 
         //액션바에 식물 애칭 넣기
         Intent intent = getIntent();
+        isConnected = intent.getIntExtra("isConnected", 0);
         PLANT_NAME = intent.getStringExtra("plantName");
-        Temp = intent.getDoubleExtra("Temp", 30);
-        Light = intent.getDoubleExtra("Light", 3);
-        Humidity = intent.getDoubleExtra("Humidity", 300);
+        Temp = intent.getDoubleExtra("Temp", 0);
+        Light = intent.getDoubleExtra("Light", 0);
+        Humidity = intent.getDoubleExtra("Humidity", 0);
+        MaxTemp = intent.getDoubleExtra("MaxTemp", 0);
+        MinTemp = intent.getDoubleExtra("MinTemp", 0);
+        MaxLight = intent.getDoubleExtra("MaxLight", 0);
+        MinLight = intent.getDoubleExtra("MinLight", 0);
+        MaxHumidity = intent.getDoubleExtra("MaxHumidity", 0);
+        MinHumidity = intent.getDoubleExtra("MinHumidity", 0);
         //아두이노에서 현재 값 받아오기
 
         // 툴바 생성
@@ -153,9 +161,17 @@ public class Stuckyi extends AppCompatActivity {
                     }
 
                     //context로 아두이노로부터 받은 실시간 정보 넣기
+                    context.put("isConnected", isConnected);
                     context.put("Temp",Temp);
                     context.put("Light", Light);
                     context.put("Humidity", Humidity);
+                    context.put("MaxTemp", MaxTemp);
+                    context.put("MinTemp", MinTemp);
+                    context.put("MaxLight", MaxLight);
+                    context.put("MinLight", MinLight);
+                    context.put("MaxHumidity", MaxHumidity);
+                    context.put("MinHumidity", MinHumidity);
+
                     //context.put("Temper", Temper);
 
                     final MessageRequest request = new MessageRequest.Builder().inputText(inputText).context(context).build();

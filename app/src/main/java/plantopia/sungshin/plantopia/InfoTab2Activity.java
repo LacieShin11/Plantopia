@@ -2,16 +2,16 @@ package plantopia.sungshin.plantopia;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +38,10 @@ public class InfoTab2Activity extends AppCompatActivity {
     DiaryRecyclerViewAdapter adapter;
     ServiceApiForUser service;
 
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
+    @BindView(R.id.swipe_container)
+    SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.diary_list)
-    XRecyclerView diaryList;
+    RecyclerView diaryList;
     @BindView(R.id.none_diary_text)
     TextView noneDiaryText;
     List<DiaryItem> arrayList = new ArrayList<>();
@@ -66,8 +66,8 @@ public class InfoTab2Activity extends AppCompatActivity {
         //다이어리 아이템 채우기
         getDiaryItems(AutoLoginManager.getInstance(getApplicationContext()).getUser());
 
-        diaryList.setNoMore(true);
-        diaryList.setFootViewText("새로고침 중", "");
+//        swipeRefreshLayout.setRefreshing(true);
+//        swipeRefreshLayout.setVerticalScrollBarEnabled(true);
         diaryList.setAdapter(new AlphaInAnimationAdapter(alphaAdapter));
         diaryList.setHasFixedSize(true);
         diaryList.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
@@ -76,9 +76,10 @@ public class InfoTab2Activity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(InfoTab2Activity.this, ShowDiaryActivity.class);
-                intent.putExtra("content", arrayList.get(position - 1).getDiary_content());
-                intent.putExtra("imgPath", arrayList.get(position - 1).getDiary_img());
-                intent.putExtra("id", arrayList.get(position - 1).getOwner_id());
+                intent.putExtra("content", arrayList.get(position).getDiary_content());
+                intent.putExtra("imgPath", arrayList.get(position).getDiary_img());
+                intent.putExtra("id", arrayList.get(position).getOwner_id());
+                intent.putExtra("diaryId", arrayList.get(position).getDiary_id());
                 startActivityForResult(intent, SHOW_DIARY);
             }
 
@@ -88,18 +89,22 @@ public class InfoTab2Activity extends AppCompatActivity {
             }
         }));
 
-        diaryList.setLoadingListener(new XRecyclerView.LoadingListener() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                swipeRefreshLayout.setEnabled(true);
+               swipeRefreshLayout.setRefreshing(true);
                 getDiaryItems(AutoLoginManager.getInstance(getApplicationContext()).getUser());
-                diaryList.refreshComplete();
-            }
 
-            @Override
-            public void onLoadMore() {
-                diaryList.setNoMore(true);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getDiaryItems(AutoLoginManager.getInstance(getApplicationContext()).getUser());
+                    }
+                }, 800);
             }
         });
+
     }
 
     @Override
@@ -110,13 +115,10 @@ public class InfoTab2Activity extends AppCompatActivity {
     }
 
     private void getDiaryItems(UserData userData) {
-        progressBar.setVisibility(View.VISIBLE);
-
         Call<List<DiaryItem>> diaryCall = service.getDiary(userData.getUser_id());
         diaryCall.enqueue(new Callback<List<DiaryItem>>() {
             @Override
             public void onResponse(Call<List<DiaryItem>> call, Response<List<DiaryItem>> response) {
-                progressBar.setVisibility(View.INVISIBLE);
                 if (response.isSuccessful()) {
                     arrayList = response.body();
                     setDiaryItems();
@@ -126,7 +128,6 @@ public class InfoTab2Activity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<DiaryItem>> call, Throwable t) {
-                progressBar.setVisibility(View.INVISIBLE);
                 t.printStackTrace();
                 Log.d("실패", t.getMessage());
                 Toast.makeText(InfoTab2Activity.this, getString(R.string.name_error), Toast.LENGTH_SHORT).show();
@@ -154,5 +155,7 @@ public class InfoTab2Activity extends AppCompatActivity {
             noneDiaryText.setVisibility(View.INVISIBLE);
             diaryList.setVisibility(View.VISIBLE);
         }
+
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

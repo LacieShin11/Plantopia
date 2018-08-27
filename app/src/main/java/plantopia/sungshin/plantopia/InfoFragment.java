@@ -137,8 +137,8 @@ public class InfoFragment extends android.support.v4.app.Fragment {
         return view;
     }
 
-    public void setCount() {
-        UserData user = AutoLoginManager.getInstance(context).getUser();
+    public void setCount(final Context mContext) {
+        UserData user = AutoLoginManager.getInstance(mContext).getUser();
 
         Call<Count> countCall = service.getCount(user.getUser_id());
         countCall.enqueue(new Callback<Count>() {
@@ -149,7 +149,7 @@ public class InfoFragment extends android.support.v4.app.Fragment {
                     diaryCountText.setText(String.valueOf(response.body().getDiaryCount()));
                     saveCountText.setText(String.valueOf(response.body().getScrapCount()));
 
-                    AutoLoginManager.getInstance(context).setUserCount(
+                    AutoLoginManager.getInstance(mContext).setUserCount(
                             response.body().getPotCount(),
                             response.body().getDiaryCount(),
                             response.body().getScrapCount()
@@ -260,7 +260,7 @@ public class InfoFragment extends android.support.v4.app.Fragment {
                 Glide.with(context).load(user.getUser_img()).into(profileImg);
             }
 
-            setCount();
+            setCount(context);
         } else {
             needLoginLayout.setVisibility(View.VISIBLE);
             loginLayout.setVisibility(View.GONE);

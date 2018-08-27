@@ -130,6 +130,7 @@ public class SearchFragment extends android.support.v4.app.Fragment {
                 byte[] bytes = new byte[4096];
                 InputStream in = conn.getInputStream();
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
                 while (true) {
                     int red = in.read(bytes);
                     if (red < 0) break;

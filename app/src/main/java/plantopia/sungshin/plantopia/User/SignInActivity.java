@@ -78,7 +78,6 @@ public class SignInActivity extends AppCompatActivity {
 
                 UserData pushAlert = response.body(); //받아온 데이터 받을 객체
                 Log.d("pushAlert", pushAlert.getMsg());
-
             }
 
             @Override

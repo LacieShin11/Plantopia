@@ -1,13 +1,27 @@
 package plantopia.sungshin.plantopia;
 
-public class PlantItem {
-    private int owner_id;
+import java.io.Serializable;
+
+public class PlantItem implements Serializable{
+    private int owner_id, plant_id;
     private String plant_name;
     private String plant_type;
     private String plantNumber; //xml에서 구분하는 데 필요한, 식물 구분 번호
     private String plant_img;
     private double winterMinTemp, temp_max, temp_min, light_max, light_min, humidity_max, humidity_min, temp, light, humidity;
     private int plant_connect;
+
+    public int getPlant_id() {
+        return plant_id;
+    }
+
+    public void setPlant_id(int plant_id) {
+        this.plant_id = plant_id;
+    }
+
+    public int getPlant_connect() {
+        return plant_connect;
+    }
 
     public int isPlant_connect() {
         return plant_connect;

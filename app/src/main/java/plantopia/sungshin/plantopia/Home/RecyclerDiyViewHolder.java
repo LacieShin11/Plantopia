@@ -9,7 +9,7 @@ import plantopia.sungshin.plantopia.R;
 
 public class RecyclerDiyViewHolder extends RecyclerView.ViewHolder {
     TextView titleText, sourceText;
-    ImageView postImg;
+    ImageView postImg, scrapMenu;
 
     public RecyclerDiyViewHolder(View itemView) {
         super(itemView);
@@ -17,6 +17,7 @@ public class RecyclerDiyViewHolder extends RecyclerView.ViewHolder {
         this.titleText = (TextView) itemView.findViewById(R.id.diy_title);
         this.sourceText = (TextView) itemView.findViewById(R.id.diy_source);
         this.postImg = (ImageView) itemView.findViewById(R.id.diy_img);
+        this.scrapMenu = (ImageView) itemView.findViewById(R.id.diy_scrap);
 
     }
 }

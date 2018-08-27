@@ -24,12 +24,15 @@ import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import plantopia.sungshin.plantopia.R;
+import plantopia.sungshin.plantopia.User.ApplicationController;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
 import plantopia.sungshin.plantopia.User.ServerURL;
+import plantopia.sungshin.plantopia.User.ServiceApiForUser;
 import plantopia.sungshin.plantopia.User.UserData;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,6 +41,7 @@ import retrofit2.Response;
 public class ShowDiaryActivity extends AppCompatActivity {
     final static int EDIT_DIARY = 13;
 
+    ServiceApiForUser service;
     @BindView(R.id.diary_img)
     ImageView diaryImg;
     @BindView(R.id.diary_text)
@@ -50,6 +54,11 @@ public class ShowDiaryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_diary);
         ButterKnife.bind(this);
+
+        //서버 연결
+        ApplicationController applicationController = ApplicationController.getInstance();
+        applicationController.buildService(ServerURL.URL, 3000);
+        service = ApplicationController.getInstance().getService();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         progressBar.setVisibility(View.INVISIBLE);
@@ -94,8 +103,21 @@ public class ShowDiaryActivity extends AppCompatActivity {
                         .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                setResult(RESULT_OK);
-                                finish();
+                                Call<UserData> diaryCall = service.deleteDiary(getIntent().getIntExtra("diaryId", 1));
+                                diaryCall.enqueue(new Callback<UserData>() {
+                                    @Override
+                                    public void onResponse(Call<UserData> call, Response<UserData> response) {
+                                        Toast.makeText(ShowDiaryActivity.this, "삭제 완료", Toast.LENGTH_SHORT).show();
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<UserData> call, Throwable t) {
+                                        t.printStackTrace();
+                                        Toast.makeText(ShowDiaryActivity.this, R.string.name_error, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         }).show();
 

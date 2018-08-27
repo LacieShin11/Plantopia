@@ -3,28 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingTop="10dp">
 
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
-        android:id="@+id/diary_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never"
-        app:cardUseCompatPadding="true" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/none_diary_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/none_diary"
-        android:textColor="@android:color/black"
-        android:textSize="22sp"
-        android:visibility="gone" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/diary_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            app:cardUseCompatPadding="true" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+        <TextView
+            android:id="@+id/none_diary_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/none_diary"
+            android:textColor="@android:color/black"
+            android:textSize="22sp"
+            android:visibility="gone" />
 </FrameLayout>
