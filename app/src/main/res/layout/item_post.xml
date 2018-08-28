@@ -26,6 +26,7 @@
             android:src="@drawable/background" />
 
         <TextView
+            android:layout_marginHorizontal="5dp"
             android:id="@+id/post_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -42,7 +43,7 @@
                 android:id="@+id/post_source"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/scrap"
+                android:layout_toLeftOf="@+id/post_scrap"
                 android:paddingBottom="5dp"
                 android:paddingHorizontal="5dp"
                 android:singleLine="true"

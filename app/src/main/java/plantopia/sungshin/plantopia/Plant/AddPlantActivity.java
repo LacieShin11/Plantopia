@@ -1,4 +1,4 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.Plant;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,7 +20,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -54,6 +57,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import plantopia.sungshin.plantopia.R;
 import plantopia.sungshin.plantopia.Search.SearchListAdapter;
 import plantopia.sungshin.plantopia.User.ApplicationController;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
@@ -85,6 +89,12 @@ public class AddPlantActivity extends AppCompatActivity {
     Switch connectSwitch;
     @BindView(R.id.plant_type_edit)
     AutoCompleteTextView plantTypeEdit;
+    @BindView(R.id.connect_layout)
+    LinearLayout connectLayout;
+    @BindView(R.id.line)
+    View line;
+    @BindView(R.id.connect_id)
+    EditText connectIdEdit;
 
     static final String KEY = "20180814WAQFXYCPVL972GCN79KFQ";
     static final String IMG_PATH1 = "http://www.nongsaro.go.kr/cms_contents/301/";
@@ -148,6 +158,16 @@ public class AddPlantActivity extends AppCompatActivity {
                 getPlantDetailTask.execute();
             }
         });
+
+        connectSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                connectLayout.setVisibility((isChecked) ? View.VISIBLE : View.GONE);
+                line.setVisibility((isChecked) ? View.VISIBLE : View.GONE);
+            }
+        });
+
+        connectLayout.setVisibility(View.GONE);
     }
 
     private void showMessage(String msg) {
@@ -213,6 +233,11 @@ public class AddPlantActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<UserData> call, Response<UserData> response) {
                         if (response.isSuccessful()) {
+                            Log.d("겨울 최저 온도", Double.toString(newPlant.getWinterMinTemp()));
+                            Log.d("생육 최저 온도", Double.toString(newPlant.getTemp_min()));
+                            Log.d("생육 최고 온도", Double.toString(newPlant.getTemp_max()));
+                            Log.d("최저 습도", Double.toString(newPlant.getHumidity_min()));
+                            Log.d("최고 습도", Double.toString(newPlant.getHumidity_max()));
                             progressBar.setVisibility(View.INVISIBLE);
                             finish();
                         }

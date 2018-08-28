@@ -44,9 +44,9 @@
     <string name="skip_msg">닉네임과 프로필 사진 설정을 생략하시겠습니까? (이후 프로필 설정에서 수정이 가능합니다.)</string>
     <string name="profile_intro">Plantopia에서 사용할 프로필을 설정해주세요!</string>
 
-    <string name="plant_state1">&quot; 몸상태가 최악이에요... &quot;</string>
+    <string name="plant_state1">&quot; 몸상태가 최악이예요... &quot;</string>
     <string name="plant_state2">&quot; 기분이 좋아요! &quot;</string>
-    <string name="plant_state3">" 식물 정보를 불러올 수 없습니다 "</string>
+    <string name="plant_state3">" 식물 정보를 불러올 수 없습니다. "</string>
 
     <string name="state_good">GOOD</string>
     <string name="state_high">HIGH!</string>
@@ -75,5 +75,4 @@
     <string name="check_name3">12자 이하로 입력해주세요.</string>
 
     <string name="select_img">식물의 사진을 선택해주세요!</string>
-    <string name="diary_test">자연을 그리워하고 가까이하는 건 인간의 본능이라고 한다. 실내에서 굳이 식물을 키우는 건 다 이런데서 비롯되었을 거다. 식물을 키우면 심리적 안정감은 물론이고 미세먼지 제거, 공기 정화, 가습, 음이온 배출 등 여러 실용적인 효과도 있다.</string>
 </resources>

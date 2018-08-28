@@ -64,15 +64,15 @@ public class ChatbotAdapter extends BaseAdapter {
         View viewLeft = null;
 
         // 리스트가 길어지면서 현재 화면에 보이지 않는 아이템은 converView가 null인 상태로 들어 옴
-        if ( convertView == null ) {
+        if (convertView == null) {
             // view가 null일 경우 커스텀 레이아웃을 얻어 옴
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.activity_chatitem, parent, false);
 
-            layout    = (LinearLayout) convertView.findViewById(R.id.layout);
-            conversation    = (TextView) convertView.findViewById(R.id.conversation);
-            viewRight    = (View) convertView.findViewById(R.id.imageViewright);
-            viewLeft    = (View) convertView.findViewById(R.id.imageViewleft);
+            layout = (LinearLayout) convertView.findViewById(R.id.layout);
+            conversation = (TextView) convertView.findViewById(R.id.conversation);
+            viewRight = (View) convertView.findViewById(R.id.imageViewright);
+            viewLeft = (View) convertView.findViewById(R.id.imageViewleft);
 
             // 홀더 생성 및 Tag로 등록
             holder = new CustomHolder();
@@ -81,8 +81,7 @@ public class ChatbotAdapter extends BaseAdapter {
             holder.viewRight = viewRight;
             holder.viewLeft = viewLeft;
             convertView.setTag(holder);
-        }
-        else {
+        } else {
             holder = (CustomHolder) convertView.getTag();
             conversation = holder.m_TextView;
             layout = holder.layout;
@@ -94,19 +93,22 @@ public class ChatbotAdapter extends BaseAdapter {
         ListContents listContents = (ListContents) m_List.get(position);
         conversation.setText(listContents.getMsg());
 
-        if( listContents.getType() == 0 ) {
+        if (listContents.getType() == 0) {
             conversation.setBackgroundResource(R.drawable.chat_bubble_left);
+            conversation.setTextColor(Color.BLACK);
             layout.setGravity(Gravity.LEFT);
             viewRight.setVisibility(View.GONE);
             viewLeft.setVisibility(View.GONE);
-        }else if(listContents.getType() == 1){
+        } else if (listContents.getType() == 1) {
             conversation.setBackgroundResource(R.drawable.chat_bubble_right);
+            conversation.setTextColor(Color.BLACK);
             layout.setGravity(Gravity.RIGHT);
             viewRight.setVisibility(View.GONE);
             viewLeft.setVisibility(View.GONE);
-        }else if(listContents.getType() == 2){
+        } else if (listContents.getType() == 2) {
             //conversation.setBackgroundResource(R.drawable.datebg);
             conversation.setBackgroundColor(Color.TRANSPARENT); //배경 투명하게 하기
+            conversation.setTextColor(Color.WHITE);
             layout.setGravity(Gravity.CENTER);
             viewRight.setVisibility(View.VISIBLE);
             viewLeft.setVisibility(View.VISIBLE);

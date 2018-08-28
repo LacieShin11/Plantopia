@@ -4,7 +4,7 @@ import java.util.List;
 
 import plantopia.sungshin.plantopia.Diray.DiaryItem;
 import plantopia.sungshin.plantopia.Diray.ScrapItem;
-import plantopia.sungshin.plantopia.PlantItem;
+import plantopia.sungshin.plantopia.Plant.PlantItem;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -76,4 +76,10 @@ public interface ServiceApiForUser {
 
     @DELETE("/scrap/delete/{scrap_id}")
     Call<UserData> deleteScrap(@Path("scrap_id") int scrapId);
+
+    @DELETE("/plant/delete/{plant_id}")
+    Call<UserData> deletePlant(@Path("plant_id") int plantId);
+
+    @POST("/plant/update")
+    Call<UserData> updatePlant(@Body PlantItem updatePlant);
 }

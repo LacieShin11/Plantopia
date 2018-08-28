@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-import plantopia.sungshin.plantopia.PlantItem;
+import plantopia.sungshin.plantopia.Plant.PlantItem;
 import plantopia.sungshin.plantopia.R;
 
 public class SearchListAdapter extends BaseAdapter implements Filterable {

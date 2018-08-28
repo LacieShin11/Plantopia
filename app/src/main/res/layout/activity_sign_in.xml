@@ -89,45 +89,17 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:text="다음으로 로그인"
+            android:text="계정이 없으신가요?"
             android:textSize="17sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/naver_btn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="5dp"
-                android:background="@android:color/transparent"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:scaleType="fitCenter"
-                android:src="@drawable/naver_login" />
-
-            <ImageButton
-                android:id="@+id/ggl_btn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:background="@android:color/transparent"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ggl_login" />
-        </LinearLayout>
 
         <Button
             android:id="@+id/sign_up_btn"
+            android:layout_marginVertical="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginVertical="15dp"
             android:background="@android:color/transparent"
             android:fontFamily="sans-serif"
             android:foreground="?attr/selectableItemBackgroundBorderless"

@@ -35,8 +35,6 @@ public class SignInActivity extends AppCompatActivity {
     ProgressBar progressBar;
     @BindView(R.id.sign_in_finish)
     Button signInFinishBtn;
-    @BindView(R.id.ggl_btn)
-    ImageButton googleBtn;
     @BindView(R.id.sign_up_btn)
     Button signUpBtn;
 

@@ -1,4 +1,4 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.Plant;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+
+import plantopia.sungshin.plantopia.R;
 
 public class PlantRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerPlantViewHolder> {
     private ArrayList<PlantItem> arrayList;

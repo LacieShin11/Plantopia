@@ -245,7 +245,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                     try {
                         for (int i = 0; i < result_title_list.size(); i++) {
                             PostItem item = new PostItem(result_link_list.get(i).toString(), result_title_list.get(i).toString(),
-                                    "다음 블로그", result_image_list.get(i).toString());
+                                    (result_link_list.get(i).toString().contains("youtube")) ? "유튜부" : "블로그", result_image_list.get(i).toString());
                             postAdapter.addItem(item);
                         }
                         postAdapter.notifyDataSetChanged();
@@ -352,7 +352,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                 public void run() {
                     for (int i = 0; i < resultTitleList.size(); i++) {
                         DIYItem item2 = new DIYItem(resultLinkList.get(i).toString(), resultTitleList.get(i).toString(),
-                                "다음 블로그", resultImageList.get(i).toString());
+                                "유튜브", resultImageList.get(i).toString());
 
                         diyAdapter.addItem(item2);
                     }
@@ -382,7 +382,7 @@ public class HomeFragment extends android.support.v4.app.Fragment implements Rec
                 resultImageList = new ArrayList<String>();
                 resultLpriceList = new ArrayList<String>();
 
-                String query = "";
+                String query;
                 query = URLEncoder.encode(keyWord, "utf-8");
 
                 String address = "https://dapi.kakao.com/v2/search/book?query=" + query;

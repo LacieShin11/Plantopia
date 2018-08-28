@@ -4,13 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/progressbar"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="center"
-        android:visibility="invisible" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -49,47 +42,46 @@
             android:layout_marginBottom="20dp"
             android:gravity="center">
 
-            <TextView
-                android:id="@+id/id_text"
-                android:layout_width="wrap_content"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/name_edit_layout"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
-                android:text="name"
-                android:textColor="@android:color/black"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:layout_marginVertical="10dp"
+                android:padding="0dp">
 
-            <ImageButton
-                android:id="@+id/change_name_btn"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center_vertical"
-                android:layout_toRightOf="@+id/id_text"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/name" />
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/name_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_name"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
         </RelativeLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:background="@drawable/tab_back_custom">
+            android:background="@drawable/tab_back_custom"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/search_plant_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/plant_type_btn"
-                    android:layout_width="wrap_content"
+                <AutoCompleteTextView
+                    android:id="@+id/plant_type_edit"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toLeftOf="@id/search_plant_btn"
                     android:background="@android:color/transparent"
-                    android:text="@string/add_plant_text1"
+                    android:completionThreshold="1"
+                    android:gravity="left|center_vertical"
+                    android:hint="@string/add_plant_text1"
+                    android:maxLines="1"
+                    android:paddingVertical="15dp"
                     android:textColor="@android:color/black"
                     android:textSize="17sp" />
 
@@ -99,7 +91,7 @@
                     android:layout_height="24dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="15dp"
+                    android:layout_marginRight="20dp"
                     android:background="@android:color/transparent"
                     android:gravity="right"
                     android:scaleType="fitCenter"
@@ -109,41 +101,107 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/search_plant_layout"
                 android:background="#BDBDBD" />
 
-            <Button
-                android:id="@+id/connect_device_btn"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/search_plant_layout"
-                android:background="@android:color/transparent"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="15dp"
-                android:text="@string/add_plant_text2"
-                android:textColor="@android:color/black"
-                android:textSize="17sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="15dp"
+                    android:text="@string/add_plant_text2"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|right"
+                    android:orientation="vertical">
+
+                    <Switch
+                        android:id="@+id/connect_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#BDBDBD" />
+
+            <LinearLayout
+                android:id="@+id/switch_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:padding="15dp"
+                    android:text="아두이노 연결"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|right"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/connect_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="80dp"
+                        android:layout_marginRight="20dp"
+                        android:gravity="right"
+                        android:background="@null"
+                        android:hint="아두이노 ID"
+                        android:inputType="numberDecimal" />
+                </LinearLayout>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/connect_device_btn"
                 android:background="#BDBDBD" />
 
-            <Button
-                android:id="@+id/delete_account_text"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/connect_device_btn"
-                android:background="@android:color/transparent"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="left|center_vertical"
-                android:paddingHorizontal="15dp"
-                android:text="식물 삭제"
-                android:textColor="@android:color/black"
-                android:textSize="17sp" />
+                android:orientation="horizontal">
 
-        </RelativeLayout>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:onClick="deleteBtnOnClicked"
+                    android:padding="15dp"
+                    android:text="식물 삭제"
+                    android:textColor="@android:color/black"
+                    android:textSize="17sp" />
+
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 </FrameLayout>

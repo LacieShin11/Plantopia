@@ -1,8 +1,7 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.User;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -31,18 +30,13 @@ import com.bumptech.glide.Glide;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-import plantopia.sungshin.plantopia.User.ApplicationController;
-import plantopia.sungshin.plantopia.User.AutoLoginManager;
-import plantopia.sungshin.plantopia.User.ServerURL;
-import plantopia.sungshin.plantopia.User.ServiceApiForUser;
-import plantopia.sungshin.plantopia.User.UserData;
+import plantopia.sungshin.plantopia.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

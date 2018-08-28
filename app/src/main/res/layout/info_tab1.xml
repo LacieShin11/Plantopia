@@ -6,8 +6,8 @@
     <com.handmark.pulltorefresh.library.PullToRefreshScrollView
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/plant_layout"
@@ -24,7 +24,8 @@
                 android:text="@string/info_tab1_text1"
                 android:textColor="@android:color/black"
                 android:textSize="17sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="invisible" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/tab1_plantopia_list"
@@ -42,7 +43,8 @@
                 android:text="@string/info_tab1_text2"
                 android:textColor="@android:color/black"
                 android:textSize="17sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="invisible" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/tab1_plants_list"

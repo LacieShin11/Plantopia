@@ -90,10 +90,9 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
                         android:background="@android:color/transparent"
-                        android:foreground="?attr/selectableItemBackgroundBorderless"
                         android:gravity="right"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/search" />
+                        android:src="@drawable/submit" />
                 </RelativeLayout>
 
                 <View
@@ -126,6 +125,48 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#BDBDBD" />
+
+                <LinearLayout
+                    android:id="@+id/connect_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="15dp"
+                        android:text="아두이노 연결"
+                        android:textColor="@android:color/black"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|right"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/connect_id"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="50dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@null"
+                            android:gravity="right"
+                            android:hint="아두이노 ID"
+                            android:inputType="numberDecimal" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

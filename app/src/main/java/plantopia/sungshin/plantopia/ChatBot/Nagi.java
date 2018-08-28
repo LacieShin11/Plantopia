@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -41,6 +42,8 @@ public class Nagi extends AppCompatActivity {
     Map context;
     Double Temp, Light, Humidity, MaxTemp, MinTemp, MaxLight, MinLight, MaxHumidity, MinHumidity; //아두이노로부터 받아온 현재 식물 정보
     int isConnected;
+    TextView conversation, userInput, emptyView;
+    ConversationService myConversationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +53,7 @@ public class Nagi extends AppCompatActivity {
         //네트워크 연결 유무 확인
         NetworkInfo mNetworkState = getNetworkInfo();
 
-        if(mNetworkState == null || !mNetworkState.isConnected()){
+        if (mNetworkState == null || !mNetworkState.isConnected()) {
             Toast.makeText(getApplicationContext(), "네트워크 연결 상태를 확인해주세요", Toast.LENGTH_LONG).show();
         }//네트워크 끊김-Toast 메시지
 
@@ -94,15 +97,15 @@ public class Nagi extends AppCompatActivity {
         // ListView에 어댑터 연결
         m_ListView.setAdapter(m_Adapter);
 
-        final ConversationService myConversationService =
+        myConversationService =
                 new ConversationService(
                         "2018-07-10",
                         getString(R.string.username),
                         getString(R.string.password));
 
-        final TextView conversation = (TextView)findViewById(R.id.conversation);
-        final EditText userInput = (EditText)findViewById(R.id.user_input);
-        final TextView emptyView = (TextView) findViewById(R.id.empty_view);
+        conversation = (TextView) findViewById(R.id.conversation);
+        userInput = (EditText) findViewById(R.id.user_input);
+        emptyView = (TextView) findViewById(R.id.empty_view);
 
         //db, listView 어댑터
         chatBotDbHelper = new ChatBotDBAdapter(getApplicationContext());
@@ -115,7 +118,7 @@ public class Nagi extends AppCompatActivity {
         userInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if(actionId == EditorInfo.IME_ACTION_DONE) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     // 현재 시간 구하기
                     long now = System.currentTimeMillis();
                     // 현재 시간을 date 변수에 저장
@@ -131,13 +134,13 @@ public class Nagi extends AppCompatActivity {
                     String inputText2 = userInput.getText().toString();
 
                     //**컨텍스트 넣기-여기에 넣어야지만 맨 처음에 갑작스럽게 습도, 온도, 빛 정보 물어봐도 식물의 현재 상태 정보 알려줌
-                    if(context == null){
+                    if (context == null) {
                         context = new HashMap<String, Object>();
                     }
 
                     //context로 아두이노로부터 받은 실시간 정보 넣기
                     context.put("isConnected", isConnected);
-                    context.put("Temp",Temp);
+                    context.put("Temp", Temp);
                     context.put("Light", Light);
                     context.put("Humidity", Humidity);
                     context.put("MaxTemp", MaxTemp);
@@ -152,18 +155,19 @@ public class Nagi extends AppCompatActivity {
                     final String timeText = "\n\n" + formatTime;
                     inputText2 += timeText;
 
-                    if(chatBotDbHelper.isEmpty(PLANT_TYPE,PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate,PLANT_TYPE,PLANT_NAME)) {
+                    if (chatBotDbHelper.isEmpty(PLANT_TYPE, PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate, PLANT_TYPE, PLANT_NAME)) {
                         chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, formatDate, 2, formatDate, formatTime); //db에 넣기
                         chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, inputText2, 1, formatDate, formatTime); //db에 넣기
                         //첫 대화 시 날짜 띄우기(해당 디비 내역이 비어있을 시, 그리고 db에 그 날짜에 대화한 목록이 없을 때 날짜 띄우기(db에 내용은 있는데)
-                    }else {
+                    } else {
                         chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, inputText2, 1, formatDate, formatTime); //db에 넣기
                     }
 
                     //chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText2, 1, formatDate, formatTime); //db에 넣기
                     userInput.setText("");
                     m_Adapter.notifyDataSetChanged();
-                    if(!chatBotDbHelper.isEmpty(PLANT_TYPE,PLANT_NAME)) setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
+                    if (!chatBotDbHelper.isEmpty(PLANT_TYPE, PLANT_NAME))
+                        setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
 
                     myConversationService.message(getString(R.string.nagi_workspace), request).enqueue(new ServiceCallback<MessageResponse>() {
                         @Override
@@ -186,16 +190,17 @@ public class Nagi extends AppCompatActivity {
 
                                 @Override
                                 public void run() {
-                                    if(chatBotDbHelper.isEmpty(PLANT_TYPE,PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate,PLANT_TYPE,PLANT_NAME)) {
+                                    if (chatBotDbHelper.isEmpty(PLANT_TYPE, PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate, PLANT_TYPE, PLANT_NAME)) {
                                         chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, formatDate, 2, formatDate, formatTime); //db에 넣기
                                         chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, outputText, 0, formatDate, formatTime); //db에 넣기
                                         //첫 대화 시 날짜 띄우기(해당 디비 내역이 비어있을 시, 그리고 db에 그 날짜에 대화한 목록이 없을 때 날짜 띄우기(db에 내용은 있는데)
-                                    }else {
+                                    } else {
                                         chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, outputText, 0, formatDate, formatTime); //db에 넣기
                                     }
 
                                     m_Adapter.notifyDataSetChanged();
-                                    if(!chatBotDbHelper.isEmpty(PLANT_TYPE,PLANT_NAME)) setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
+                                    if (!chatBotDbHelper.isEmpty(PLANT_TYPE, PLANT_NAME))
+                                        setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
 
                                 }
                             });
@@ -212,7 +217,7 @@ public class Nagi extends AppCompatActivity {
         });
 
         m_Adapter.notifyDataSetChanged();
-        if(!chatBotDbHelper.isEmpty(PLANT_TYPE,PLANT_NAME)) setListItem();
+        if (!chatBotDbHelper.isEmpty(PLANT_TYPE, PLANT_NAME)) setListItem();
         //앱 껐다 켜도 db저장된 거 나올 수 있도록
     }
 
@@ -230,13 +235,13 @@ public class Nagi extends AppCompatActivity {
         }
 
         m_ListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-        m_ListView.setSelection(m_Adapter.getCount()-1);//맨 밑 띄워주기
+        m_ListView.setSelection(m_Adapter.getCount() - 1);//맨 밑 띄워주기
 
         m_Adapter.notifyDataSetChanged();
     } //대화 목록 띄워주는 함수
 
-    public NetworkInfo getNetworkInfo(){
-        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+    public NetworkInfo getNetworkInfo() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo;
@@ -249,5 +254,100 @@ public class Nagi extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void sendBtnOnClicked(View view) {
+        // 현재 시간 구하기
+        long now = System.currentTimeMillis();
+        // 현재 시간을 date 변수에 저장
+        Date date = new Date(now);
+        // 시간을 나타낼 포맷 정하기
+        SimpleDateFormat sdfNow = new SimpleDateFormat("aa HH:mm");
+        // 날짜를 나타낼 포맷 정하기
+        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy년 MM월 dd일");
+        // nowDate 변수에 값을 저장
+        formatTime = sdfNow.format(date);
+        formatDate = sdfDate.format(date);
+        final String inputText = userInput.getText().toString();
+        String inputText2 = userInput.getText().toString();
+
+        //**컨텍스트 넣기-여기에 넣어야지만 맨 처음에 갑작스럽게 습도, 온도, 빛 정보 물어봐도 식물의 현재 상태 정보 알려줌
+        if (context == null) {
+            context = new HashMap<String, Object>();
+        }
+
+        //context로 아두이노로부터 받은 실시간 정보 넣기
+        context.put("isConnected", isConnected);
+        context.put("Temp", Temp);
+        context.put("Light", Light);
+        context.put("Humidity", Humidity);
+        context.put("MaxTemp", MaxTemp);
+        context.put("MinTemp", MinTemp);
+        context.put("MaxLight", MaxLight);
+        context.put("MinLight", MinLight);
+        context.put("MaxHumidity", MaxHumidity);
+        context.put("MinHumidity", MinHumidity);
+
+        final MessageRequest request = new MessageRequest.Builder().inputText(inputText).context(context).build();
+
+        final String timeText = "\n\n" + formatTime;
+        inputText2 += timeText;
+
+        if (chatBotDbHelper.isEmpty(PLANT_TYPE, PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate, PLANT_TYPE, PLANT_NAME)) {
+            chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+            chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, inputText2, 1, formatDate, formatTime); //db에 넣기
+            //첫 대화 시 날짜 띄우기(해당 디비 내역이 비어있을 시, 그리고 db에 그 날짜에 대화한 목록이 없을 때 날짜 띄우기(db에 내용은 있는데)
+        } else {
+            chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, inputText2, 1, formatDate, formatTime); //db에 넣기
+        }
+
+        //chatBotDbHelper.insertColumn(PLANT_NAME, PLANT_NICKNAME, inputText2, 1, formatDate, formatTime); //db에 넣기
+        userInput.setText("");
+        m_Adapter.notifyDataSetChanged();
+        if (!chatBotDbHelper.isEmpty(PLANT_TYPE, PLANT_NAME))
+            setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
+
+        myConversationService.message(getString(R.string.nagi_workspace), request).enqueue(new ServiceCallback<MessageResponse>() {
+            @Override
+            public void onResponse(MessageResponse response) {
+                // 현재 시간 구하기
+                long now = System.currentTimeMillis();
+                // 현재 시간을 date 변수에 저장
+                Date date = new Date(now);
+                // 시간을 나타낼 포맷 정하기
+                SimpleDateFormat sdfNow = new SimpleDateFormat("aa HH:mm");
+                // 날짜를 나타낼 포맷 정하기
+                SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy년 MM월 dd일");
+                // nowDate 변수에 값을 저장
+                formatTime = sdfNow.format(date);
+                formatDate = sdfDate.format(date);
+                String timeText = "\n\n" + formatTime;
+                final String outputText = response.getText().get(0) + timeText;//이 위치 맞음
+
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if (chatBotDbHelper.isEmpty(PLANT_TYPE, PLANT_NAME) || chatBotDbHelper.isCheckDatelog(formatDate, PLANT_TYPE, PLANT_NAME)) {
+                            chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, formatDate, 2, formatDate, formatTime); //db에 넣기
+                            chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, outputText, 0, formatDate, formatTime); //db에 넣기
+                            //첫 대화 시 날짜 띄우기(해당 디비 내역이 비어있을 시, 그리고 db에 그 날짜에 대화한 목록이 없을 때 날짜 띄우기(db에 내용은 있는데)
+                        } else {
+                            chatBotDbHelper.insertColumn(PLANT_TYPE, PLANT_NAME, outputText, 0, formatDate, formatTime); //db에 넣기
+                        }
+
+                        m_Adapter.notifyDataSetChanged();
+                        if (!chatBotDbHelper.isEmpty(PLANT_TYPE, PLANT_NAME))
+                            setListItem(); //해당 plant와 관련된 내용이 db에 있으면 그 plant와의 대화내용 다 띄우기
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, e.getMessage());
+            }
+        });
     }
 }

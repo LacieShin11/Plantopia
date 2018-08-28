@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -22,6 +21,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import plantopia.sungshin.plantopia.Plant.PlantInfoActivity;
+import plantopia.sungshin.plantopia.Plant.PlantItem;
+import plantopia.sungshin.plantopia.Plant.PlantRecyclerViewAdapter;
 import plantopia.sungshin.plantopia.User.ApplicationController;
 import plantopia.sungshin.plantopia.User.AutoLoginManager;
 import plantopia.sungshin.plantopia.User.ServerURL;

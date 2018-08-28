@@ -33,17 +33,17 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import plantopia.sungshin.plantopia.PlantItem;
+import plantopia.sungshin.plantopia.Plant.PlantItem;
 import plantopia.sungshin.plantopia.R;
 
 public class SearchFragment extends android.support.v4.app.Fragment {
     private Unbinder unbinder;
 
-    @BindView(R.id.search_list)
+//    @BindView(R.id.search_list)
     ListView searchListView;
-    @BindView(R.id.search_edit_text)
+//    @BindView(R.id.search_edit_text)
     EditText editText;
-    @BindView(R.id.progressbar)
+//    @BindView(R.id.progressbar)
     ProgressBar progressbar;
 
     SearchListAdapter adapter = new SearchListAdapter();
@@ -57,11 +57,14 @@ public class SearchFragment extends android.support.v4.app.Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab2, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        searchListView = view.findViewById(R.id.search_list);
+        progressbar = view.findViewById(R.id.progressbar);
+        editText = view.findViewById(R.id.search_edit_text);
 
         progressbar.setVisibility(View.VISIBLE);
         getPlantDataTask ayncTask = new getPlantDataTask();

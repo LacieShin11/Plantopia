@@ -1,9 +1,11 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.Plant;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import plantopia.sungshin.plantopia.R;
 
 class RecyclerPlantViewHolder extends RecyclerView.ViewHolder {
     TextView plantNameText;

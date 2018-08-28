@@ -1,4 +1,4 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.Plant;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import plantopia.sungshin.plantopia.ChatBot.Nagi;
 import plantopia.sungshin.plantopia.ChatBot.Oroya;
 import plantopia.sungshin.plantopia.ChatBot.Palm;
 import plantopia.sungshin.plantopia.ChatBot.Stuckyi;
+import plantopia.sungshin.plantopia.R;
 
 public class PlantInfoActivity extends AppCompatActivity {
     String plantName, plantType, plantimg;
@@ -77,9 +78,22 @@ public class PlantInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         PlantItem plantItem = (PlantItem) intent.getSerializableExtra("plantItem");
 
+        setStatus(plantItem);
         setTitle(plantItem.getPlant_name());
+
+        //전 값과 비교하기
+        // if(count > 0) {
+           /* latestTemp = Temp;
+            latestLight = Light;
+            latestHumidity = Humidity;*/
+        setStatus(plantItem);
+    }
+
+    public void setStatus(PlantItem plantItem) {
+
         Glide.with(this).load(plantItem.getPlant_img()).into(plantImg);
 
+        Intent intent = getIntent();
         isConnected = intent.getIntExtra("isConnected", 0);//식물 연결 여부
 
         //아두이노에서 정보 가져오기
@@ -93,16 +107,7 @@ public class PlantInfoActivity extends AppCompatActivity {
         MaxHumidity = intent.getDoubleExtra("plantMaxHumidity", 0);
         MinHumidity = intent.getDoubleExtra("plantMinHumidity", 0);
 
-        //전 값과 비교하기
-        // if(count > 0) {
-           /* latestTemp = Temp;
-            latestLight = Light;
-            latestHumidity = Humidity;*/
-        setStatus(plantItem);
-    }
-
-    public void setStatus(PlantItem plantItem) {
-        if (isConnected == 0) { //(Temp == 0 && Light == 0 && Humidity == 0) { //연결이 안 되었을 시에
+        if (isConnected == 0) { //연결이 안 되었을 시에
             plantStateText.setText(R.string.plant_state3);
             tempText.setVisibility(View.GONE);
             waterText.setVisibility(View.GONE);
@@ -118,16 +123,11 @@ public class PlantInfoActivity extends AppCompatActivity {
             tempText.setText(Temp + "°C");
 
             if (Temp > MaxTemp) {
-                //if(latestTemp < Temp){
                 status_count++;
-                //plantStateText.setText(R.string.plant_state2);
                 tempStatusText.setText(R.string.state_high);
-                tempImg.setImageResource(R.drawable.monitor_notemp);//.setBackgroundResource(R.drawable.monitor_notemp);
-                //}else{
-                //}
+                tempImg.setImageResource(R.drawable.monitor_notemp);
             } else if (Temp < MinTemp) {
                 status_count++;
-                //plantStateText.setText(R.string.plant_state2);
                 tempStatusText.setText(R.string.state_low);
                 tempImg.setImageResource(R.drawable.monitor_notemp);
             }//온도 정보 비교
@@ -137,12 +137,10 @@ public class PlantInfoActivity extends AppCompatActivity {
 
             if (Light > MaxLight) {
                 status_count++;
-                //plantStateText.setText(R.string.plant_state2);
                 brightStatusText.setText(R.string.state_high);
                 brightImg.setImageResource(R.drawable.monitor_nosunlight);
             } else if (Light < MinLight) {
                 status_count++;
-                //plantStateText.setText(R.string.plant_state2);
                 brightStatusText.setText(R.string.state_low);
                 brightImg.setImageResource(R.drawable.monitor_nosunlight);
             }//빛 정보 비교
@@ -152,12 +150,10 @@ public class PlantInfoActivity extends AppCompatActivity {
 
             if (Humidity > MaxHumidity) {
                 status_count++;
-                //plantStateText.setText(R.string.plant_state2);
                 waterStatusText.setText(R.string.state_high);
                 waterImg.setImageResource(R.drawable.monitor_nowater);
             } else if (Humidity < MinHumidity) {
                 status_count++;
-                //plantStateText.setText(R.string.plant_state2);
                 waterStatusText.setText(R.string.state_low);
                 waterImg.setImageResource(R.drawable.monitor_nowater);
             }//습도 정보 비교
@@ -198,13 +194,10 @@ public class PlantInfoActivity extends AppCompatActivity {
         MinLight = intent2.getDoubleExtra("plantMinLight", 0);
         MaxHumidity = intent2.getDoubleExtra("plantMaxHumidity", 0);
         MinHumidity = intent2.getDoubleExtra("plantMinHumidity", 0);
-        /*//여기까진 정보 잘 받아옴..테스팅
-        Toast.makeText(getApplicationContext(), Temp.toString(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), Light.toString(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), Humidity.toString(), Toast.LENGTH_SHORT).show();*/
 
         switch (item.getItemId()) {
             case R.id.menu_chat: //챗봇 누르기
+                Log.d("plantType", plantType);
                 if (plantType.equals("스투키")) {
                     Intent intent = new Intent(PlantInfoActivity.this, Stuckyi.class);
                     intent.putExtra("isConnected", isConnected);
@@ -297,6 +290,8 @@ public class PlantInfoActivity extends AppCompatActivity {
         if (requestCode == DELETE_PLANT && resultCode == RESULT_OK) {
             setResult(RESULT_OK);
             finish();
+        } else if (requestCode == MODIFY_PLANT && resultCode == RESULT_OK) {
+            setStatus((PlantItem)data.getSerializableExtra("plantItem")); //화면 갱신
         }
     }
 

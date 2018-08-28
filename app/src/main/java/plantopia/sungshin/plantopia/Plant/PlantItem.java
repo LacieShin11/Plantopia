@@ -1,4 +1,4 @@
-package plantopia.sungshin.plantopia;
+package plantopia.sungshin.plantopia.Plant;
 
 import java.io.Serializable;
 
@@ -129,6 +129,10 @@ public class PlantItem implements Serializable{
     }
 
     public PlantItem() {
+        this.temp_max = 0;
+        this.temp_min = 0;
+        this.humidity_max = 0;
+        this.humidity_min = 0;
     }
 
     public PlantItem(String plantName, String plantType, String plantImg, double Temp, double Light, double Humidity){
@@ -145,19 +149,19 @@ public class PlantItem implements Serializable{
         this.plantNumber = plantNumber;
     }
 
-    public PlantItem(int ownerID, String plantName, String plantType, String plantNumber, String plantImg, double winterMinTemp, double maxTemp, double minTemp, double maxLight, double minLignt, double maxHumidity, double minHumidity, double temp, double light, double humidity, int isConnected) {
+    public PlantItem(int ownerID, String plantName, String plantType, String plantNumber, String plantImg, double winterMinTemp, double temp_max, double temp_min, double light_max, double light_min, double humidity_max, double humidity_min, double temp, double light, double humidity, int isConnected) {
         this.owner_id = ownerID;
         this.plant_name = plantName;
         this.plant_type = plantType;
         this.plantNumber = plantNumber;
         this.plant_img = plantImg;
         this.winterMinTemp = winterMinTemp;
-        this.temp_max = maxTemp;
-        this.temp_min = minTemp;
-        this.light_max = maxLight;
-        this.light_min = minLignt;
-        this.humidity_max = maxHumidity;
-        this.humidity_min = minHumidity;
+        this.temp_max = temp_max;
+        this.temp_min = temp_min;
+        this.light_max = light_max;
+        this.light_min = light_min;
+        this.humidity_max = humidity_max;
+        this.humidity_min = humidity_min;
         this.temp = temp;
         this.light = light;
         this.humidity = humidity;
